@@ -2,6 +2,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.sound.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -93,6 +94,11 @@ public class MakeCoffeeTask extends Task {
         }
         if (stepOn != codes.length && i == codes[stepOn]) {
             stepOn++;
+            if (stepOn == codes.length) {
+                SoundPlayer.getSoundPlayer().playCoffeeBrewing();
+            } else {
+                SoundPlayer.getSoundPlayer().playMouseClick();
+            }
         }
     }
 

@@ -25,15 +25,21 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
     private BufferedImage standingLeft;
     private BufferedImage standingRight;
     private BufferedImage standingImage;
-    private Animation anim;
+    private Animation leftAnim;
+    private Animation rightAnim;
+    private Animation curAnim;
     
-    public PlayerDemon(GameWorld par, float x, Animation playerAnimation, Camera camera) {
-        super(par, x, playerAnimation, camera);
-        anim = playerAnimation;
+    public PlayerDemon(GameWorld par, float x, Animation left, Animation right, Camera camera) {
+        super(par, x, (Animation)null, camera);
+        this.leftAnim = left;
+        this.rightAnim = right;
+        leftAnim.update(0);
+        rightAnim.update(0);
         standingRight = par.getState().getImage("demon2");
         par.getState().getAssetManager().createHorizontialFlipCopy(standingRight, "standingLeft");
         standingLeft = par.getState().getImage("demon2Left");
         standingImage = standingRight;
+        setImage(standingImage);
     }
 
     @Override
@@ -41,23 +47,23 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
         super.update(delta);
         //Move the player. The tasks updating and whatnot will be done in PlayState
         if (right) {
+            curAnim = rightAnim;
             translateX(speed);
-            setAnimation(anim);
             translateX(6);
-            anim.setTrack(1);
             standingImage = standingRight;
-        }
-        if (left) {
+        } else if (left) {
+            curAnim = leftAnim;
             translateX(-speed);
-            setAnimation(anim);
             translateX(-6);
-            anim.setTrack(0);
             standingImage = standingLeft;
-        } else {
+        } else if (!right && !left) {
             setImage(standingImage);
+            curAnim = null;
         }
-
-        anim.update(delta);
+        if (curAnim != null) {
+            setAnimation(curAnim);
+            curAnim.update(delta);
+        }
     }
     
     @Override

@@ -5,11 +5,12 @@
  */
 package ggj16;
 
-import ggj16.states.PlayState;
+import ggj16.sound.SoundPlayer;
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
+import ggj16.states.MenuState;
 import java.io.File;
 
 /**
@@ -26,9 +27,12 @@ public class GGJ16 {
         GameWindow window = new AWTGameWindow("Our game", 800, 600);
         
         assetManager.loadImagesInDirectories("images", true);
+        assetManager.loadSoundEffectsInDirectories("sounds", true);
+        assetManager.loadSoundEffectsInDirectories("music", true);
+        SoundPlayer.getSoundPlayer().init(assetManager);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        runner.setState(new PlayState());
+        runner.setState(new MenuState());
         runner.loop();
     }
     

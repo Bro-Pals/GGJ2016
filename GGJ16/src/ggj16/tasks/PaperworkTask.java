@@ -3,6 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.sound.SoundPlayer;
 import ggj16.states.PlayState;
 import ggj16.Task;
 import java.awt.Color;
@@ -32,6 +33,7 @@ public class PaperworkTask extends Task {
             // reduce paperwork
             ready = false;
             plateStateRef.changePaperwork(-1);
+            SoundPlayer.getSoundPlayer().playPaperWriting();
         }
         if (!bln) {
             ready = true;

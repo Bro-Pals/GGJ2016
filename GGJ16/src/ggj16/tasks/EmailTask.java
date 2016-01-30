@@ -3,6 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.sound.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -68,6 +69,7 @@ public class EmailTask extends Task {
         }
         if (steps[stepOn] == i) {
             stepOn++;
+            SoundPlayer.getSoundPlayer().playMouseClick();
             if (stepOn >= steps.length) {
                 stepOn = 0;
                 timesLeft--;

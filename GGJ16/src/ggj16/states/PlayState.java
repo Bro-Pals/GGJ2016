@@ -17,6 +17,7 @@ import ggj16.gui.PaperStackGui;
 import ggj16.gui.ToDoListElement;
 import ggj16.officeobjects.OfficeTaskObject;
 import ggj16.officeobjects.PlayerDemon;
+import ggj16.sound.SoundPlayer;
 import ggj16.tasks.EmailTask;
 import ggj16.tasks.FaxTask;
 import ggj16.tasks.HitImpTask;
@@ -275,6 +276,10 @@ public class PlayState extends GameState {
         }
         taskRender.dispose();
         
+        if (isCompletedWithTasks()) {
+            SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
+        }
+        
         // 3. Draw the GUIs
         // Guis are in 2 parts:
         // 200x300 at (0, 300)
@@ -371,7 +376,7 @@ public class PlayState extends GameState {
         // coffee maker
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxmachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
         workers[2] = new Employee(officeWorld, 1200 + workerImageAdjust, workerWorkingImg, camera);
@@ -399,7 +404,6 @@ public class PlayState extends GameState {
         
         
         // init player last (so they're drawn on top)
-        Animation demonAnimation = new Animation();
         Track right = new Track(new BufferedImage[]{getImage("demon1"), getImage("demon2"), getImage("demon3")}, 200);
         getAssetManager().createHorizontialFlipCopy(getImage("demon1"), "demon1Left");
         getAssetManager().createHorizontialFlipCopy(getImage("demon2"), "demon2Left");
@@ -409,10 +413,11 @@ public class PlayState extends GameState {
             getImage("demon2Left"), 
             getImage("demon3Left")
         }, 200);
-        demonAnimation.addTrack(left);
-        demonAnimation.addTrack(right);
-        demonAnimation.setTrack(0);
-        demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
+        Animation rightAnim = new Animation();
+        rightAnim.setTrack(rightAnim.addTrack(right));
+        Animation leftAnim = new Animation();
+        leftAnim.setTrack(leftAnim.addTrack(left));
+        demonPlayer = new PlayerDemon(officeWorld, 0, leftAnim, rightAnim, camera);
         officeWorld.addEntity(demonPlayer);
         
         // employee heads init
@@ -443,6 +448,8 @@ public class PlayState extends GameState {
         gui.setEnabled("main", true);
         todoListGuiElement.setEnabled(false);
         
+        SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
+        
     }
 
     ////Huuuurrrrrrr
@@ -464,8 +471,8 @@ public class PlayState extends GameState {
     public void key(int keycode, boolean pressed) {
         demonPlayer.key(keycode, pressed);
         // handle input for actice task (only on valid active task)
-        if (nextTaskIndex < toDoList.size() && 
-                activeTask != null && activeTask == toDoList.get(nextTaskIndex)) {
+
+        if (!isCompletedWithTasks() && activeTask != null && activeTask == toDoList.get(nextTaskIndex)) {
             activeTask.key(keycode, pressed);
         } else {
             // if it's not the right one on the todo list then see if
@@ -539,6 +546,11 @@ public class PlayState extends GameState {
         for (int i=0; i<toDoList.size(); i++) {
             toDoList.get(i).resetForDay();
         }
+        SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
+    }
+    
+    public boolean isCompletedWithTasks() {
+        return nextTaskIndex >= toDoList.size();
     }
     
     public int getNumWorkerAlive() {
@@ -553,7 +565,7 @@ public class PlayState extends GameState {
     
     public void advanceDay() {
         dayOn++;
-        if (nextTaskIndex >= toDoList.size()) {
+        if (isCompletedWithTasks()) {
             //Completed all tasks
             //Go to the next day
             if (dayOn == 1) {

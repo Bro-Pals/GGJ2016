@@ -1,0 +1,13 @@
+Office Demon
+
+-Created for the Global Game Jam 2016
+
+Team:
+Jonathon Prehn - Programming and Design
+Kevin Prehn - Programming and Design
+Taylor Lutz - Art, Sound and Design
+
+Some sound effects were taken from 
+
+-http://www.freesfx.co.uk
+-Matt Koenig, soundbible.com
