@@ -1,6 +1,7 @@
 
 package ggj16;
 
+import bropals.lib.simplegame.KeyListener;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.entity.block.TexturedBlock;
 import java.awt.Graphics2D;
@@ -10,7 +11,7 @@ import java.awt.Graphics2D;
  * 
  * @author Kevin
  */
-public abstract class Task {
+public abstract class Task implements KeyListener {
 
     GameWorld<TexturedBlock> world; // all of the objects for this task
     
