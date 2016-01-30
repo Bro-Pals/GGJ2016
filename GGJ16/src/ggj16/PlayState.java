@@ -5,6 +5,7 @@ import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.officeobjects.OfficeTaskObject;
 import ggj16.officeobjects.PlayerDemon;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -32,12 +33,12 @@ public class PlayState extends GameState {
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
     
     @Override
-    public void update(int i) {
+    public void update(int delta) {
         // 1. update office world
-        officeWorld.updateEntities(i);
+        officeWorld.updateEntities(delta);
         // 2. update tasks world
         for (int j=0; j<toDoList.size(); j++) {
-            toDoList.get(j).update(i);
+            toDoList.get(j).update(delta);
         }
         // 3. ?? update the input ??
         //Input does not need to be updated
@@ -45,6 +46,21 @@ public class PlayState extends GameState {
         //Update the camera
         //The camera sets its position itself
         camera.setXLocation((int)(demonPlayer.getX()+(demonPlayer.getWidth()/2)-400));
+        OfficeTaskObject intersects = null;
+        for (int i=0; i<officeWorld.getEntities().size(); i++) {
+            OfficeObject obj = officeWorld.getEntities().get(i);
+            if (obj instanceof OfficeTaskObject) {
+                OfficeTaskObject task = (OfficeTaskObject)obj;
+                if (task.collidesWith(demonPlayer)) {
+                    intersects = task;
+                }
+            }
+        }
+        if (intersects != null) {
+            activeTask = intersects.getAssociatedTask();
+        } else {
+            activeTask = null;
+        }
     }
 
     @Override
@@ -109,6 +125,17 @@ public class PlayState extends GameState {
         
     }
 
+    ////Huuuurrrrrrr
+    public PlayerDemon getDemonPlayer() {
+        return demonPlayer;
+    }
+
+    public void setActiveTask(Task activeTask) {
+        this.activeTask = activeTask;
+    }
+    
+    
+    
     @Override
     public void onExit() {
     }
