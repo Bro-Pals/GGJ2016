@@ -12,7 +12,7 @@ package ggj16;
 public class Camera {
 
     private static final int CAMERA_MIN = 0; //The left edge
-    private static final int CAMERA_MAX = 1000; //The right edge
+    private static final int CAMERA_MAX = 3000; //The right edge
 
     private float x;
 

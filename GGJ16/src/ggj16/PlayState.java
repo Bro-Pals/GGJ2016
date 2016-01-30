@@ -12,6 +12,12 @@ import ggj16.gui.PaperStackGui;
 import ggj16.gui.ToDoListElement;
 import ggj16.officeobjects.OfficeTaskObject;
 import ggj16.officeobjects.PlayerDemon;
+import ggj16.tasks.EmailTask;
+import ggj16.tasks.FaxTask;
+import ggj16.tasks.MakeCoffeeTask;
+import ggj16.tasks.MeetingTask;
+import ggj16.tasks.ScareHouseTask;
+import ggj16.tasks.TakeLunchTask;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -138,6 +144,18 @@ public class PlayState extends GameState {
         }
         g2.setClip(0, 0, 800, 600); // reset the graphics 
         gui.render(o);
+        
+        
+        
+        
+        /*
+        Debugging things
+        */
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 0, 150, 50);
+        g2.setColor(Color.BLACK);
+        g2.drawString("activeTask: " + activeTask, 10, 20);
+        
     }
 
     @Override
@@ -145,6 +163,7 @@ public class PlayState extends GameState {
         officeWorld = new GameWorld<>(this);
         camera = new Camera();
         toDoList = new ArrayList<>();
+        
         
         Animation demonAnimation = new Animation();
         Track t = new Track(new BufferedImage[]{getImage("demonrightview")});
@@ -154,6 +173,47 @@ public class PlayState extends GameState {
         
         officeWorld.addEntity(demonPlayer);
         
+        // task and todo list init
+        MakeCoffeeTask coffeeTask = new MakeCoffeeTask(this);
+        MeetingTask meetingTask = new MeetingTask(this);
+        TakeLunchTask lunchTask = new TakeLunchTask(this);
+        EmailTask emailTask = new EmailTask(this);
+        ScareHouseTask scareTask = new ScareHouseTask(this);
+        FaxTask faxTask = new FaxTask(this);
+        toDoList.add(coffeeTask);
+        toDoList.add(meetingTask);
+        toDoList.add(lunchTask);
+        toDoList.add(emailTask);
+        toDoList.add(scareTask);
+        toDoList.add(faxTask);
+        
+        // add everything to the world
+        // desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 100, getAssetManager().getImage("workerDesk"), camera));
+        // meeting door
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 400, getAssetManager().getImage("meetingDoor"), camera, meetingTask));
+        //  desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 550, getAssetManager().getImage("workerDesk"), camera));
+        // coffee maker
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeeMakerOffice"), camera, coffeeTask));
+        // fax machine
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
+        //  desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
+        //  desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 1450, getAssetManager().getImage("workerDesk"), camera));
+        // phone to order lunch
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1650, getAssetManager().getImage("phoneOffice"), camera, lunchTask));
+        // demon desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 1750, getAssetManager().getImage("demonDesk"), camera));
+        // computer to answer emails
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("demonComputer"), camera, emailTask));
+        //  desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 2250, getAssetManager().getImage("workerDesk"), camera));
+        //  desk
+        officeWorld.addEntity(new OfficeObject(officeWorld, 2500, getAssetManager().getImage("workerDesk"), camera));
+        // portal to scare the family
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2800, getAssetManager().getImage("portalOffice"), camera, scareTask));
         
         //Background init
         officeBackgroundRepeated = getAssetManager().getImage("foreground");
