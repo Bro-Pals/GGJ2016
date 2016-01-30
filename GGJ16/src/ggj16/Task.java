@@ -15,7 +15,6 @@ public abstract class Task implements KeyListener {
 
     GameWorld<TexturedBlock> world; // all of the objects for this task
     
-    
     /**
      * Update the task
      * @param ms  milliseconds that frame

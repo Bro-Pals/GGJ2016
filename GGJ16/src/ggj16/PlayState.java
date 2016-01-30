@@ -78,22 +78,16 @@ public class PlayState extends GameState {
 
     @Override
     public void onEnter() {
-        addController(new Controller() {
-
-            @Override
-            public void key(int i, boolean bln) {
-            }
-
-            @Override
-            public void mouse(int i, int i1, int i2, boolean bln) {
-            }
-            
-            
-        });
+        
+        
     }
 
     @Override
     public void onExit() {
     }
 
+    @Override
+    public void key(int keycode, boolean pressed) {
+        
+    }    
 }
