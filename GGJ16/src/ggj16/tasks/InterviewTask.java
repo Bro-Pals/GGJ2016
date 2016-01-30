@@ -27,7 +27,7 @@ public class InterviewTask extends Task {
     int currWaitTime = 0;
     
     public InterviewTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Hire worker");
     }
 
     @Override

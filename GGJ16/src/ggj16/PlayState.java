@@ -297,4 +297,13 @@ public class PlayState extends GameState {
             hoursLeft = 12;
         }
     }
+
+    
+    /// adsfasdfasdjfldsjls
+    public ArrayList<Task> getToDoList() {
+        return toDoList;
+    }
+    
+    
+    
 }

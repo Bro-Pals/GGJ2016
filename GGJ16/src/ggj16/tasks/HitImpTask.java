@@ -27,7 +27,7 @@ public class HitImpTask extends Task {
     MoveTaskObject impThing;
     
     public HitImpTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "kill imp");
         
         float impSpawnX = 200;
         float impSpawnY = 50;

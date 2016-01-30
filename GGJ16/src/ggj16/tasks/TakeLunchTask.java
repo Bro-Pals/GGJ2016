@@ -28,7 +28,7 @@ public class TakeLunchTask extends Task {
     int currWaitTime = 0;
     
     public TakeLunchTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Order lunch");
     }
 
     @Override

@@ -16,7 +16,7 @@ public class EmailTask extends Task {
     int stepOn = 0;
     
     public EmailTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Respond to emails");
     }
 
     @Override

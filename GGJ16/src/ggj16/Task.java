@@ -17,8 +17,10 @@ public abstract class Task implements KeyListener {
 
     GameWorld<TaskObject> world; // all of the objects for this task
     boolean isComplete;
+    String description;
     
-    public Task(GameState stateInside) {
+    public Task(GameState stateInside, String desc) {
+        description = desc;
         isComplete = false;
         world = new GameWorld<TaskObject>(stateInside);
     }
@@ -58,6 +60,12 @@ public abstract class Task implements KeyListener {
     public GameWorld<TaskObject> getWorld() {
         return world;
     }
+
+    public String getDescription() {
+        return description;
+    }
+    
+    
     
     
 

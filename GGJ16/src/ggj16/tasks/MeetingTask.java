@@ -32,7 +32,7 @@ public class MeetingTask extends Task {
     int timeUntilSleeper = 0;
     
     public MeetingTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Conduct meeting");
     }
 
     @Override

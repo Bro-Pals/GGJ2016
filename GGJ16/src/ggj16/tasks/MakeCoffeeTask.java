@@ -29,7 +29,7 @@ public class MakeCoffeeTask extends Task {
     private BufferedImage[] images;
     
     public MakeCoffeeTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Make coffee");
         images = new BufferedImage[] {
             stateInside.getAssetManager().getImage("coffeepot1"),
             stateInside.getAssetManager().getImage("coffeepot2"),
