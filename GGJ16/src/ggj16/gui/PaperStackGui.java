@@ -8,7 +8,7 @@ package ggj16.gui;
 import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiElement;
-import ggj16.PlayState;
+import ggj16.states.PlayState;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 

@@ -1,5 +1,5 @@
 
-package ggj16;
+package ggj16.states;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.animation.Animation;
@@ -8,6 +8,10 @@ import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.gui.Gui;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.Camera;
+import ggj16.Employee;
+import ggj16.OfficeObject;
+import ggj16.Task;
 import ggj16.gui.ClockGui;
 import ggj16.gui.PaperStackGui;
 import ggj16.gui.ToDoListElement;
@@ -53,9 +57,11 @@ public class PlayState extends GameState {
     // worker values
     private Employee[] workers;
     private BufferedImage[] workerHeadsIcon;
+    /*
     private int currWorkerSleepTime;
     private final int WORKER_SLEEP_WAIT_TIME = 12000; // 12 seconds
-    // imp attack values
+    */
+// imp attack values
     private ArrayList<HitImpTask> impTasks; // list of all imp attack tasks objects
     private int currImpAttackTime;
     private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
@@ -64,9 +70,11 @@ public class PlayState extends GameState {
     private int dayOn; // Count what day you're on.
     private int obstructionValue = 0; //Level of obstruction
     private int hoursLeft = 12;
-    private int ticksPerHour = 5000; //Seconds per tick (Make the day a minute to start?)
+    private int ticksPerHour = 30000;
+    // ticksPerHour * 12 /1000 = seconds per day ( 360 secs )
     private int tickProgress;
-    private float paperworkLeft = 100; // how much paperwork is left for that day.
+    private final float PAPERWORK_PER_DAY_BASE_VALUE = 100;
+    private float paperworkLeft = PAPERWORK_PER_DAY_BASE_VALUE; // how much paperwork is left for that day.
     private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
     
@@ -93,6 +101,7 @@ public class PlayState extends GameState {
             //System.out.println("COMPLETED ALL TASKS");
         }
         
+        /*
         // workers falling asleep
         currWorkerSleepTime += delta;
         if (currWorkerSleepTime > WORKER_SLEEP_WAIT_TIME) {
@@ -116,7 +125,7 @@ public class PlayState extends GameState {
                 System.out.println("make a employee sleep: whichOne: " + whichOne);
             }
             currWorkerSleepTime = 0;
-        }
+        }*/
         
         // imp spawning
          currImpAttackTime += delta;
@@ -260,7 +269,7 @@ public class PlayState extends GameState {
 
     @Override
     public void onEnter() {
-        currWorkerSleepTime = 0;
+        //currWorkerSleepTime = 0;
         officeWorld = new GameWorld<>(this);
         camera = new Camera();
         toDoList = new ArrayList<>();
@@ -282,7 +291,7 @@ public class PlayState extends GameState {
         toDoList.add(faxTask);
        
         workers = new Employee[6];
-        BufferedImage workerWorkingImg = getAssetManager().getImage("workerAwake");
+        BufferedImage workerWorkingImg = getAssetManager().getImage("worker");
         
         int workerImageAdjust = 44;
         
@@ -347,7 +356,7 @@ public class PlayState extends GameState {
         // employee heads init
         workerHeadsIcon = new BufferedImage[]{
             getAssetManager().getImage("workerHeadAwake"),
-            getAssetManager().getImage("workerHeadSleeping"),
+          // getAssetManager().getImage("workerHeadSleeping"),
             getAssetManager().getImage("workerHeadDead")
          };
         
@@ -448,10 +457,43 @@ public class PlayState extends GameState {
     public ArrayList<Task> getToDoList() {
         return toDoList;
     }
+
+    public int getObstructionValue() {
+        return obstructionValue;
+    }
+        
+    public void resetForNewDay() {
+        hoursLeft = 12;
+        paperworkLeft = PAPERWORK_PER_DAY_BASE_VALUE;
+        nextTaskIndex = 0;
+        for (int i=0; i<toDoList.size(); i++) {
+            toDoList.get(i).resetForDay();
+        }
+    }
     
     public void advanceDay() {
-        
         dayOn++;
+        if (nextTaskIndex >= toDoList.size()) {
+            //Completed all tasks
+            //Go to the next day
+            if (dayOn == 1) {
+                obstructionValue = 1;
+            } else if (dayOn == 2) {
+                ticksPerHour = 4500; //Make the days shorter
+            } else if (dayOn == 3) {
+                obstructionValue = 2;
+            } else if (dayOn == 4) {
+                ticksPerHour = 4000; //Make the days even shorter
+                obstructionValue = 3;
+            } else if (dayOn == 5) {
+                //Lets make this the win state
+                getGameStateRunner().setState(new WinState());
+            }
+        } else {
+            //Did not complete all tasks
+            System.out.println("YOU ARE FIRED");
+            getGameStateRunner().setState(new FiredState());
+        }
     }
     
 }

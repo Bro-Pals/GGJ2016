@@ -74,4 +74,11 @@ public class InterviewTask extends Task {
         }
     }
     
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        timesToTapLeft = 12;
+        currWaitTime = 0;
+        setComplete(false);
+    }
 }

@@ -43,4 +43,6 @@ public class OfficeTaskObject extends OfficeObject {
         float half = player.getX() + (player.getWidth()/2);
         return half > getX() && half < getX() + getWidth();
     }
+    
+    
 }

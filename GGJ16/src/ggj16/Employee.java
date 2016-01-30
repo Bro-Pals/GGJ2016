@@ -10,7 +10,7 @@ import java.awt.image.BufferedImage;
  */
 public class Employee extends OfficeObject {
 
-    public final static int WORKING = 0, SLEEPING = 1, DEAD = 2;
+    public final static int WORKING = 0, DEAD = 1;
     int state;
     int positionX;
     
@@ -24,10 +24,7 @@ public class Employee extends OfficeObject {
         super.update(delta);
         switch(state) {
             case WORKING:
-                setImage(getParent().getState().getImage("workerAwake"));
-                break;
-            case SLEEPING:
-                setImage(getParent().getState().getImage("workerAsleep"));
+                setImage(getParent().getState().getImage("worker"));
                 break;
             case DEAD:
                 setImage(null);

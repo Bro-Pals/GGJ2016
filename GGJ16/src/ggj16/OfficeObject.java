@@ -120,6 +120,8 @@ public class OfficeObject extends BaseEntity {
         }
     }
     
+
+    
     public void translateX(float x) {
         setX(this.x+=x);
     }

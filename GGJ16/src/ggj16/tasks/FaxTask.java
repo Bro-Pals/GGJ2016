@@ -87,4 +87,12 @@ public class FaxTask extends Task {
             stepOn = 2;
         }
     }
+    
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        currWaitTime = 0;
+        waitTimeDoneFaxing = 4000;
+        setComplete(false);
+    }
 }

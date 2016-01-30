@@ -124,4 +124,15 @@ public class ScareHouseTask extends Task {
         }
         
     }
+    
+    @Override
+    public void resetForDay() {
+        littleDemonPosX = 30;
+        for (int i=0; i<housesScared.length; i++) {
+            housesScared[i] = false;
+        }
+        left = false;
+        right = false;
+        setComplete(false);
+    }
 }

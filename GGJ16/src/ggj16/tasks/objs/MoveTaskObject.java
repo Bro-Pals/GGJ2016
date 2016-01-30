@@ -60,5 +60,29 @@ public class MoveTaskObject extends TaskObject {
         return y;
     }
 
+    public void setX(float x) {
+        this.x = x;
+    }
+
+    public void setY(float y) {
+        this.y = y;
+    }
+
+    public void setDirection(float direction) {
+        this.direction = direction;
+    }
+
+    public void setVelocity(float velocity) {
+        this.velocity = velocity;
+    }
+
+    public float getDirection() {
+        return direction;
+    }
+
+    public float getVelocity() {
+        return velocity;
+    }
+
     
 }

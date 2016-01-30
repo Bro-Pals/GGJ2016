@@ -5,6 +5,7 @@ import ggj16.tasks.objs.TaskObject;
 import bropals.lib.simplegame.KeyListener;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.states.PlayState;
 import java.awt.Graphics2D;
 
 /**
@@ -48,6 +49,10 @@ public abstract class Task implements KeyListener {
         return isComplete;
     }
 
+    public int getObstructionValue() {
+        return ((PlayState)getWorld().getState()).getObstructionValue();
+    }
+    
     /**
      * Set if a task is completed or not
      * @param isComplete Is this task completed?
@@ -55,6 +60,12 @@ public abstract class Task implements KeyListener {
     protected void setComplete(boolean isComplete) {
         this.isComplete = isComplete;
     }
+    
+    /**
+     * Resets all values to where they were before the task was completed.
+     * @param newObstructionValue the new obstruction value
+     */
+    public abstract void resetForDay();    
 
     public GameWorld<TaskObject> getWorld() {
         return world;

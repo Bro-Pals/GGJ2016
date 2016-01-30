@@ -47,6 +47,8 @@ public class WakeSleeperTask extends Task {
         }
     }
 
-    
-    
+    public void resetForDay() {
+        setComplete(false);
+    }
+
 }
