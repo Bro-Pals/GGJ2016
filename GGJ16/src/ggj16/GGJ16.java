@@ -25,7 +25,8 @@ public class GGJ16 {
         GameWindow window = new AWTGameWindow("Our game", 800, 600);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        
+        runner.setState(new PlayState());
+        runner.loop();
     }
     
 }
