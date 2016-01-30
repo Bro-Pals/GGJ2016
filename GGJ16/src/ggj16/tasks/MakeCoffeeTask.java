@@ -25,6 +25,8 @@ public class MakeCoffeeTask extends Task {
 
     int currWaitTime = 0;
     int waitForCoffeeTime = 5000; // 5 seconds
+    
+    
 
     private BufferedImage[] images;
 
