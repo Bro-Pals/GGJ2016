@@ -25,6 +25,9 @@ import ggj16.tasks.MeetingTask;
 import ggj16.tasks.PaperworkTask;
 import ggj16.tasks.ScareHouseTask;
 import ggj16.tasks.TakeLunchTask;
+import ggj16.tasks.WakeSleeperTask;
+import ggj16.tasks.objs.ChangeEmployeeStateTaskObject;
+import ggj16.tasks.objs.ImpAttackTaskObject;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -54,9 +57,11 @@ public class PlayState extends GameState {
     // worker values
     private Employee[] workers;
     private BufferedImage[] workerHeadsIcon;
+    /*
     private int currWorkerSleepTime;
     private final int WORKER_SLEEP_WAIT_TIME = 12000; // 12 seconds
-    // imp attack values
+    */
+// imp attack values
     private ArrayList<HitImpTask> impTasks; // list of all imp attack tasks objects
     private int currImpAttackTime;
     private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
@@ -93,16 +98,34 @@ public class PlayState extends GameState {
         officeWorld.updateEntities(delta);
         // 2. update tasks world
         if (nextTaskIndex >= toDoList.size()) {
-            System.out.println("COMPLETED ALL TASKS");
+            //System.out.println("COMPLETED ALL TASKS");
         }
         
+        /*
         // workers falling asleep
         currWorkerSleepTime += delta;
         if (currWorkerSleepTime > WORKER_SLEEP_WAIT_TIME) {
             // make a random worker fall asleep
-            
+            if (Math.random() > 0) { // 0 is temp
+                // randomly chose a non-dead and non-sleeping worker
+                int whichOne = 0;
+                do {
+                    whichOne = (int)(Math.random() * workers.length);
+                } while(workers[whichOne].getState() != Employee.WORKING);
+                // put them to sleep
+                workers[whichOne].setState(Employee.SLEEPING);
+                // define the task and add it to the list of tasks to be updated
+                WakeSleeperTask wakeTask = new WakeSleeperTask(this, "Wake up worker");
+                // spawn a "wake up" task object near them
+                officeWorld.addEntity(new ChangeEmployeeStateTaskObject(
+                        officeWorld, workers[whichOne].getX(), 
+                        getAssetManager().getImage("phoneOffice"), 
+                        camera, wakeTask, workers[whichOne],
+                        Employee.WORKING));
+                System.out.println("make a employee sleep: whichOne: " + whichOne);
+            }
             currWorkerSleepTime = 0;
-        }
+        }*/
         
         // imp spawning
          currImpAttackTime += delta;
@@ -133,6 +156,17 @@ public class PlayState extends GameState {
             OfficeObject obj = officeWorld.getEntities().get(i);
             if (obj instanceof OfficeTaskObject) {
                 OfficeTaskObject task = (OfficeTaskObject)obj;
+                if (task instanceof ChangeEmployeeStateTaskObject ||
+                       task instanceof ImpAttackTaskObject  ) {
+                    // if a wake employee, interview, or kill imp task is completed, then its deleted on completion.
+                    if (task.getAssociatedTask().isComplete()) {
+                        // remove object
+                        System.out.println("Removed a task object for being completed!");
+                        obj.setParent(null);
+                        officeWorld.getEntities().remove(obj);
+                        continue; // go to the next iteration.
+                    }
+                }
                 if (task.collidesWith(demonPlayer)) {
                     intersects = task;
                 }
@@ -235,7 +269,7 @@ public class PlayState extends GameState {
 
     @Override
     public void onEnter() {
-        currWorkerSleepTime = 0;
+        //currWorkerSleepTime = 0;
         officeWorld = new GameWorld<>(this);
         camera = new Camera();
         toDoList = new ArrayList<>();
@@ -321,7 +355,7 @@ public class PlayState extends GameState {
         // employee heads init
         workerHeadsIcon = new BufferedImage[]{
             getAssetManager().getImage("workerHeadAwake"),
-            getAssetManager().getImage("workerHeadSleeping"),
+          // getAssetManager().getImage("workerHeadSleeping"),
             getAssetManager().getImage("workerHeadDead")
          };
         
