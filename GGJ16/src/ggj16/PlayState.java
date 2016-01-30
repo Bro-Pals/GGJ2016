@@ -5,16 +5,15 @@ import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.gui.Gui;
-import bropals.lib.simplegame.gui.GuiElement;
 import bropals.lib.simplegame.gui.GuiGroup;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.gui.ClockGui;
 import ggj16.gui.PaperStackGui;
 import ggj16.gui.ToDoListElement;
 import ggj16.officeobjects.OfficeTaskObject;
 import ggj16.officeobjects.PlayerDemon;
 import java.awt.Color;
 import java.awt.Graphics2D;
-import java.awt.Point;
 import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
@@ -26,6 +25,7 @@ public class PlayState extends GameState {
        
     private Camera camera;
     private Gui gui;
+    private ClockGui clockGui;
     private ToDoListElement todoListGuiElement;
     
     // game world values
@@ -38,12 +38,15 @@ public class PlayState extends GameState {
     
     // game values.
     private int dayOn; // Count what day you're on.
+    private int hoursLeft = 4;
     private float paperworkLeft = 100; // how much paperwork is left for that day.
     private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
     
     //Background (unorganized for now :<)
     private BufferedImage officeBackgroundRepeated;
+    private BufferedImage coolParallaxScrolling;
+    private int parallaxOffset;
     
     @Override
     public void update(int delta) {
@@ -59,6 +62,9 @@ public class PlayState extends GameState {
         //Update the camera
         //The camera sets its position itself
         camera.setXLocation((int)(demonPlayer.getX()+(demonPlayer.getWidth()/2)-400));
+        //Cool parallax scrolling
+        parallaxOffset = (int)( (float)(demonPlayer.getX()/((float)(Camera.getCameraMax()-demonPlayer.getWidth())-Camera.getCameraMin())) * 1600 );
+        
         OfficeTaskObject intersects = null;
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
             OfficeObject obj = officeWorld.getEntities().get(i);
@@ -92,7 +98,13 @@ public class PlayState extends GameState {
         g2.setClip(0, 0, 800, 300); // reset the graphics 
         
         //Draw the background
+        g2.drawImage(coolParallaxScrolling, -parallaxOffset, 0, null);
+        g2.drawImage(coolParallaxScrolling, 800-parallaxOffset, 0, null);
         
+        int offset = ((int)camera.getXLocation())%officeBackgroundRepeated.getWidth();
+        for (int i=0; i<((officeBackgroundRepeated.getWidth()/800)+1); i++) {
+            g2.drawImage(officeBackgroundRepeated, (int)(-offset+(i*officeBackgroundRepeated.getWidth())), 100, null );
+        }
         
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
             officeWorld.getEntities().get(i).render(g2);
@@ -144,15 +156,18 @@ public class PlayState extends GameState {
         
         
         //Background init
-        officeBackgroundRepeated = getAssetManager().getImage("officebackground");
+        officeBackgroundRepeated = getAssetManager().getImage("foreground");
+        coolParallaxScrolling = getAssetManager().getImage("background");
         
         ///Gui init
         gui = new Gui();
         GuiGroup main = new GuiGroup();
         main.addElement(todoListGuiElement = new ToDoListElement(200, 200, 600, 400, this));
         main.addElement(new PaperStackGui(0, 300, 200, 300, this));
+        main.addElement(clockGui = new ClockGui(600, 300, 200, 300, this));
         gui.addGroup("main", main);
         gui.setEnabled("main", true);
+        
     }
 
     ////Huuuurrrrrrr
@@ -193,5 +208,14 @@ public class PlayState extends GameState {
     
     public void toggleToDoListVisiblity() {
         todoListGuiElement.setEnabled(!todoListGuiElement.isEnabled());
+    }
+    
+    public int getHoursLeft() {
+        return hoursLeft;
+    }
+    
+    public void advanceHour() {
+        hoursLeft--;
+        clockGui.setClockRotation(12-hoursLeft);
     }
 }
