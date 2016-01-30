@@ -12,7 +12,6 @@ import ggj16.OfficeObject;
 import ggj16.Task;
 import ggj16.tasks.HitImpTask;
 import ggj16.tasks.InterviewTask;
-import ggj16.tasks.WakeSleeperTask;
 import java.awt.image.BufferedImage;
 
 /**
@@ -42,8 +41,7 @@ public class OfficeTaskObject extends OfficeObject {
         super.update(delta);
         if (associatedTask != null) {
             if (associatedTask instanceof HitImpTask ||
-                    associatedTask instanceof InterviewTask ||
-                    associatedTask instanceof WakeSleeperTask) {
+                    associatedTask instanceof InterviewTask) {
                 associatedTask.update(delta);
             }
         }
