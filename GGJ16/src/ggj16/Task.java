@@ -31,4 +31,8 @@ public abstract class Task implements KeyListener {
         
     }
     
+    @Override
+    public void key(int i, boolean bln) {
+    }
+    
 }
