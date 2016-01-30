@@ -1,10 +1,14 @@
 
 package ggj16;
 
+import bropals.lib.simplegame.animation.Animation;
+import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.entity.GameWorld;
-import bropals.lib.simplegame.entity.block.TexturedBlock;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.officeobjects.PlayerDemon;
+import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 
 /**
@@ -12,10 +16,11 @@ import java.util.ArrayList;
  * @author Kevin
  */
 public class PlayState extends GameState {
-    
+       
+    private Camera camera;
     // game world values
     private GameWorld<OfficeObject> officeWorld;
-    private TexturedBlock demonPlayer; // special reference of the demon
+    private PlayerDemon demonPlayer; // special reference of the demon
     
     // task values
     private ArrayList<Task> toDoList; // every task
@@ -28,7 +33,6 @@ public class PlayState extends GameState {
     
     @Override
     public void update(int i) {
-        
         // 1. update office world
         officeWorld.updateEntities(i);
         // 2. update tasks world
@@ -36,12 +40,19 @@ public class PlayState extends GameState {
             toDoList.get(j).update(i);
         }
         // 3. ?? update the input ??
+        //Input does not need to be updated
+        
+        //Update the camera
+        //The camera sets its position itself
+        camera.setXLocation((int)(demonPlayer.getX()+(demonPlayer.getWidth()/2)-400));
     }
 
     @Override
     public void render(Object o) {
         Graphics2D g2 = (Graphics2D) o;
-        
+        //Clear the background
+        g2.setColor(Color.BLACK);
+        g2.fillRect(0, 0, 800, 600);
         // 1. clip office work to draw.
         // 800x300 Office world from (0, 0)
         //    draw background(s)
@@ -50,13 +61,21 @@ public class PlayState extends GameState {
         //    If one is viewing the tasks window, render the tasks.
         g2.clipRect(0, 0, 800, 300); // reset the graphics 
         
+        for (int i=0; i<officeWorld.getEntities().size(); i++) {
+            officeWorld.getEntities().get(i).render(g2);
+        }
         // 2. clip task world to draw.
         // 400x300 task world from (200, 300)
         //    If there is an active task, draw it
         //    Otherwise, draw a placeholder(?)
         g2.clipRect(200, 300, 400, 300); // ( think?)
-        for (int j=0; j<toDoList.size(); j++) {
-            toDoList.get(j).render(g2); // pass the clipped graphics in
+       /// for (int j=0; j<toDoList.size(); j++) {
+       ///     toDoList.get(j).render(g2); // pass the clipped graphics in
+       /// }
+        if (activeTask != null) {
+            activeTask.render(g2);
+        } else {
+            //Whatever is there with no task
         }
         
         
@@ -76,7 +95,17 @@ public class PlayState extends GameState {
 
     @Override
     public void onEnter() {
+        officeWorld = new GameWorld<>(this);
+        camera = new Camera();
+        toDoList = new ArrayList<>();
         
+        Animation demonAnimation = new Animation();
+        Track t = new Track(new BufferedImage[]{getImage("demonPlaceholder")});
+        demonAnimation.addTrack(t);
+        demonAnimation.setTrack(0);
+        demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
+        
+        officeWorld.addEntity(demonPlayer);
         
     }
 
@@ -86,7 +115,7 @@ public class PlayState extends GameState {
 
     @Override
     public void key(int keycode, boolean pressed) {
-        
+        demonPlayer.key(keycode, pressed);
     }    
     
     /** 
