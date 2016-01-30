@@ -65,7 +65,7 @@ public class PlayState extends GameState {
     // imp attack values
     private ArrayList<ImpAttackTaskObject> impTaskObjects; // list of all imp attack tasks objects
     private int currImpAttackTime;
-    private final int IMP_WAIT_TIME = 1000; //10000; // 10 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME = 10000; //10000; // 10 seconds between each chance for an imp to spawn.
     
     // game values.
     private int dayOn; // Count what day you're on.
@@ -263,11 +263,12 @@ public class PlayState extends GameState {
         if (activeTask != null) {
             // find what task needs to be done next
             activeTask.render(taskRender);
-            if (nextTaskIndex < toDoList.size() &&
+            if (!isCompletedWithTasks() &&
                     activeTask != toDoList.get(nextTaskIndex) && 
                     !activeTask.isComplete() &&
                     !(activeTask instanceof HitImpTask) &&
-                    !(activeTask instanceof InterviewTask)) {
+                    !(activeTask instanceof InterviewTask) &&
+                    !(activeTask instanceof PaperworkTask)) {
                 // prompt that the task is visited too  early
                 taskRender.drawImage(canNotDoYetPrompt, 0, 0, null);
             }
@@ -348,6 +349,7 @@ public class PlayState extends GameState {
         EmailTask emailTask = new EmailTask(this);
         ScareHouseTask scareTask = new ScareHouseTask(this);
         FaxTask faxTask = new FaxTask(this);
+        PaperworkTask paperworkTask = new PaperworkTask(this);
         toDoList.add(coffeeTask);
         toDoList.add(meetingTask);
         toDoList.add(lunchTask);
@@ -388,7 +390,7 @@ public class PlayState extends GameState {
         // phone to order lunch
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1650, getAssetManager().getImage("phoneOffice"), camera, lunchTask));
         // demon desk
-        officeWorld.addEntity(new OfficeObject(officeWorld, 1850, getAssetManager().getImage("paperdesk"), camera));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1850, getAssetManager().getImage("paperdesk"), camera, paperworkTask));
         // computer to answer emails
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("computerdesk"), camera, emailTask));
         //  desk

@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import ggj16.tasks.objs.MoveTaskObject;
 import ggj16.Employee;
+import ggj16.sound.SoundPlayer;
 import ggj16.states.PlayState;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -59,6 +60,7 @@ public class HitImpTask extends Task {
             employeeTargeted.setState(Employee.DEAD);
             setComplete(true); // set complete to get rid of it.
             ps.onImpKillEmployee(this);
+            SoundPlayer.getSoundPlayer().playLaugh();
             employeeTargeted.setBeingAttackedByImp(false);
         }
         
@@ -94,6 +96,7 @@ public class HitImpTask extends Task {
                    if (impThing.closeTo(fireBallObject, 30)) {
                        // we have killed dat imp boi
                        setComplete(true);
+                       SoundPlayer.getSoundPlayer().playImpScreech();
                        employeeTargeted.setBeingAttackedByImp(false);
                        employeeTargeted = null; //don't reference it
                    } 
@@ -150,6 +153,7 @@ public class HitImpTask extends Task {
             float ballSpawnX = 200;
             float ballSpawnY = 270;
             fireBallObject = new MoveTaskObject(getWorld(), ballSpawnX, ballSpawnY, currentAim, ballVel);
+            SoundPlayer.getSoundPlayer().playFireball();
             getWorld().addEntity(fireBallObject);
         }
     }

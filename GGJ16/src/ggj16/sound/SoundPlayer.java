@@ -23,6 +23,7 @@ public class SoundPlayer {
     private SoundEffect[] impScreech;
     private SoundEffect[] mouseClick;
     private SoundEffect[] pageTurn;
+    private SoundEffect[] laughing;
     private SoundEffect phoneBeep;
     private SoundEffect paperWriting;
     private SoundEffect fireball;
@@ -59,6 +60,11 @@ public class SoundPlayer {
             assets.getSoundEffect("pageTurn1"),
             assets.getSoundEffect("pageTurn2")
         };
+        laughing = new SoundEffect[] {
+            assets.getSoundEffect("laugh1"),
+            assets.getSoundEffect("laugh2"),
+            assets.getSoundEffect("laugh3")
+        };
         phoneBeep = assets.getSoundEffect("phoneBeep");
         paperWriting = assets.getSoundEffect("paperWriting");
         fireball = assets.getSoundEffect("fireball");
@@ -77,6 +83,8 @@ public class SoundPlayer {
         victorySong.play();
     }
 
+    
+    
     public void setMusicTo(int song) {
         if (currentMusicTrack != null && currentMusic != song) {
             currentMusicTrack.getRaw().stop();
@@ -97,6 +105,10 @@ public class SoundPlayer {
         sounds[index].play();
     }
 
+    public void playLaugh() {
+        playRandomSound(laughing);
+    }
+    
     public void playImpScreech() {
         playRandomSound(impScreech);
     }
