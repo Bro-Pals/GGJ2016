@@ -5,10 +5,10 @@ import bropals.lib.simplegame.entity.BaseEntity;
 import bropals.lib.simplegame.entity.GameWorld;
 
 /**
- *
+ * The base task object for the tasks
  * @author Kevin
  */
-public abstract class TaskObject extends BaseEntity {
+public class TaskObject extends BaseEntity {
 
     public TaskObject(GameWorld par) {
         super(par);

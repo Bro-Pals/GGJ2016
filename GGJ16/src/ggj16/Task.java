@@ -4,8 +4,6 @@ package ggj16;
 import ggj16.tasks.objs.TaskObject;
 import bropals.lib.simplegame.KeyListener;
 import bropals.lib.simplegame.entity.GameWorld;
-import bropals.lib.simplegame.entity.block.TexturedBlock;
-import bropals.lib.simplegame.io.AssetManager;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Graphics2D;
 

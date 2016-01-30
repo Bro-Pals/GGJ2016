@@ -15,6 +15,7 @@ import ggj16.officeobjects.OfficeTaskObject;
 import ggj16.officeobjects.PlayerDemon;
 import ggj16.tasks.EmailTask;
 import ggj16.tasks.FaxTask;
+import ggj16.tasks.HitImpTask;
 import ggj16.tasks.MakeCoffeeTask;
 import ggj16.tasks.MeetingTask;
 import ggj16.tasks.PaperworkTask;
@@ -30,7 +31,7 @@ import java.util.ArrayList;
  * @author Kevin
  */
 public class PlayState extends GameState {
-       
+    
     private Camera camera;
     private Gui gui;
     private ClockGui clockGui;
@@ -45,6 +46,16 @@ public class PlayState extends GameState {
     private ArrayList<Task> toDoList; // every task
     private Task activeTask; // special reference to a task taking in input, pointed from "tasks"
     private int nextTaskIndex = 0; // the index of the next task that needs to be done.
+    
+    // worker values
+    private Employee[] workers;
+    private BufferedImage[] workerHeadsIcon;
+    private int currWorkerSleepTime;
+    private final int WORKER_SLEEP_WAIT_TIME = 12000; // 12 seconds
+    // imp attack values
+    private ArrayList<HitImpTask> impTasks; // list of all imp attack tasks objects
+    private int currImpAttackTime;
+    private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
     
     // game values.
     private int dayOn; // Count what day you're on.
@@ -77,6 +88,23 @@ public class PlayState extends GameState {
         if (nextTaskIndex >= toDoList.size()) {
             System.out.println("COMPLETED ALL TASKS");
         }
+        
+        // workers falling asleep
+        currWorkerSleepTime += delta;
+        if (currWorkerSleepTime > WORKER_SLEEP_WAIT_TIME) {
+            // make a random worker fall asleep
+            
+            currWorkerSleepTime = 0;
+        }
+        
+        // imp spawning
+         currImpAttackTime += delta;
+        if (currImpAttackTime > IMP_WAIT_TIME) {
+            // make an imp randomly attack
+            
+            currImpAttackTime = 0;
+        }
+        
         
         if (nextTaskIndex < toDoList.size() && toDoList.get(nextTaskIndex).isComplete()) {
             nextTaskIndex++;
@@ -182,6 +210,11 @@ public class PlayState extends GameState {
         // draw the todolist last to go on top
         todoListGuiElement.render(o);
         
+        // render employee status gui according to what state they're in.
+        for (int i=0; i<workers.length; i++) {
+            g2.drawImage(workerHeadsIcon[(workers[i].getState())], 495 + (50 * i), 10, null);
+        }
+        
         /*
         Debugging things
         */
@@ -195,28 +228,11 @@ public class PlayState extends GameState {
 
     @Override
     public void onEnter() {
+        currWorkerSleepTime = 0;
         officeWorld = new GameWorld<>(this);
         camera = new Camera();
         toDoList = new ArrayList<>();
-        
-        
-        Animation demonAnimation = new Animation();
-        Track right = new Track(new BufferedImage[]{getImage("demon1"), getImage("demon2"), getImage("demon3")}, 200);
-        getAssetManager().createHorizontialFlipCopy(getImage("demon1"), "demon1Left");
-        getAssetManager().createHorizontialFlipCopy(getImage("demon2"), "demon2Left");
-        getAssetManager().createHorizontialFlipCopy(getImage("demon3"), "demon3Left");
-        Track left = new Track(new BufferedImage[]{
-            getImage("demon1Left"), 
-            getImage("demon2Left"), 
-            getImage("demon3Left")
-        }, 200);
-        demonAnimation.addTrack(left);
-        demonAnimation.addTrack(right);
-        demonAnimation.setTrack(0);
-        demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
-        
-        officeWorld.addEntity(demonPlayer);
-        
+           
         // task and todo list init
         PaperworkTask paperTask = new PaperworkTask(this);
         
@@ -232,22 +248,35 @@ public class PlayState extends GameState {
         toDoList.add(emailTask);
         toDoList.add(scareTask);
         toDoList.add(faxTask);
+       
+        workers = new Employee[6];
+        BufferedImage workerWorkingImg = getAssetManager().getImage("workerAwake");
+        
+        int workerImageAdjust = 44;
         
         // add everything to the world
         // desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 100, getAssetManager().getImage("workerDesk"), camera));
+        workers[0] = new Employee(officeWorld, 100 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[0]);
         // meeting door
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 400, getAssetManager().getImage("meetingDoor"), camera, meetingTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 550, getAssetManager().getImage("workerDesk"), camera));
+        workers[1] = new Employee(officeWorld, 550 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[1]);
         // coffee maker
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
+        workers[2] = new Employee(officeWorld, 1200 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[2]);
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1450, getAssetManager().getImage("workerDesk"), camera));
+        workers[3] = new Employee(officeWorld, 1450 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[3]);
         // phone to order lunch
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1650, getAssetManager().getImage("phoneOffice"), camera, lunchTask));
         // demon desk
@@ -256,10 +285,39 @@ public class PlayState extends GameState {
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("computerdesk"), camera, emailTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 2250, getAssetManager().getImage("workerDesk"), camera));
+        workers[4] = new Employee(officeWorld, 2250 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[4]);
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 2500, getAssetManager().getImage("workerDesk"), camera));
+        workers[5] = new Employee(officeWorld, 2500 + workerImageAdjust, workerWorkingImg, camera);
+        officeWorld.addEntity(workers[5]);
         // portal to scare the family
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2800, getAssetManager().getImage("portalOffice"), camera, scareTask));
+        
+        
+        // init player last (so they're drawn on top)
+        Animation demonAnimation = new Animation();
+        Track right = new Track(new BufferedImage[]{getImage("demon1"), getImage("demon2"), getImage("demon3")}, 200);
+        getAssetManager().createHorizontialFlipCopy(getImage("demon1"), "demon1Left");
+        getAssetManager().createHorizontialFlipCopy(getImage("demon2"), "demon2Left");
+        getAssetManager().createHorizontialFlipCopy(getImage("demon3"), "demon3Left");
+        Track left = new Track(new BufferedImage[]{
+            getImage("demon1Left"), 
+            getImage("demon2Left"), 
+            getImage("demon3Left")
+        }, 200);
+        demonAnimation.addTrack(left);
+        demonAnimation.addTrack(right);
+        demonAnimation.setTrack(0);
+        demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
+        officeWorld.addEntity(demonPlayer);
+        
+        // employee heads init
+        workerHeadsIcon = new BufferedImage[]{
+            getAssetManager().getImage("workerHeadAwake"),
+            getAssetManager().getImage("workerHeadSleeping"),
+            getAssetManager().getImage("workerHeadDead")
+         };
         
         //Background init
         officeBackgroundRepeated = getAssetManager().getImage("foreground");
