@@ -85,8 +85,16 @@ public class SoundPlayer {
         faxMachine.play();
     }
     
+    public void stopFaxMachine() {
+        faxMachine.getRaw().stop();
+    }
+    
     public void playDialUpLong() {
         dialUpLong.play();
+    }
+    
+    public void stopDialUpLong() {
+        dialUpLong.getRaw().stop();
     }
     
     public void playCoffeeBrewing() {

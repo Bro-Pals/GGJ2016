@@ -309,7 +309,7 @@ public class PlayState extends GameState {
         // coffee maker
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxmachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
         workers[2] = new Employee(officeWorld, 1200 + workerImageAdjust, workerWorkingImg, camera);

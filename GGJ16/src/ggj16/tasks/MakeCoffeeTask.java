@@ -96,6 +96,8 @@ public class MakeCoffeeTask extends Task {
             stepOn++;
             if (stepOn == codes.length) {
                 SoundPlayer.getSoundPlayer().playCoffeeBrewing();
+            } else {
+                SoundPlayer.getSoundPlayer().playMouseClick();
             }
         }
     }

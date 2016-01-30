@@ -37,11 +37,13 @@ public class FaxTask extends Task {
     @Override
     public void update(int ms) {
         super.update(ms);
-        
-        if (stepOn == 2) {
-            currWaitTime += ms;
-            if (currWaitTime > waitTimeDoneFaxing) {
-                setComplete(true);
+        if (!isComplete()) {
+            if (stepOn == 2) {
+                currWaitTime += ms;
+                if (currWaitTime > waitTimeDoneFaxing) {
+                    setComplete(true);
+                    SoundPlayer.getSoundPlayer().stopFaxMachine();
+                }
             }
         }
     }
@@ -84,6 +86,7 @@ public class FaxTask extends Task {
         
         if (stepOn == 0 && i == KeyCode.KEY_D) {
             stepOn = 1;
+            SoundPlayer.getSoundPlayer().playPhoneBeep();
         } else if (stepOn == 1 && i == KeyCode.KEY_F) {
             stepOn = 2;
             SoundPlayer.getSoundPlayer().playFaxMachine();
