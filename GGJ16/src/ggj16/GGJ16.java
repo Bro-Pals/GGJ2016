@@ -21,8 +21,10 @@ public class GGJ16 {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        AssetManager assetManager = new AssetManager(new File("").getAbsoluteFile(), false);
+        AssetManager assetManager = new AssetManager(new File("assets"), true);
         GameWindow window = new AWTGameWindow("Our game", 800, 600);
+        
+        assetManager.loadImagesInDirectories("images", true);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
         runner.setState(new PlayState());
