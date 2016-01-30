@@ -45,6 +45,8 @@ public class PlayState extends GameState {
     // game values.
     private int dayOn; // Count what day you're on.
     private int hoursLeft = 12;
+    private int ticksPerHour = 2000;
+    private int tickProgress;
     private float paperworkLeft = 100; // how much paperwork is left for that day.
     private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
@@ -58,6 +60,11 @@ public class PlayState extends GameState {
     
     @Override
     public void update(int delta) {
+        tickProgress += delta;
+        if (tickProgress>=ticksPerHour) {
+            advanceHour();
+            tickProgress = 0;
+        }
         // 1. update office world
         officeWorld.updateEntities(delta);
         // 2. update tasks world
@@ -200,9 +207,9 @@ public class PlayState extends GameState {
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 550, getAssetManager().getImage("workerDesk"), camera));
         // coffee maker
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeeMakerOffice"), camera, coffeeTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxmachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
         //  desk
@@ -283,6 +290,11 @@ public class PlayState extends GameState {
     
     public void advanceHour() {
         hoursLeft--;
-        clockGui.setClockRotation(12-hoursLeft);
+        if (hoursLeft>0) {
+            clockGui.setClockRotation(12-hoursLeft);
+        } else {
+            dayOn++;
+            hoursLeft = 12;
+        }
     }
 }

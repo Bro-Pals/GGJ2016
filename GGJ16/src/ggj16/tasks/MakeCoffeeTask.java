@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -25,8 +26,16 @@ public class MakeCoffeeTask extends Task {
     int currWaitTime = 0;
     int waitForCoffeeTime = 5000; // 5 seconds
 
+    private BufferedImage[] images;
+    
     public MakeCoffeeTask(GameState stateInside) {
         super(stateInside);
+        images = new BufferedImage[] {
+            stateInside.getAssetManager().getImage("coffeepot1"),
+            stateInside.getAssetManager().getImage("coffeepot2"),
+            stateInside.getAssetManager().getImage("coffeepot3"),
+            stateInside.getAssetManager().getImage("coffeepot4")
+        };
     }
     
     @Override
@@ -34,6 +43,7 @@ public class MakeCoffeeTask extends Task {
         super.update(ms); 
         if (stepOn == codes.length) {
             currWaitTime += ms;
+            System.out.println("BREWING");
             if (currWaitTime > waitForCoffeeTime) {
                 setComplete(true);
             }
@@ -43,12 +53,20 @@ public class MakeCoffeeTask extends Task {
     @Override
     public void render(Graphics2D g2) {
         super.render(g2);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
         
-        g2.setColor(Color.BLACK);
-        g2.drawString("make coffee task", 40, 60);
-        g2.drawString("stepOn: " + stepOn, 40, 160);
+        BufferedImage img = null;
+        if (waitForCoffeeTime-currWaitTime > (waitForCoffeeTime/4)*3) {
+            img = images[3];
+        } else if (waitForCoffeeTime-currWaitTime > waitForCoffeeTime/2) {
+            img = images[2];
+        } else if (waitForCoffeeTime-currWaitTime > waitForCoffeeTime/4) {
+            img = images[1];
+        } else {
+            img = images[0];
+        }
+        g2.drawImage(img, 100, 50, null);
     }
 
 
