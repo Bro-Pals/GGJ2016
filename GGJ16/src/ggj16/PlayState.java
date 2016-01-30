@@ -17,6 +17,7 @@ import ggj16.tasks.EmailTask;
 import ggj16.tasks.FaxTask;
 import ggj16.tasks.MakeCoffeeTask;
 import ggj16.tasks.MeetingTask;
+import ggj16.tasks.PaperworkTask;
 import ggj16.tasks.ScareHouseTask;
 import ggj16.tasks.TakeLunchTask;
 import java.awt.Color;
@@ -172,6 +173,7 @@ public class PlayState extends GameState {
         g2.fillRect(0, 0, 150, 50);
         g2.setColor(Color.BLACK);
         g2.drawString("activeTask: " + activeTask, 10, 20);
+        g2.drawString("paperworkLeft: " + paperworkLeft, 10, 30);
         
     }
 
@@ -191,6 +193,8 @@ public class PlayState extends GameState {
         officeWorld.addEntity(demonPlayer);
         
         // task and todo list init
+        PaperworkTask paperTask = new PaperworkTask(this);
+        
         MakeCoffeeTask coffeeTask = new MakeCoffeeTask(this);
         MeetingTask meetingTask = new MeetingTask(this);
         TakeLunchTask lunchTask = new TakeLunchTask(this);
@@ -214,15 +218,15 @@ public class PlayState extends GameState {
         // coffee maker
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxmachine"), camera, faxTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1450, getAssetManager().getImage("workerDesk"), camera));
         // phone to order lunch
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1650, getAssetManager().getImage("phoneOffice"), camera, lunchTask));
-        // demon desk
-        officeWorld.addEntity(new OfficeObject(officeWorld, 1750, getAssetManager().getImage("demonDesk"), camera));
+        // paperwork desk
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1750, getAssetManager().getImage("demonDesk"), camera, paperTask));
         // computer to answer emails
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("demonComputer"), camera, emailTask));
         //  desk
@@ -248,6 +252,7 @@ public class PlayState extends GameState {
         main.addElement(todoListGuiElement = new ToDoListElement(200, 200, 600, 400, this));
         gui.addGroup("main", main);
         gui.setEnabled("main", true);
+        todoListGuiElement.setEnabled(false);
         
     }
 

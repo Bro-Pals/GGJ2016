@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -23,12 +24,20 @@ public class TakeLunchTask extends Task {
         KeyCode.KEY_4,
         KeyCode.KEY_9
     };
+    BufferedImage[] images;
+
     
     int millisToWait = 5000; // 5 seconds.
     int currWaitTime = 0;
     
     public TakeLunchTask(GameState stateInside) {
         super(stateInside, "Order lunch");
+        images = new BufferedImage[]{
+            stateInside.getAssetManager().getImage("6KeyPrompt"),
+            stateInside.getAssetManager().getImage("1KeyPrompt"),
+            stateInside.getAssetManager().getImage("4KeyPrompt"),
+            stateInside.getAssetManager().getImage("9KeyPrompt"),
+        };
     }
 
     @Override
@@ -52,6 +61,10 @@ public class TakeLunchTask extends Task {
         g2.drawString("take lunch task", 40, 60);
         g2.drawString("stepOn: " + stepOn, 40, 160);
         g2.drawString("currWaitTime: " + currWaitTime, 40, 210);
+        
+        if (stepOn < codes.length) {
+            g2.drawImage(images[stepOn], 0, 0, null);
+        }
     }
 
 

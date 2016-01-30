@@ -34,7 +34,10 @@ public class MakeCoffeeTask extends Task {
             stateInside.getAssetManager().getImage("coffeepot1"),
             stateInside.getAssetManager().getImage("coffeepot2"),
             stateInside.getAssetManager().getImage("coffeepot3"),
-            stateInside.getAssetManager().getImage("coffeepot4")
+            stateInside.getAssetManager().getImage("coffeepot4"),
+            stateInside.getAssetManager().getImage("fKeyPrompt"),
+            stateInside.getAssetManager().getImage("pKeyPrompt"),
+            stateInside.getAssetManager().getImage("oKeyPrompt"),
         };
     }
     
@@ -67,6 +70,9 @@ public class MakeCoffeeTask extends Task {
             img = images[0];
         }
         g2.drawImage(img, 100, 50, null);
+        if (stepOn < codes.length) {
+            g2.drawImage(images[4 + stepOn], 0, 0, null);
+        }
     }
 
 
