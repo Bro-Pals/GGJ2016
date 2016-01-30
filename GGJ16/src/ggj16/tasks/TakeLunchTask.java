@@ -43,7 +43,8 @@ public class TakeLunchTask extends Task {
             stateInside.getAssetManager().getImage("phonePickUpLunchTask"), // 6
             stateInside.getAssetManager().getImage("roadLunchTask"), // 7
             stateInside.getAssetManager().getImage("deliveryManSmall"), // 8
-            stateInside.getAssetManager().getImage("deliveringPrompt")
+            stateInside.getAssetManager().getImage("deliveringPrompt"),
+            stateInside.getAssetManager().getImage("taskCompletePrompt") // 10
         };
     }
 
@@ -96,6 +97,11 @@ public class TakeLunchTask extends Task {
         
         if (stepOn < codes.length) {
             g2.drawImage(images[stepOn], 100 + (30 * stepOn), 30, null);
+        }
+        
+        // draw completed prompt on completion
+        if (isComplete()) {
+            g2.drawImage(images[10], 0, 0, null);
         }
     }
 

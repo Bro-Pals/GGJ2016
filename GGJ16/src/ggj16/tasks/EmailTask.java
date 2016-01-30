@@ -20,7 +20,8 @@ public class EmailTask extends Task {
     private BufferedImage read;
     private BufferedImage respond;
     private BufferedImage finish;
-    private BufferedImage bg;
+    private BufferedImage canNotDoYetPrompt;
+    private BufferedImage bg, completePrompt;
     
     public EmailTask(GameState stateInside) {
         super(stateInside, "Respond to emails");
@@ -28,6 +29,9 @@ public class EmailTask extends Task {
         respond = stateInside.getAssetManager().getImage("respondScreen");
         finish = stateInside.getAssetManager().getImage("finishedScreen");
         bg = stateInside.getAssetManager().getImage("emailBackground");
+        completePrompt = stateInside.getAssetManager().getImage("taskCompletePrompt");
+        canNotDoYetPrompt = stateInside.getAssetManager().getImage("canNotDoYet");
+        
     }
 
     @Override
@@ -39,7 +43,7 @@ public class EmailTask extends Task {
     @Override
     public void render(Graphics2D g2) {
         super.render(g2);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
         
         g2.drawImage(bg, 0, 0, null);
@@ -49,6 +53,10 @@ public class EmailTask extends Task {
             g2.drawImage(respond, 78, 58, null);
         } else if (stepOn == 1) {
             g2.drawImage(read, 78, 58, null);
+        }
+        
+        if (isComplete()) {
+            g2.drawImage(completePrompt, 0, 0, null);
         }
     }
 

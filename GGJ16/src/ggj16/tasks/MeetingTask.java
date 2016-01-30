@@ -40,6 +40,8 @@ public class MeetingTask extends Task {
     private BufferedImage speech;
     private BufferedImage boo;
     private BufferedImage marker;
+    private BufferedImage aPrompt, dPrompt, mPrompt, completePrompt;
+    private BufferedImage fTowakePrompt;
     private int[][] workerPositions;
     private int[] speechPosition;
     
@@ -51,6 +53,12 @@ public class MeetingTask extends Task {
         speech = stateInside.getAssetManager().getImage("speech");
         boo = stateInside.getAssetManager().getImage("boo");
         marker = stateInside.getAssetManager().getImage("marker");
+        aPrompt = stateInside.getAssetManager().getImage("aKeyPrompt");
+        dPrompt = stateInside.getAssetManager().getImage("dKeyPrompt");
+        mPrompt = stateInside.getAssetManager().getImage("mKeyPrompt");
+        fTowakePrompt = stateInside.getAssetManager().getImage("wakeUpPrompt");
+        completePrompt = stateInside.getAssetManager().getImage("taskCompletePrompt");
+
         workerPositions = new int[][] {
             new int[] { 34, 83 },
             new int[] { 111, 83 },
@@ -105,6 +113,19 @@ public class MeetingTask extends Task {
         }
         if (booTimeLeft>0) {
             g2.drawImage(boo, speechPosition[0], speechPosition[1], null);
+        }
+        
+        // control prompts
+        if (stepOn == 0) {
+            g2.drawImage(mPrompt, 120, 240, null);
+        } else if (stepOn == 1) {
+            g2.drawImage(aPrompt, 60, 240, null);
+            g2.drawImage(dPrompt, 130, 240, null);
+            g2.drawImage(fTowakePrompt, 240, 240, null);
+        }
+        
+        if (isComplete()) {
+            g2.drawImage(completePrompt, 0, 0, null);
         }
     }
 
