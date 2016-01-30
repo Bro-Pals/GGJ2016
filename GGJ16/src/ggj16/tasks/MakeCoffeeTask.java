@@ -45,10 +45,12 @@ public class MakeCoffeeTask extends Task {
     @Override
     public void update(int ms) {
         super.update(ms); 
-        if (stepOn == codes.length) {
-            currWaitTime += ms;
-            if (currWaitTime > waitForCoffeeTime) {
-                setComplete(true);
+        if (!isComplete()) {
+            if (stepOn == codes.length) {
+                currWaitTime += ms;
+                if (currWaitTime > waitForCoffeeTime) {
+                    setComplete(true);
+                }
             }
         }
     }

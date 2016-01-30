@@ -50,11 +50,20 @@ public class TakeLunchTask extends Task {
     @Override
     public void update(int ms) {
         super.update(ms);
+<<<<<<< HEAD
         if (stepOn >= codes.length) {
             if (currWaitTime > millisToWait) {
                 setComplete(true); // done waiting!
             } else {
                 currWaitTime += ms;
+=======
+        if (!isComplete()) {
+            if (stepOn >= codes.length) {
+                currWaitTime += ms;
+                if (currWaitTime > millisToWait) {
+                    setComplete(true); // done waiting!
+                }
+>>>>>>> 17c0a97a231024e0b964b54c2bb7738b8e134c01
             }
         }
     }

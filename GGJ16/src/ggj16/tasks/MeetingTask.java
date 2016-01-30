@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -30,15 +31,44 @@ public class MeetingTask extends Task {
     
     int timeBetweenRandomSleeper = 2000;
     int timeUntilSleeper = 0;
+    int booTimeLeft;
+    int speechTimeLeft;
+    
+    private BufferedImage bg;
+    private BufferedImage awake;
+    private BufferedImage asleep;
+    private BufferedImage speech;
+    private BufferedImage boo;
+    private BufferedImage marker;
+    private int[][] workerPositions;
+    private int[] speechPosition;
     
     public MeetingTask(GameState stateInside) {
         super(stateInside, "Conduct meeting");
+        bg = stateInside.getAssetManager().getImage("meetingBackground");
+        awake = stateInside.getAssetManager().getImage("workerAwake");
+        asleep = stateInside.getAssetManager().getImage("workerAsleep");
+        speech = stateInside.getAssetManager().getImage("speech");
+        boo = stateInside.getAssetManager().getImage("boo");
+        marker = stateInside.getAssetManager().getImage("marker");
+        workerPositions = new int[][] {
+            new int[] { 34, 83 },
+            new int[] { 111, 83 },
+            new int[] { 182, 83 },
+            new int[] { 250, 83 }
+        };
+        speechPosition = new int[] { 311, 24 };
     }
 
     @Override
     public void update(int ms) {
         super.update(ms);
-        
+        if (booTimeLeft>0) {
+            booTimeLeft -= ms;
+        }
+        if (speechTimeLeft>0) {
+            speechTimeLeft -= ms;
+        }
         if (stepOn == 0) {
             // randomly have a sleeper appear and make stepOn == 1
             
@@ -61,13 +91,21 @@ public class MeetingTask extends Task {
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, 400, 300);
         
-        g2.setColor(Color.BLACK);
-        g2.drawString("meeting task", 40, 60);
-        g2.drawString("stepOn: " + stepOn, 40, 160);
-        g2.drawString("arrow over: " + arrowOver, 40, 210);
-        g2.drawString("sleeper is (-1 means nobody): " + sleeper, 40, 260);
-
-
+        g2.drawImage(bg, 0, 0, null);
+        for (int i=0; i<4; i++) {
+            if (i == sleeper) {
+                g2.drawImage(asleep, workerPositions[i][0], workerPositions[i][1], null);
+            } else {
+                g2.drawImage(awake, workerPositions[i][0], workerPositions[i][1], null);
+            }
+        }
+        g2.drawImage(marker, workerPositions[arrowOver][0]+7, workerPositions[arrowOver][1]-50, null );
+        if (speechTimeLeft>0) {
+            g2.drawImage(speech, speechPosition[0], speechPosition[1], null);
+        }
+        if (booTimeLeft>0) {
+            g2.drawImage(boo, speechPosition[0], speechPosition[1], null);
+        }
     }
 
 
@@ -77,9 +115,9 @@ public class MeetingTask extends Task {
         if (!bln) {
             return;
         }
-        
         if (stepOn == 0 && i == KeyCode.KEY_M) {
             workLeft--;
+            speechTimeLeft = 150;
             if (workLeft <= 0) {
                 setComplete(true);
             }
@@ -87,6 +125,7 @@ public class MeetingTask extends Task {
             // wake him up
             stepOn = 0;
             sleeper = -1;
+            booTimeLeft = 250;
         }
         
         if (i == KeyCode.KEY_A) {

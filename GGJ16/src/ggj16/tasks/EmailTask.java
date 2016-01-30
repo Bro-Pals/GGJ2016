@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -16,9 +17,17 @@ public class EmailTask extends Task {
     int stepOn = 0;
     int[] steps = new int[]{KeyCode.KEY_R, KeyCode.KEY_D};
     int timesLeft = 8;
+    private BufferedImage read;
+    private BufferedImage respond;
+    private BufferedImage finish;
+    private BufferedImage bg;
     
     public EmailTask(GameState stateInside) {
         super(stateInside, "Respond to emails");
+        read = stateInside.getAssetManager().getImage("readScreen");
+        respond = stateInside.getAssetManager().getImage("respondScreen");
+        finish = stateInside.getAssetManager().getImage("finishedScreen");
+        bg = stateInside.getAssetManager().getImage("emailBackground");
     }
 
     @Override
@@ -33,10 +42,14 @@ public class EmailTask extends Task {
         g2.setColor(Color.WHITE);
         g2.fillRect(0, 0, 400, 300);
         
-        g2.setColor(Color.BLACK);
-        g2.drawString("Email task", 40, 60);
-        g2.drawString("stepOn: " + stepOn, 40, 160);
-
+        g2.drawImage(bg, 0, 0, null);
+        if (isComplete()) {
+            g2.drawImage(finish, 78, 58, null);
+        } else if (stepOn == 0) {
+            g2.drawImage(respond, 78, 58, null);
+        } else if (stepOn == 1) {
+            g2.drawImage(read, 78, 58, null);
+        }
     }
 
      @Override
