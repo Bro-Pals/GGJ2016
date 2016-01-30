@@ -46,8 +46,9 @@ public class PlayState extends GameState {
     
     // game values.
     private int dayOn; // Count what day you're on.
+    private int obstructionValue = 0; //Level of obstruction
     private int hoursLeft = 12;
-    private int ticksPerHour = 2000;
+    private int ticksPerHour = 5000; //Seconds per tick (Make the day a minute to start?)
     private int tickProgress;
     private float paperworkLeft = 100; // how much paperwork is left for that day.
     private float initialPaperworkValue = 100;
@@ -322,8 +323,8 @@ public class PlayState extends GameState {
         if (hoursLeft>0) {
             clockGui.setClockRotation(12-hoursLeft);
         } else {
-            dayOn++;
             hoursLeft = 12;
+            advanceDay();
         }
     }
 
@@ -333,6 +334,9 @@ public class PlayState extends GameState {
         return toDoList;
     }
     
-    
+    public void advanceDay() {
+        
+        dayOn++;
+    }
     
 }
