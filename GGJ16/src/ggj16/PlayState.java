@@ -222,9 +222,9 @@ public class PlayState extends GameState {
         // phone to order lunch
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1650, getAssetManager().getImage("phoneOffice"), camera, lunchTask));
         // demon desk
-        officeWorld.addEntity(new OfficeObject(officeWorld, 1750, getAssetManager().getImage("demonDesk"), camera));
+        officeWorld.addEntity(new OfficeObject(officeWorld, 1850, getAssetManager().getImage("paperdesk"), camera));
         // computer to answer emails
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("demonComputer"), camera, emailTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 2000, getAssetManager().getImage("computerdesk"), camera, emailTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 2250, getAssetManager().getImage("workerDesk"), camera));
         //  desk
