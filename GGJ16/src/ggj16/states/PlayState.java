@@ -20,6 +20,7 @@ import ggj16.officeobjects.PlayerDemon;
 import ggj16.tasks.EmailTask;
 import ggj16.tasks.FaxTask;
 import ggj16.tasks.HitImpTask;
+import ggj16.tasks.InterviewTask;
 import ggj16.tasks.MakeCoffeeTask;
 import ggj16.tasks.MeetingTask;
 import ggj16.tasks.PaperworkTask;
@@ -61,10 +62,10 @@ public class PlayState extends GameState {
     private int currWorkerSleepTime;
     private final int WORKER_SLEEP_WAIT_TIME = 12000; // 12 seconds
     */
-// imp attack values
-    private ArrayList<HitImpTask> impTasks; // list of all imp attack tasks objects
+    // imp attack values
+    private ArrayList<ImpAttackTaskObject> impTaskObjects; // list of all imp attack tasks objects
     private int currImpAttackTime;
-    private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME = 1000; //10000; // 10 seconds between each chance for an imp to spawn.
     
     // game values.
     private int dayOn; // Count what day you're on.
@@ -84,8 +85,12 @@ public class PlayState extends GameState {
     private int parallaxOffset;
     private BufferedImage border;
     private BufferedImage border2;
-    // can not do yet prompt
+    // other prompts
     private BufferedImage canNotDoYetPrompt;
+    
+    // alert image
+    private BufferedImage impAlertImage;
+    
     
     @Override
     public void update(int delta) {
@@ -128,10 +133,37 @@ public class PlayState extends GameState {
         }*/
         
         // imp spawning
-         currImpAttackTime += delta;
-        if (currImpAttackTime > IMP_WAIT_TIME) {
+        currImpAttackTime += delta;
+        if (currImpAttackTime > IMP_WAIT_TIME &&
+                getNumWorkerAlive() != 0) { // there must be workers alive to spawn an imp on one
             // make an imp randomly attack
-            
+            // make a random worker fall asleep
+            if (Math.random() > 0) { // 0 is temp
+                // randomly chose a non-dead worker
+                int whichOne = 0;
+                int iterations = 0; // prevent infinite loop
+                do {
+                    whichOne = (int)(Math.random() * workers.length);
+                    iterations++;
+                } while(iterations >= 50 && // safe lock to stop the loop after 100 times.
+                        workers[whichOne].getState() != Employee.WORKING &&
+                        !workers[whichOne].isBeingAttackedByImp());
+                if (!workers[whichOne].isBeingAttackedByImp() && 
+                        workers[whichOne].getState() == Employee.WORKING &&
+                        iterations < 50) { // only spawn an imp if iterations did not go out too far
+                    // define the task and add it to the list of tasks to be updated
+                    HitImpTask impTask = new HitImpTask(this, workers[whichOne]);
+                    ImpAttackTaskObject impTaskObject = new ImpAttackTaskObject(officeWorld, workers[whichOne].getX(),
+                            getAssetManager().getImage("emptyImage"), camera, impTask);
+                    impTaskObjects.add(impTaskObject); // add to the list to keep track of it
+                    // spawn a "wake up" task object near them
+                    officeWorld.addEntity(impTaskObject);
+                    
+                    System.out.println("An imp started to attack an employee: whichOne: " + whichOne
+                        + ", worker being attacked already: " + workers[whichOne].isBeingAttackedByImp());
+                    workers[whichOne].setBeingAttackedByImp(true);
+                }
+            }
             currImpAttackTime = 0;
         }
         
@@ -157,13 +189,24 @@ public class PlayState extends GameState {
             if (obj instanceof OfficeTaskObject) {
                 OfficeTaskObject task = (OfficeTaskObject)obj;
                 if (task instanceof ChangeEmployeeStateTaskObject ||
-                       task instanceof ImpAttackTaskObject  ) {
+                       task instanceof ImpAttackTaskObject) {
+                    //System.out.println("we found a cool generated task object.");
                     // if a wake employee, interview, or kill imp task is completed, then its deleted on completion.
                     if (task.getAssociatedTask().isComplete()) {
                         // remove object
+                        if (activeTask == task.getAssociatedTask()) {
+                            activeTask = null;
+                        }
                         System.out.println("Removed a task object for being completed!");
                         obj.setParent(null);
                         officeWorld.getEntities().remove(obj);
+                        // remove the imp task from the list of imp tasks.
+                        if (task instanceof ImpAttackTaskObject) {
+                            ImpAttackTaskObject iat = (ImpAttackTaskObject)task;
+                            if (impTaskObjects.contains(iat)) {
+                                impTaskObjects.remove(iat);
+                            }
+                        }
                         continue; // go to the next iteration.
                     }
                 }
@@ -220,7 +263,12 @@ public class PlayState extends GameState {
         if (activeTask != null) {
             // find what task needs to be done next
             activeTask.render(taskRender);
-            if (nextTaskIndex < toDoList.size() && activeTask != toDoList.get(nextTaskIndex) && !activeTask.isComplete()) {
+            if (nextTaskIndex < toDoList.size() &&
+                    activeTask != toDoList.get(nextTaskIndex) && 
+                    !activeTask.isComplete() &&
+                    !(activeTask instanceof HitImpTask) &&
+                    !(activeTask instanceof InterviewTask) &&
+                    !(activeTask instanceof WakeSleeperTask)) {
                 // prompt that the task is visited too  early
                 taskRender.drawImage(canNotDoYetPrompt, 0, 0, null);
             }
@@ -256,6 +304,19 @@ public class PlayState extends GameState {
             g2.drawImage(workerHeadsIcon[(workers[i].getState())], 495 + (50 * i), 10, null);
         }
         
+        // draw the alert GUI warning about an imp attack
+        for (int i=0; i<impTaskObjects.size(); i++) {
+            int yPos = 30 + (i * 25);
+            int xPos = (int)(impTaskObjects.get(i).getX() - camera.getXLocation());
+            // contain it to the screen so one can see what direction to go.
+            if (xPos < 10) {
+                xPos = 10;
+            } else if (xPos > 770) {
+                xPos = 770;
+            }
+            g2.drawImage(impAlertImage, xPos, yPos, null);
+        }
+        
         /*
         Debugging things
         */
@@ -273,7 +334,8 @@ public class PlayState extends GameState {
         officeWorld = new GameWorld<>(this);
         camera = new Camera();
         toDoList = new ArrayList<>();
-           
+        impTaskObjects = new ArrayList<>();
+        
         // task and todo list init
         PaperworkTask paperTask = new PaperworkTask(this);
         
@@ -292,6 +354,8 @@ public class PlayState extends GameState {
        
         workers = new Employee[6];
         BufferedImage workerWorkingImg = getAssetManager().getImage("worker");
+        
+        impAlertImage =  getAssetManager().getImage("impAlert");
         
         int workerImageAdjust = 44;
         
@@ -402,8 +466,17 @@ public class PlayState extends GameState {
     public void key(int keycode, boolean pressed) {
         demonPlayer.key(keycode, pressed);
         // handle input for actice task (only on valid active task)
-        if (nextTaskIndex < toDoList.size() && activeTask != null && activeTask == toDoList.get(nextTaskIndex)) {
+        if (nextTaskIndex < toDoList.size() && 
+                activeTask != null && activeTask == toDoList.get(nextTaskIndex)) {
             activeTask.key(keycode, pressed);
+        } else {
+            // if it's not the right one on the todo list then see if
+            // it's one of the other tasks.
+            if ((activeTask instanceof HitImpTask) ||
+                (activeTask instanceof InterviewTask) ||
+                (activeTask instanceof WakeSleeperTask)) {
+                activeTask.key(keycode, pressed);
+            }
         }
         if (keycode == KeyCode.KEY_T && pressed) {
             System.out.println("Toggle");
@@ -471,6 +544,16 @@ public class PlayState extends GameState {
         }
     }
     
+    public int getNumWorkerAlive() {
+        int count = 0;
+        for (int i=0; i<workers.length; i++) {
+            if (workers[i].getState() != Employee.DEAD) {
+                count++;
+            }
+        }
+        return count;
+    }
+    
     public void advanceDay() {
         dayOn++;
         if (nextTaskIndex >= toDoList.size()) {
@@ -496,4 +579,18 @@ public class PlayState extends GameState {
         }
     }
     
+    
+    /// huuururrurrrrr
+    public void onImpKillEmployee(HitImpTask hit) {
+        if (activeTask == hit) {
+            activeTask = null;
+        }
+        // remove the imp task block from showing
+        for (int i=0; i<impTaskObjects.size(); i++) {
+            if (impTaskObjects.get(i).getAssociatedTask() == hit) {
+                impTaskObjects.remove(i);
+                break;
+            }
+        }
+    }
 }

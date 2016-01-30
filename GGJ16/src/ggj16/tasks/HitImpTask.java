@@ -6,6 +6,7 @@ import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import ggj16.tasks.objs.MoveTaskObject;
 import ggj16.Employee;
+import ggj16.states.PlayState;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -32,6 +33,8 @@ public class HitImpTask extends Task {
     final float impSpawnY = 50;
     final float impVelocity = 1f; // speed of the imp
 
+    PlayState ps;
+    
     public HitImpTask(GameState stateInside, Employee threatenedEmployee) {
         super(stateInside, "kill imp");
         
@@ -39,21 +42,34 @@ public class HitImpTask extends Task {
         impThing = new MoveTaskObject(getWorld(), impSpawnX, impSpawnY, 0, impVelocity);
         getWorld().addEntity(impThing);
         timeLeftForEmployeeDeath = 20000;
+        this.employeeTargeted = threatenedEmployee;
+        ps = (PlayState)stateInside;
     }
 
     @Override
     public void update(int ms) {
         super.update(ms);
         
+        if (isComplete()) {
+            return;
+        }
         timeLeftForEmployeeDeath -= ms; // death timer goes down.
-        if (timeLeftForEmployeeDeath < 0) {
+        if (employeeTargeted != null && timeLeftForEmployeeDeath < 0) {
             // kill employee
             employeeTargeted.setState(Employee.DEAD);
             setComplete(true); // set complete to get rid of it.
+            ps.onImpKillEmployee(this);
+            employeeTargeted.setBeingAttackedByImp(false);
         }
         
         // update the imp movement here
-        
+        if (impThing != null) {
+            if (impThing.getX() < 20) {
+                impThing.setDirection(0); /// move right
+            } else if (impThing.getX() > 390) {
+                impThing.setDirection((float)Math.PI); // move left
+            }
+        }
         
         if (stepOn == 0) {
             // make the aim move back and form in a range.
@@ -78,23 +94,40 @@ public class HitImpTask extends Task {
                    if (impThing.closeTo(fireBallObject, 30)) {
                        // we have killed dat imp boi
                        setComplete(true);
+                       employeeTargeted.setBeingAttackedByImp(false);
+                       employeeTargeted = null; //don't reference it
                    } 
                 }
             }
             
+        }
+        
+        if (impThing != null) {
+            impThing.update(ms);
+        }
+        if (fireBallObject != null) {
+            fireBallObject.update(ms);
         }
     }
     
     @Override
     public void render(Graphics2D g2) {
         super.render(g2);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
+        if (isComplete()) { // outta sight outta mind..?
+            return;
+        }
+        
         
         g2.setColor(Color.BLACK);
-        g2.drawString("Imp killing task right here", 40, 60);
-        g2.drawString("stepOn: " + stepOn, 40, 160);
-        g2.drawString("The current aim of the fireball: " + currentAim, 40, 260);
+        g2.drawString("Imp killing task", 40, 60);
+        g2.drawString("stepOn: " + stepOn, 40, 110);
+        g2.drawString("The current aim of the fireball: " + currentAim, 40, 210);
+        
+        g2.setColor(Color.YELLOW);
+        g2.drawLine((int)(200), (int)(270), 
+                (int)(200 + (40 * Math.cos(currentAim))), (int)(270 - (40 * Math.sin(currentAim))));
         
         if (fireBallObject != null) {
             // placeholder fireball object
@@ -110,7 +143,7 @@ public class HitImpTask extends Task {
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
-        if (stepOn == 0 && i == KeyCode.KEY_F) {
+        if (bln && stepOn == 0 && i == KeyCode.KEY_F) {
             stepOn = 1; // shoot fire!
             // spawn the fire ball thing in the task
             float ballVel = 3f;

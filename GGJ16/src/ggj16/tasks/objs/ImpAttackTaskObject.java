@@ -13,8 +13,8 @@ import java.awt.image.BufferedImage;
  */
 public class ImpAttackTaskObject extends OfficeTaskObject {
 
-    public ImpAttackTaskObject(GameWorld par, float x, BufferedImage image, Camera camera, Task associatedTask) {
-        super(par, x, image, camera, associatedTask);
+    public ImpAttackTaskObject(GameWorld par, float x, BufferedImage img, Camera camera, Task associatedTask) {
+        super(par, x, img, camera, associatedTask);
     }
     
 }

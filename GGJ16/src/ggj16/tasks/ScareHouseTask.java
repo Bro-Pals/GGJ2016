@@ -100,10 +100,7 @@ public class ScareHouseTask extends Task {
         if (i == KeyCode.KEY_A) {
             left = bln;
         }
-        // if the boolean is being released...
-        if (!bln) {
-            return;
-        }
+
         // scare the house the demon is nearby
         if (i == KeyCode.KEY_F) {
             boolean allScared = true;

@@ -10,6 +10,9 @@ import bropals.lib.simplegame.entity.GameWorld;
 import ggj16.Camera;
 import ggj16.OfficeObject;
 import ggj16.Task;
+import ggj16.tasks.HitImpTask;
+import ggj16.tasks.InterviewTask;
+import ggj16.tasks.WakeSleeperTask;
 import java.awt.image.BufferedImage;
 
 /**
@@ -37,6 +40,13 @@ public class OfficeTaskObject extends OfficeObject {
     @Override
     public void update(int delta) {
         super.update(delta);
+        if (associatedTask != null) {
+            if (associatedTask instanceof HitImpTask ||
+                    associatedTask instanceof InterviewTask ||
+                    associatedTask instanceof WakeSleeperTask) {
+                associatedTask.update(delta);
+            }
+        }
     }
     
     public boolean collidesWith(PlayerDemon player) {

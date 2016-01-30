@@ -34,7 +34,7 @@ public class MoveTaskObject extends TaskObject {
         
         // uuuughghghhgh
         x += (float)(Math.cos(direction) * velocity);
-        y += (float)(Math.sin(direction) * velocity);
+        y -= (float)(Math.sin(direction) * velocity);
     }
     
     /**

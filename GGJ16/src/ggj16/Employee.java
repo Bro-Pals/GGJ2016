@@ -13,10 +13,12 @@ public class Employee extends OfficeObject {
     public final static int WORKING = 0, DEAD = 1;
     int state;
     int positionX;
-    
+    boolean beingAttackedByImp;
+            
     public Employee(GameWorld par, float x, BufferedImage image, Camera camera) {
         super(par, x, image, camera);
         state = WORKING;
+        beingAttackedByImp = false;
     }
 
     @Override
@@ -39,4 +41,14 @@ public class Employee extends OfficeObject {
     public int getState() {
         return state;
     }
+
+    public boolean isBeingAttackedByImp() {
+        return beingAttackedByImp;
+    }
+
+    public void setBeingAttackedByImp(boolean beingAttackedByImp) {
+        this.beingAttackedByImp = beingAttackedByImp;
+    }
+    
+    
 }
