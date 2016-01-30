@@ -185,8 +185,17 @@ public class PlayState extends GameState {
         
         
         Animation demonAnimation = new Animation();
-        Track t = new Track(new BufferedImage[]{getImage("demonrightview")});
-        demonAnimation.addTrack(t);
+        Track right = new Track(new BufferedImage[]{getImage("demon1"), getImage("demon2"), getImage("demon3")}, 200);
+        getAssetManager().createHorizontialFlipCopy(getImage("demon1"), "demon1Left");
+        getAssetManager().createHorizontialFlipCopy(getImage("demon2"), "demon2Left");
+        getAssetManager().createHorizontialFlipCopy(getImage("demon3"), "demon3Left");
+        Track left = new Track(new BufferedImage[]{
+            getImage("demon1Left"), 
+            getImage("demon2Left"), 
+            getImage("demon3Left")
+        }, 200);
+        demonAnimation.addTrack(left);
+        demonAnimation.addTrack(right);
         demonAnimation.setTrack(0);
         demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
         

@@ -11,6 +11,7 @@ import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.entity.GameWorld;
 import ggj16.Camera;
 import ggj16.OfficeObject;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -20,9 +21,18 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
 
     private boolean right = false;
     private boolean left = false;
+    private BufferedImage standingLeft;
+    private BufferedImage standingRight;
+    private BufferedImage standingImage;
+    private Animation anim;
     
     public PlayerDemon(GameWorld par, float x, Animation playerAnimation, Camera camera) {
         super(par, x, playerAnimation, camera);
+        anim = playerAnimation;
+        standingRight = par.getState().getImage("demon2");
+        par.getState().getAssetManager().createHorizontialFlipCopy(standingRight, "standingLeft");
+        standingLeft = par.getState().getImage("demon2Left");
+        standingImage = standingRight;
     }
 
     @Override
@@ -30,11 +40,19 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
         super.update(delta);
         //Move the player. The tasks updating and whatnot will be done in PlayState
         if (right) {
+            setAnimation(anim);
             translateX(6);
-        }
-        if (left) {
+            anim.setTrack(1);
+            standingImage = standingRight;
+        } else if (left) {
+            setAnimation(anim);
             translateX(-6);
+            anim.setTrack(0);
+            standingImage = standingLeft;
+        } else {
+            setImage(standingImage);
         }
+        anim.update(delta);
     }
     
     @Override
