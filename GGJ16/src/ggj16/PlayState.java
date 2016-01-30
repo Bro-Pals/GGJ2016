@@ -44,7 +44,7 @@ public class PlayState extends GameState {
     
     // game values.
     private int dayOn; // Count what day you're on.
-    private int hoursLeft = 4;
+    private int hoursLeft = 12;
     private float paperworkLeft = 100; // how much paperwork is left for that day.
     private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
@@ -53,6 +53,8 @@ public class PlayState extends GameState {
     private BufferedImage officeBackgroundRepeated;
     private BufferedImage coolParallaxScrolling;
     private int parallaxOffset;
+    private BufferedImage border;
+    private BufferedImage border2;
     
     @Override
     public void update(int delta) {
@@ -146,8 +148,11 @@ public class PlayState extends GameState {
             // View all of the tasks.
         }
         gui.render(o);        
+        //Draw borders
         
-        
+        g2.drawImage(border, 0, 300, null);
+        g2.drawImage(border2, 196, 306, null);
+        g2.drawImage(border2, 598, 306, null);
         /*
         Debugging things
         */
@@ -218,6 +223,8 @@ public class PlayState extends GameState {
         //Background init
         officeBackgroundRepeated = getAssetManager().getImage("foreground");
         coolParallaxScrolling = getAssetManager().getImage("background");
+        border = getAssetManager().getImage("border");
+        border2 = getAssetManager().getImage("border2");
         
         ///Gui init
         gui = new Gui();

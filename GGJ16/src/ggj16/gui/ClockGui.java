@@ -18,39 +18,36 @@ import java.awt.image.BufferedImage;
 public class ClockGui extends GuiElement {
     
     private PlayState ps;
-    private BufferedImage clockHand;
-    private BufferedImage clock;
-    private AffineTransform trans;
-    private int offsetX;
-    private int offsetY;
+    private int current;
+    private BufferedImage[] images;
     
     public ClockGui(int x, int y, int w, int h, PlayState ps) {
         super(x, y, w, h);
         this.ps = ps;
-        clockHand = ps.getImage("clockhand");
-        clock = ps.getImage("clockface");
-        trans = new AffineTransform();
-        setClockRotation(0);
+        current = 0;
+        images = new BufferedImage[] {
+            ps.getImage("clock1"),
+            ps.getImage("clock2"),
+            ps.getImage("clock3"),
+            ps.getImage("clock4"),
+            ps.getImage("clock5"),
+            ps.getImage("clock6"),
+            ps.getImage("clock7"),
+            ps.getImage("clock8"),
+            ps.getImage("clock9"),
+            ps.getImage("clock10"),
+            ps.getImage("clock11"),
+            ps.getImage("clock12")
+        };
     }
     
     @Override
     public void render(Object o) {
         Graphics2D g = (Graphics2D)o;
-        g.drawImage(clock, getX(), getY(), getWidth(), getHeight(), null);
-        AffineTransform old = g.getTransform();
-        g.setTransform(trans);
-        g.drawImage(clockHand, getX()+97, getY()+144, null);
-        g.setTransform(old);
+        g.drawImage(images[current], getX(), getY(), getWidth(), getHeight(), null);
     }
     
     public void setClockRotation(int hour) {
-        double rot = Math.PI/2 + ((float)(hour)/6 * Math.PI);
-        offsetX = (int)(Math.cos(rot)*clockHand.getWidth()/2);
-        offsetY = (int)(Math.sin(rot)*clockHand.getHeight()/2);
-        trans.setTransform(
-                Math.cos(rot), Math.sin(rot),
-                -Math.sin(rot), Math.cos(rot), 
-                -clockHand.getWidth()/2, -clockHand.getHeight()/2
-        );
+        current = hour;
     }
 }
