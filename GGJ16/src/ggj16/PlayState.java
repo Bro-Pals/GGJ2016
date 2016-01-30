@@ -39,10 +39,12 @@ public class PlayState extends GameState {
     // game world values
     private GameWorld<OfficeObject> officeWorld;
     private PlayerDemon demonPlayer; // special reference of the demon
-    
+    boolean debugDemonRun = false;
+            
     // task values
     private ArrayList<Task> toDoList; // every task
     private Task activeTask; // special reference to a task taking in input, pointed from "tasks"
+    private int nextTaskIndex = 0; // the index of the next task that needs to be done.
     
     // game values.
     private int dayOn; // Count what day you're on.
@@ -60,6 +62,8 @@ public class PlayState extends GameState {
     private int parallaxOffset;
     private BufferedImage border;
     private BufferedImage border2;
+    // can not do yet prompt
+    private BufferedImage canNotDoYetPrompt;
     
     @Override
     public void update(int delta) {
@@ -71,6 +75,13 @@ public class PlayState extends GameState {
         // 1. update office world
         officeWorld.updateEntities(delta);
         // 2. update tasks world
+        if (nextTaskIndex >= toDoList.size()) {
+            System.out.println("COMPLETED ALL TASKS");
+        }
+        
+        if (nextTaskIndex < toDoList.size() && toDoList.get(nextTaskIndex).isComplete()) {
+            nextTaskIndex++;
+        }
         for (int j=0; j<toDoList.size(); j++) {
             toDoList.get(j).update(delta);
         }
@@ -139,7 +150,12 @@ public class PlayState extends GameState {
        ///     toDoList.get(j).render(g2); // pass the clipped graphics in
        /// }
         if (activeTask != null) {
+            // find what task needs to be done next
             activeTask.render(taskRender);
+            if (nextTaskIndex < toDoList.size() && activeTask != toDoList.get(nextTaskIndex) && !activeTask.isComplete()) {
+                // prompt that the task is visited too  early
+                taskRender.drawImage(canNotDoYetPrompt, 0, 0, null);
+            }
         } else {
             //Whatever is there with no task
         }
@@ -252,6 +268,9 @@ public class PlayState extends GameState {
         border = getAssetManager().getImage("border");
         border2 = getAssetManager().getImage("border2");
         
+        // other images init
+        canNotDoYetPrompt = getAssetManager().getImage("canNotDoYet");
+        
         ///Gui init
         gui = new Gui();
         GuiGroup main = new GuiGroup();
@@ -284,13 +303,20 @@ public class PlayState extends GameState {
     @Override
     public void key(int keycode, boolean pressed) {
         demonPlayer.key(keycode, pressed);
-        // handle input for actice task
-        if (activeTask != null) {
+        // handle input for actice task (only on valid active task)
+        if (nextTaskIndex < toDoList.size() && activeTask != null && activeTask == toDoList.get(nextTaskIndex)) {
             activeTask.key(keycode, pressed);
         }
         if (keycode == KeyCode.KEY_T && pressed) {
             System.out.println("Toggle");
             toggleToDoListVisiblity();
+        }
+        if (keycode == KeyCode.KEY_Z) {
+            if (pressed) {
+                demonPlayer.setSpeed(18);
+            } else {
+                demonPlayer.setSpeed(6);
+            }
         }
     }    
     

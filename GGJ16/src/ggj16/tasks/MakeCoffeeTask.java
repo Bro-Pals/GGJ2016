@@ -35,6 +35,8 @@ public class MakeCoffeeTask extends Task {
             stateInside.getAssetManager().getImage("coffeepot2"),
             stateInside.getAssetManager().getImage("coffeepot3"),
             stateInside.getAssetManager().getImage("coffeepot4"),
+            stateInside.getAssetManager().getImage("taskCompletePrompt"),
+            stateInside.getAssetManager().getImage("brewingPrompt"), // 5
             stateInside.getAssetManager().getImage("fKeyPrompt"),
             stateInside.getAssetManager().getImage("pKeyPrompt"),
             stateInside.getAssetManager().getImage("oKeyPrompt"),
@@ -71,8 +73,17 @@ public class MakeCoffeeTask extends Task {
             img = images[3];
         }
         g2.drawImage(img, 100, 50, null);
-        if (stepOn < codes.length) {
-            g2.drawImage(images[4 + stepOn], 0, 0, null);
+        if (stepOn < 3) {
+            g2.drawImage(images[6 + stepOn], 100 + (30 * stepOn), 60, null);
+        }
+        if (stepOn == codes.length && !isComplete()) {
+            // show brewing prompt when coffee is being made
+            g2.drawImage(images[5], 120, 60, null);
+        }
+        
+         // draw completed prompt on completion
+        if (isComplete()) {
+            g2.drawImage(images[4], 0, 0, null);
         }
     }
 
@@ -85,9 +96,6 @@ public class MakeCoffeeTask extends Task {
         }
         if (stepOn != codes.length && i == codes[stepOn]) {
             stepOn++;
-            if (stepOn == codes.length) { 
-                setComplete(true);
-            }
         }
     }
 
