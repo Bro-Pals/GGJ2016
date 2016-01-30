@@ -6,6 +6,7 @@
 package ggj16.states;
 
 import bropals.lib.simplegame.state.GameState;
+import ggj16.sound.SoundPlayer;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -30,6 +31,7 @@ public class MenuState extends GameState {
     @Override
     public void onEnter() {
         bg = getImage("menuscreen");
+        SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
     }
 
     @Override

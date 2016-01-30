@@ -6,6 +6,7 @@
 package ggj16.states;
 
 import bropals.lib.simplegame.state.GameState;
+import ggj16.sound.SoundPlayer;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -25,6 +26,7 @@ public class WinState extends GameState {
 
     @Override
     public void onEnter() {
+        SoundPlayer.getSoundPlayer().playVictoryMusic();
     }
 
     @Override

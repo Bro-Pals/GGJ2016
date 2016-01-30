@@ -5,6 +5,7 @@
  */
 package ggj16;
 
+import ggj16.sound.SoundPlayer;
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
@@ -27,6 +28,7 @@ public class GGJ16 {
         
         assetManager.loadImagesInDirectories("images", true);
         assetManager.loadSoundEffectsInDirectories("sounds", true);
+        assetManager.loadSoundEffectsInDirectories("music", true);
         SoundPlayer.getSoundPlayer().init(assetManager);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);

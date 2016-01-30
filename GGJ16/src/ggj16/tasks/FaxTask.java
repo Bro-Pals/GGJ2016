@@ -3,7 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
-import ggj16.SoundPlayer;
+import ggj16.sound.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
