@@ -42,6 +42,9 @@ public class PlayState extends GameState {
     private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
     
+    //Background (unorganized for now :<)
+    private BufferedImage officeBackgroundRepeated;
+    
     @Override
     public void update(int delta) {
         // 1. update office world
@@ -87,6 +90,9 @@ public class PlayState extends GameState {
         //    draw the demon
         //    If one is viewing the tasks window, render the tasks.
         g2.setClip(0, 0, 800, 300); // reset the graphics 
+        
+        //Draw the background
+        
         
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
             officeWorld.getEntities().get(i).render(g2);
@@ -137,7 +143,8 @@ public class PlayState extends GameState {
         officeWorld.addEntity(demonPlayer);
         
         
-        
+        //Background init
+        officeBackgroundRepeated = getAssetManager().getImage("officebackground");
         
         ///Gui init
         gui = new Gui();
