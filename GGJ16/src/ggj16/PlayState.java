@@ -69,7 +69,7 @@ public class PlayState extends GameState {
         //The camera sets its position itself
         camera.setXLocation((int)(demonPlayer.getX()+(demonPlayer.getWidth()/2)-400));
         //Cool parallax scrolling
-        parallaxOffset = (int)( (float)(demonPlayer.getX()/((float)(Camera.getCameraMax()-demonPlayer.getWidth())-Camera.getCameraMin())) * 1600 );
+        parallaxOffset = (int)( (float)(demonPlayer.getX()/((float)(Camera.getCameraMax()-demonPlayer.getWidth())-Camera.getCameraMin())) * 800 );
         
         OfficeTaskObject intersects = null;
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
@@ -101,34 +101,37 @@ public class PlayState extends GameState {
         //    draw all of the office furniture/people
         //    draw the demon
         //    If one is viewing the tasks window, render the tasks.
-        g2.setClip(0, 0, 800, 300); // reset the graphics 
+        Graphics2D officeRender = (Graphics2D)g2.create(0, 0, 800, 300); // reset the graphics 
         
         //Draw the background
-        g2.drawImage(coolParallaxScrolling, -parallaxOffset, 0, null);
-        g2.drawImage(coolParallaxScrolling, 800-parallaxOffset, 0, null);
+        officeRender.drawImage(coolParallaxScrolling, -parallaxOffset, 0, null);
+        officeRender.drawImage(coolParallaxScrolling, 800-parallaxOffset, 0, null);
+        officeRender.drawImage(coolParallaxScrolling, -parallaxOffset, 100, null);
+        officeRender.drawImage(coolParallaxScrolling, 800-parallaxOffset, 100, null);
         
         int offset = ((int)camera.getXLocation())%officeBackgroundRepeated.getWidth();
         for (int i=0; i<((officeBackgroundRepeated.getWidth()/800)+1); i++) {
-            g2.drawImage(officeBackgroundRepeated, (int)(-offset+(i*officeBackgroundRepeated.getWidth())), 100, null );
+            officeRender.drawImage(officeBackgroundRepeated, (int)(-offset+(i*officeBackgroundRepeated.getWidth())), 100, null );
         }
         
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
-            officeWorld.getEntities().get(i).render(g2);
+            officeWorld.getEntities().get(i).render(officeRender);
         }
+        officeRender.dispose();
         // 2. clip task world to draw.
         // 400x300 task world from (200, 300)
         //    If there is an active task, draw it
         //    Otherwise, draw a placeholder(?)
-        g2.setClip(200, 300, 400, 300); // ( think?)
+        Graphics2D taskRender = (Graphics2D)g2.create(200, 300, 400, 300);
        /// for (int j=0; j<toDoList.size(); j++) {
        ///     toDoList.get(j).render(g2); // pass the clipped graphics in
        /// }
         if (activeTask != null) {
-            activeTask.render(g2);
+            activeTask.render(taskRender);
         } else {
             //Whatever is there with no task
         }
-        
+        taskRender.dispose();
         
         // 3. Draw the GUIs
         // Guis are in 2 parts:
@@ -142,10 +145,7 @@ public class PlayState extends GameState {
         if (viewingTasks) {
             // View all of the tasks.
         }
-        g2.setClip(0, 0, 800, 600); // reset the graphics 
-        gui.render(o);
-        
-        
+        gui.render(o);        
         
         
         /*
