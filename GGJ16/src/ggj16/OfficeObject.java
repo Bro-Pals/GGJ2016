@@ -29,6 +29,7 @@ public class OfficeObject extends BaseEntity {
         super(par);
         this.x = x;
         this.image = image;
+        this.camera = camera;
         animation = null;
     }
     
