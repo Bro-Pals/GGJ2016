@@ -3,6 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -61,6 +62,7 @@ public class InterviewTask extends Task {
         // when you complete the codes... wait for the food
         if (stepOn == 0 && i == KeyCode.KEY_R) {
             timesToTapLeft--;
+            SoundPlayer.getSoundPlayer().playPageTurn();
             if (timesToTapLeft <= 0) { // reduce steps left.
                 stepOn++; // next step
             }

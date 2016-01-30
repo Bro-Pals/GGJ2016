@@ -337,7 +337,6 @@ public class PlayState extends GameState {
         
         
         // init player last (so they're drawn on top)
-        Animation demonAnimation = new Animation();
         Track right = new Track(new BufferedImage[]{getImage("demon1"), getImage("demon2"), getImage("demon3")}, 200);
         getAssetManager().createHorizontialFlipCopy(getImage("demon1"), "demon1Left");
         getAssetManager().createHorizontialFlipCopy(getImage("demon2"), "demon2Left");
@@ -347,9 +346,11 @@ public class PlayState extends GameState {
             getImage("demon2Left"), 
             getImage("demon3Left")
         }, 200);
-        demonAnimation.addTrack(left);
-        demonAnimation.addTrack(right);
-        demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
+        Animation rightAnim = new Animation();
+        rightAnim.setTrack(rightAnim.addTrack(right));
+        Animation leftAnim = new Animation();
+        leftAnim.setTrack(leftAnim.addTrack(left));
+        demonPlayer = new PlayerDemon(officeWorld, 0, leftAnim, rightAnim, camera);
         officeWorld.addEntity(demonPlayer);
         
         // employee heads init

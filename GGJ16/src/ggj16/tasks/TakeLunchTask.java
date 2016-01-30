@@ -3,6 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -116,7 +117,7 @@ public class TakeLunchTask extends Task {
         if (stepOn != codes.length) { // if you aren't yet completed with all of the steps...
             if (i == codes[stepOn]) { // if the keycode matches the current step...
                 stepOn++; // go to the next step
-                
+                SoundPlayer.getSoundPlayer().playPhoneBeep();
             }
             
         } 

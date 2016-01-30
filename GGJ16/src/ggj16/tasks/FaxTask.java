@@ -3,6 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
+import ggj16.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -85,6 +86,7 @@ public class FaxTask extends Task {
             stepOn = 1;
         } else if (stepOn == 1 && i == KeyCode.KEY_F) {
             stepOn = 2;
+            SoundPlayer.getSoundPlayer().playFaxMachine();
         }
     }
     

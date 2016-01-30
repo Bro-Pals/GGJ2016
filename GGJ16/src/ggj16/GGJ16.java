@@ -26,6 +26,8 @@ public class GGJ16 {
         GameWindow window = new AWTGameWindow("Our game", 800, 600);
         
         assetManager.loadImagesInDirectories("images", true);
+        assetManager.loadSoundEffectsInDirectories("sounds", true);
+        SoundPlayer.getSoundPlayer().init(assetManager);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
         runner.setState(new MenuState());
