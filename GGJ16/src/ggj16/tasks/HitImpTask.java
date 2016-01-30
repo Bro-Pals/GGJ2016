@@ -5,6 +5,7 @@ import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import ggj16.tasks.objs.MoveTaskObject;
+import ggj16.Employee;
 import java.awt.Color;
 import java.awt.Graphics2D;
 
@@ -25,8 +26,10 @@ public class HitImpTask extends Task {
     float aimVel = 0.1f;
     MoveTaskObject fireBallObject;
     MoveTaskObject impThing;
+    int timeLeftForEmployeeDeath;
+    Employee employeeTargeted;
     
-    public HitImpTask(GameState stateInside) {
+    public HitImpTask(GameState stateInside, Employee threatenedEmployee) {
         super(stateInside, "kill imp");
         
         float impSpawnX = 200;
@@ -35,13 +38,22 @@ public class HitImpTask extends Task {
         // imp initiall moves to the right
         impThing = new MoveTaskObject(getWorld(), impSpawnX, impSpawnY, 0, impVelocity);
         getWorld().addEntity(impThing);
+        timeLeftForEmployeeDeath = 20000;
     }
 
     @Override
     public void update(int ms) {
         super.update(ms);
         
-        // update the imp movement
+        timeLeftForEmployeeDeath -= ms; // death timer goes down.
+        if (timeLeftForEmployeeDeath < 0) {
+            // kill employee
+            employeeTargeted.setState(Employee.DEAD);
+            setComplete(true); // set complete to get rid of it.
+        }
+        
+        // update the imp movement here
+        
         
         if (stepOn == 0) {
             // make the aim move back and form in a range.
@@ -108,4 +120,14 @@ public class HitImpTask extends Task {
             getWorld().addEntity(fireBallObject);
         }
     }
+
+    /**
+     * Returns how much longer until the employee referenced by this task dies.
+     * @return How much longer until the employee referenced by this task dies. 
+     */
+    public int getTimeLeftForEmployeeDeath() {
+        return timeLeftForEmployeeDeath;
+    }
+    
+    
 }
