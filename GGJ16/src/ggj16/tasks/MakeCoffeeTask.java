@@ -26,7 +26,7 @@ public class MakeCoffeeTask extends Task {
     int waitForCoffeeTime = 5000; // 5 seconds
 
     public MakeCoffeeTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Make coffee");
     }
     
     @Override

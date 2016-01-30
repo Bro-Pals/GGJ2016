@@ -15,7 +15,7 @@ public class FaxTask extends Task {
     int stepOn = 0;
     
     public FaxTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "send fax");
     }
 
     @Override

@@ -10,12 +10,12 @@ import java.awt.Graphics2D;
  *
  * @author Kevin
  */
-public class ScareHouseTask extends Task{
-
+public class ScareHouseTask extends Task {
+    
     int stepOn = 0;
     
     public ScareHouseTask(GameState stateInside) {
-        super(stateInside);
+        super(stateInside, "Scare house");
     }
 
     @Override

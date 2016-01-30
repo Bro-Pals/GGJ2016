@@ -278,4 +278,13 @@ public class PlayState extends GameState {
         hoursLeft--;
         clockGui.setClockRotation(12-hoursLeft);
     }
+
+    
+    /// adsfasdfasdjfldsjls
+    public ArrayList<Task> getToDoList() {
+        return toDoList;
+    }
+    
+    
+    
 }

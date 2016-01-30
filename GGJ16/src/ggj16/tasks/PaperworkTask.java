@@ -21,7 +21,7 @@ public class PaperworkTask extends Task {
     private PlayState plateStateRef;
     
     public PaperworkTask(PlayState playState) {
-        super(playState);
+        super(playState, "Do paperwork");
         this.plateStateRef = playState;
     }
 
