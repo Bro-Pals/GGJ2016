@@ -46,7 +46,6 @@ public class MakeCoffeeTask extends Task {
         super.update(ms); 
         if (stepOn == codes.length) {
             currWaitTime += ms;
-            System.out.println("BREWING");
             if (currWaitTime > waitForCoffeeTime) {
                 setComplete(true);
             }
@@ -60,14 +59,14 @@ public class MakeCoffeeTask extends Task {
         g2.fillRect(0, 0, 400, 300);
         
         BufferedImage img = null;
-        if (waitForCoffeeTime-currWaitTime > (waitForCoffeeTime/4)*3) {
-            img = images[3];
-        } else if (waitForCoffeeTime-currWaitTime > waitForCoffeeTime/2) {
-            img = images[2];
-        } else if (waitForCoffeeTime-currWaitTime > waitForCoffeeTime/4) {
-            img = images[1];
-        } else {
+        if (currWaitTime < waitForCoffeeTime/3) {
             img = images[0];
+        } else if (currWaitTime < (waitForCoffeeTime/3)*2 ) {
+            img = images[1];
+        } else if (currWaitTime < waitForCoffeeTime) {
+            img = images[2];
+        } else {
+            img = images[3];
         }
         g2.drawImage(img, 100, 50, null);
         if (stepOn < codes.length) {
