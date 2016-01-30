@@ -5,11 +5,11 @@
  */
 package ggj16;
 
-import ggj16.states.PlayState;
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
+import ggj16.states.MenuState;
 import java.io.File;
 
 /**
@@ -28,7 +28,7 @@ public class GGJ16 {
         assetManager.loadImagesInDirectories("images", true);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        runner.setState(new PlayState());
+        runner.setState(new MenuState());
         runner.loop();
     }
     

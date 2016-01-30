@@ -315,7 +315,6 @@ public class PlayState extends GameState {
         }, 200);
         demonAnimation.addTrack(left);
         demonAnimation.addTrack(right);
-        demonAnimation.setTrack(0);
         demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
         officeWorld.addEntity(demonPlayer);
         

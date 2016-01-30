@@ -13,22 +13,35 @@ import java.awt.image.BufferedImage;
  *
  * @author Jonathon
  */
-public class WinState extends GameState {
-        
+public class MenuState extends GameState {
+    
+    private BufferedImage bg;
+    
     @Override
     public void update(int i) {
     }
 
     @Override
     public void render(Object o) {
+        Graphics g = (Graphics)o;
+        g.drawImage(bg, 0, 0, null);
     }
 
     @Override
     public void onEnter() {
+        bg = getImage("menuscreen");
     }
 
     @Override
     public void onExit() {
     }
+
+    @Override
+    public void key(int keycode, boolean pressed) {
+        if (!pressed) {
+            getGameStateRunner().setState(new PlayState());
+        }
+    }
+    
     
 }
