@@ -28,7 +28,7 @@ public abstract class Task implements KeyListener {
      * @param ms  milliseconds that frame
      */
     public void update(int ms) {
-        
+        world.updateEntities(ms);
     }
     
     /**
@@ -54,6 +54,12 @@ public abstract class Task implements KeyListener {
     protected void setComplete(boolean isComplete) {
         this.isComplete = isComplete;
     }
+
+    public GameWorld<TaskObject> getWorld() {
+        return world;
+    }
+    
+    
 
     
 }

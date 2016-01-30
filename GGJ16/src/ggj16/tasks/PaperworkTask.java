@@ -5,6 +5,8 @@ import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.PlayState;
 import ggj16.Task;
+import java.awt.Color;
+import java.awt.Graphics2D;
 
 /**
  *
@@ -34,6 +36,16 @@ public class PaperworkTask extends Task {
         if (!bln) {
             ready = true;
         }
+    }
+
+    @Override
+    public void render(Graphics2D g2) {
+        super.render(g2);
+        g2.setColor(Color.WHITE);
+        g2.fillRect(0, 0, 400, 300);
+        
+        g2.setColor(Color.BLACK);
+        g2.drawString("paperwork task", 40, 60);
     }
 
     
