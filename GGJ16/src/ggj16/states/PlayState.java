@@ -26,7 +26,6 @@ import ggj16.tasks.MeetingTask;
 import ggj16.tasks.PaperworkTask;
 import ggj16.tasks.ScareHouseTask;
 import ggj16.tasks.TakeLunchTask;
-import ggj16.tasks.WakeSleeperTask;
 import ggj16.tasks.objs.ChangeEmployeeStateTaskObject;
 import ggj16.tasks.objs.ImpAttackTaskObject;
 import java.awt.Color;
@@ -267,8 +266,7 @@ public class PlayState extends GameState {
                     activeTask != toDoList.get(nextTaskIndex) && 
                     !activeTask.isComplete() &&
                     !(activeTask instanceof HitImpTask) &&
-                    !(activeTask instanceof InterviewTask) &&
-                    !(activeTask instanceof WakeSleeperTask)) {
+                    !(activeTask instanceof InterviewTask)) {
                 // prompt that the task is visited too  early
                 taskRender.drawImage(canNotDoYetPrompt, 0, 0, null);
             }
@@ -473,8 +471,7 @@ public class PlayState extends GameState {
             // if it's not the right one on the todo list then see if
             // it's one of the other tasks.
             if ((activeTask instanceof HitImpTask) ||
-                (activeTask instanceof InterviewTask) ||
-                (activeTask instanceof WakeSleeperTask)) {
+                (activeTask instanceof InterviewTask)) {
                 activeTask.key(keycode, pressed);
             }
         }
