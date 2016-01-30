@@ -1,6 +1,7 @@
 
 package ggj16;
 
+import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.animation.Animation;
 import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.entity.GameWorld;
@@ -160,6 +161,10 @@ public class PlayState extends GameState {
         g2.drawImage(border, 0, 300, null);
         g2.drawImage(border2, 196, 306, null);
         g2.drawImage(border2, 598, 306, null);
+        
+        // draw the todolist last to go on top
+        todoListGuiElement.render(o);
+        
         /*
         Debugging things
         */
@@ -236,9 +241,11 @@ public class PlayState extends GameState {
         ///Gui init
         gui = new Gui();
         GuiGroup main = new GuiGroup();
-        main.addElement(todoListGuiElement = new ToDoListElement(200, 200, 600, 400, this));
+        
         main.addElement(new PaperStackGui(0, 300, 200, 300, this));
         main.addElement(clockGui = new ClockGui(600, 300, 200, 300, this));
+        // draw last to put it on top
+        main.addElement(todoListGuiElement = new ToDoListElement(200, 200, 600, 400, this));
         gui.addGroup("main", main);
         gui.setEnabled("main", true);
         
@@ -262,6 +269,14 @@ public class PlayState extends GameState {
     @Override
     public void key(int keycode, boolean pressed) {
         demonPlayer.key(keycode, pressed);
+        // handle input for actice task
+        if (activeTask != null) {
+            activeTask.key(keycode, pressed);
+        }
+        if (keycode == KeyCode.KEY_T && pressed) {
+            System.out.println("Toggle");
+            toggleToDoListVisiblity();
+        }
     }    
     
     /** 

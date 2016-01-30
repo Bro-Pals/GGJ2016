@@ -14,6 +14,8 @@ import java.awt.Graphics2D;
 public class EmailTask extends Task {
 
     int stepOn = 0;
+    int[] steps = new int[]{KeyCode.KEY_R, KeyCode.KEY_D};
+    int timesLeft = 8;
     
     public EmailTask(GameState stateInside) {
         super(stateInside, "Respond to emails");
@@ -40,6 +42,18 @@ public class EmailTask extends Task {
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
-        
+        if (!bln) {
+            return;
+        }
+        if (steps[stepOn] == i) {
+            stepOn++;
+            if (stepOn >= steps.length) {
+                stepOn = 0;
+                timesLeft--;
+                if (timesLeft <= 0) {
+                    setComplete(true);
+                }
+            }
+        }
     }
 }

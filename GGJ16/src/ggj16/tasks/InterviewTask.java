@@ -55,6 +55,9 @@ public class InterviewTask extends Task {
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
+        if (!bln) {
+            return;
+        }
         // when you complete the codes... wait for the food
         if (stepOn == 0 && i == KeyCode.KEY_R) {
             timesToTapLeft--;

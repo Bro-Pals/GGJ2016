@@ -73,6 +73,9 @@ public class MakeCoffeeTask extends Task {
     @Override
     public void key(int i, boolean bln) {
         super.key(i, bln); 
+        if (!bln) {
+            return;
+        }
         if (stepOn != codes.length && i == codes[stepOn]) {
             stepOn++;
             if (stepOn == codes.length) { 
