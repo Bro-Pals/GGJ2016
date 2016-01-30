@@ -64,8 +64,8 @@ public class MeetingTask extends Task {
         g2.setColor(Color.BLACK);
         g2.drawString("meeting task", 40, 60);
         g2.drawString("stepOn: " + stepOn, 40, 160);
-        g2.drawString("arrow over: " + arrowOver, 40, 260);
-        g2.drawString("sleeper is (-1 means nobody): " + sleeper, 40, 360);
+        g2.drawString("arrow over: " + arrowOver, 40, 210);
+        g2.drawString("sleeper is (-1 means nobody): " + sleeper, 40, 260);
 
 
     }
@@ -74,6 +74,10 @@ public class MeetingTask extends Task {
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
+        if (!bln) {
+            return;
+        }
+        
         if (stepOn == 0 && i == KeyCode.KEY_M) {
             workLeft--;
             if (workLeft <= 0) {

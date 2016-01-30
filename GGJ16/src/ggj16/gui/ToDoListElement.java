@@ -29,17 +29,22 @@ public class ToDoListElement extends GuiElement {
     public void render(Object o) {
         Graphics2D g2 = (Graphics2D) o;
         
-        // just draw a list of all of the tasks for now
-        /// have different colors for completed and not completed tasks
-        
-        ArrayList<Task> toDoList = ps.getToDoList();
-        for (int i=0; i<toDoList.size(); i++) {
-            if (toDoList.get(i).isComplete()) {
-                g2.setColor(Color.RED);
-            } else {
-                g2.setColor(Color.BLACK);
+        if (isEnabled()) {
+            // just draw a list of all of the tasks for now
+            /// have different colors for completed and not completed tasks
+            g2.setColor(Color.WHITE);
+           
+            g2.fillRect(100, 100, 600, 400);
+            ArrayList<Task> toDoList = ps.getToDoList();
+            for (int i=0; i<toDoList.size(); i++) {
+                if (toDoList.get(i).isComplete()) {
+                    g2.setColor(Color.RED);
+                } else {
+                    g2.setColor(Color.BLACK);
+                }
+                g2.drawString(toDoList.get(i).getDescription(), 120, 100 + (20 * (i + 1)));
             }
-            g2.drawString(toDoList.get(i).getDescription(), 10, 10 + (20 * i));
+        
         }
     }
 

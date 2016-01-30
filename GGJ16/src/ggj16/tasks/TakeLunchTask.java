@@ -34,9 +34,11 @@ public class TakeLunchTask extends Task {
     @Override
     public void update(int ms) {
         super.update(ms);
-        currWaitTime += ms;
-        if (currWaitTime > millisToWait) {
-            setComplete(true); // done waiting!
+        if (stepOn >= codes.length) {
+            currWaitTime += ms;
+            if (currWaitTime > millisToWait) {
+                setComplete(true); // done waiting!
+            }
         }
     }
     
@@ -49,13 +51,16 @@ public class TakeLunchTask extends Task {
         g2.setColor(Color.BLACK);
         g2.drawString("take lunch task", 40, 60);
         g2.drawString("stepOn: " + stepOn, 40, 160);
-        g2.drawString("currWaitTime: " + currWaitTime, 40, 160);
+        g2.drawString("currWaitTime: " + currWaitTime, 40, 210);
     }
 
 
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
+        if (!bln) {
+            return;
+        }
         // when you complete the codes... wait for the food
         if (stepOn != codes.length) { // if you aren't yet completed with all of the steps...
             if (i == codes[stepOn]) { // if the keycode matches the current step...
