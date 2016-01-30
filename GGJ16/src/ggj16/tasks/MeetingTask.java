@@ -162,4 +162,16 @@ public class MeetingTask extends Task {
         }
     }
     
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        arrowOver = 0;
+        sleeper = -1;
+        numPeople = 4;
+        workLeft = 25;
+        speechTimeLeft = 0;
+        booTimeLeft = 0;
+        timeUntilSleeper = 0;
+        setComplete(false);
+    }
 }

@@ -5,6 +5,7 @@
  */
 package ggj16;
 
+import ggj16.states.PlayState;
 import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;

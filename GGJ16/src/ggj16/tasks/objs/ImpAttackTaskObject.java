@@ -17,5 +17,4 @@ public class ImpAttackTaskObject extends OfficeTaskObject {
         super(par, x, image, camera, associatedTask);
     }
     
-   
 }

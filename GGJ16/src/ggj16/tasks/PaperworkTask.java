@@ -3,7 +3,7 @@ package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
-import ggj16.PlayState;
+import ggj16.states.PlayState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
@@ -49,4 +49,9 @@ public class PaperworkTask extends Task {
     }
 
     
+    @Override
+    public void resetForDay() {
+        ready = false;
+        setComplete(false);
+    }
 }

@@ -122,4 +122,10 @@ public class TakeLunchTask extends Task {
         } 
     }
     
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        currWaitTime = 1;
+        setComplete(false);
+    }
 }

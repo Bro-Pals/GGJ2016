@@ -28,13 +28,13 @@ public class HitImpTask extends Task {
     MoveTaskObject impThing;
     int timeLeftForEmployeeDeath;
     Employee employeeTargeted;
-    
+    final float impSpawnX = 200;
+    final float impSpawnY = 50;
+    final float impVelocity = 1f; // speed of the imp
+
     public HitImpTask(GameState stateInside, Employee threatenedEmployee) {
         super(stateInside, "kill imp");
         
-        float impSpawnX = 200;
-        float impSpawnY = 50;
-        float impVelocity = 1f; // speed of the imp
         // imp initiall moves to the right
         impThing = new MoveTaskObject(getWorld(), impSpawnX, impSpawnY, 0, impVelocity);
         getWorld().addEntity(impThing);
@@ -129,5 +129,16 @@ public class HitImpTask extends Task {
         return timeLeftForEmployeeDeath;
     }
     
-    
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        currentAim = (float)Math.PI/2; // starting pointing forward
+        aimVel = 0.1f;
+        timeLeftForEmployeeDeath = 20000;
+        impThing.setX(impSpawnX);
+        impThing.setY(impSpawnY);
+        impThing.setDirection(0);
+        impThing.setVelocity(impVelocity);
+        setComplete(false);
+    }
 }

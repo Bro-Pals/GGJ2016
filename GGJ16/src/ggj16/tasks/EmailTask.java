@@ -77,4 +77,11 @@ public class EmailTask extends Task {
             }
         }
     }
+
+    @Override
+    public void resetForDay() {
+        stepOn = 0;
+        timesLeft = 8;
+        setComplete(false);
+    }
 }

@@ -14,4 +14,8 @@ public class WakeSleeperTask extends Task {
         super(stateInside, desc);
     }
 
+    @Override
+    public void resetForDay() {
+        setComplete(false);
+    }
 }

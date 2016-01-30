@@ -24,7 +24,7 @@ public class Employee extends OfficeObject {
         super.update(delta);
         switch(state) {
             case WORKING:
-                setImage(getParent().getState().getImage("workerAwake"));
+                setImage(getParent().getState().getImage("worker"));
                 break;
             case SLEEPING:
                 setImage(getParent().getState().getImage("workerAsleep"));
