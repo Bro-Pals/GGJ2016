@@ -129,7 +129,7 @@ public class PlayState extends GameState {
         toDoList = new ArrayList<>();
         
         Animation demonAnimation = new Animation();
-        Track t = new Track(new BufferedImage[]{getImage("demonPlaceholder")});
+        Track t = new Track(new BufferedImage[]{getImage("demonrightview")});
         demonAnimation.addTrack(t);
         demonAnimation.setTrack(0);
         demonPlayer = new PlayerDemon(officeWorld, 0, demonAnimation, camera);
