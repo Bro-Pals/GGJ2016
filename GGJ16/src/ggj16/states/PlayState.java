@@ -314,7 +314,7 @@ public class PlayState extends GameState {
             // contain it to the screen so one can see what direction to go.
             if (xPos < 10) {
                 xPos = 10;
-            } else if (xPos > 770) {
+            } else if (xPos > 730) {
                 xPos = 770;
             }
             g2.drawImage(impAlertImage, xPos, yPos, null);
