@@ -1,9 +1,11 @@
 
 package ggj16;
 
+import ggj16.tasks.objs.TaskObject;
 import bropals.lib.simplegame.KeyListener;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.entity.block.TexturedBlock;
+import bropals.lib.simplegame.state.GameState;
 import java.awt.Graphics2D;
 
 /**
@@ -13,7 +15,13 @@ import java.awt.Graphics2D;
  */
 public abstract class Task implements KeyListener {
 
-    GameWorld<TexturedBlock> world; // all of the objects for this task
+    GameWorld<TaskObject> world; // all of the objects for this task
+    boolean isComplete;
+    
+    public Task(GameState stateInside) {
+        isComplete = false;
+        world = new GameWorld<TaskObject>(stateInside);
+    }
     
     /**
      * Update the task
@@ -34,5 +42,18 @@ public abstract class Task implements KeyListener {
     @Override
     public void key(int i, boolean bln) {
     }
+
+    public boolean isComplete() {
+        return isComplete;
+    }
+
+    /**
+     * Set if a task is completed or not
+     * @param isComplete Is this task completed?
+     */
+    protected void setComplete(boolean isComplete) {
+        this.isComplete = isComplete;
+    }
+
     
 }

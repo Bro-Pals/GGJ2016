@@ -1,10 +1,8 @@
 
 package ggj16;
 
-import bropals.lib.simplegame.controls.Controller;
 import bropals.lib.simplegame.entity.GameWorld;
 import bropals.lib.simplegame.entity.block.TexturedBlock;
-import bropals.lib.simplegame.entity.controls.EntityController;
 import bropals.lib.simplegame.state.GameState;
 import java.awt.Graphics2D;
 import java.util.ArrayList;
@@ -90,4 +88,12 @@ public class PlayState extends GameState {
     public void key(int keycode, boolean pressed) {
         
     }    
+    
+    /** 
+     * Alter the amount of paperwork
+     * @param amount How much paperwork left will change. (neg or pos)
+     */
+    public void changePaperwork(float amount) {
+        paperworkLeft += amount;
+    }
 }
