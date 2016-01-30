@@ -20,6 +20,7 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
 
     private boolean right = false;
     private boolean left = false;
+    private int speed = 6;
     
     public PlayerDemon(GameWorld par, float x, Animation playerAnimation, Camera camera) {
         super(par, x, playerAnimation, camera);
@@ -30,10 +31,10 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
         super.update(delta);
         //Move the player. The tasks updating and whatnot will be done in PlayState
         if (right) {
-            translateX(6);
+            translateX(speed);
         }
         if (left) {
-            translateX(-6);
+            translateX(-speed);
         }
     }
     
@@ -44,5 +45,10 @@ public class PlayerDemon extends OfficeObject implements KeyListener {
         } else if (key == KeyCode.KEY_LEFT) {
             left = pressed;
         }
-    }    
+    } 
+
+    public void setSpeed(int speed) {
+        this.speed = speed;
+    }
+   
 }

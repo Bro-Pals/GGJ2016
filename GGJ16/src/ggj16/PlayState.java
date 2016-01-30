@@ -39,7 +39,8 @@ public class PlayState extends GameState {
     // game world values
     private GameWorld<OfficeObject> officeWorld;
     private PlayerDemon demonPlayer; // special reference of the demon
-    
+    boolean debugDemonRun = false;
+            
     // task values
     private ArrayList<Task> toDoList; // every task
     private Task activeTask; // special reference to a task taking in input, pointed from "tasks"
@@ -281,6 +282,13 @@ public class PlayState extends GameState {
         if (keycode == KeyCode.KEY_T && pressed) {
             System.out.println("Toggle");
             toggleToDoListVisiblity();
+        }
+        if (keycode == KeyCode.KEY_Z) {
+            if (pressed) {
+                demonPlayer.setSpeed(18);
+            } else {
+                demonPlayer.setSpeed(6);
+            }
         }
     }    
     
