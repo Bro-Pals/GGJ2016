@@ -10,7 +10,8 @@ import ggj16.Task;
 public class MakeCoffeeTask extends Task {
 
     @Override
-    public void key(int i, boolean bln) {
+    public void key(int key, boolean pressed) {
+        
     }
 
 }
