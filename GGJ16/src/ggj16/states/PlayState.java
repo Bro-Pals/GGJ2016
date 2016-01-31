@@ -45,7 +45,7 @@ public class PlayState extends GameState {
     private final int IMP_WAIT_TIME_STAGE_2 = 6500; // 9 seconds between each chance for an imp to spawn.
     private final int IMP_WAIT_TIME_STAGE_3 = 4500; // 7.5 seconds between each chance for an imp to spawn.
     
-    public final float PAPERWORK_PER_DAY_BASE_VALUE = 100;
+    public final float PAPERWORK_PER_DAY_BASE_VALUE = 170;
     private final float EMPLOYEE_WORK_RATE = 0.009f; // the rate that each worker reduces paperwork.
     private final float MINUTES_STAGE_1 = 4; // days 1 and 2
     private final float MINUTES_STAGE_2 = 3; // days 3 and 4
@@ -559,7 +559,7 @@ public class PlayState extends GameState {
     public float getPaperworkLeft() {
         return paperworkLeft;
     }
-
+    
     public void toggleToDoListVisiblity() {
         todoListGuiElement.setEnabled(!todoListGuiElement.isEnabled());
     }
