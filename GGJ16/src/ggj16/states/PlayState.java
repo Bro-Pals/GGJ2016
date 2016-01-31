@@ -57,7 +57,11 @@ public class PlayState extends GameState {
     private GameWorld<OfficeObject> officeWorld;
     private PlayerDemon demonPlayer; // special reference of the demon
     boolean debugDemonRun = false;
-            
+    
+    private boolean viewingCompletedDay;
+    private int viewingDayTime;
+    private BufferedImage completeDay;
+    
     // task values
     private ArrayList<Task> toDoList; // every task
     private Task activeTask; // special reference to a task taking in input, pointed from "tasks"
@@ -105,6 +109,13 @@ public class PlayState extends GameState {
     
     @Override
     public void update(int delta) {
+        if (viewingCompletedDay) {
+            viewingDayTime += delta;
+            if (viewingDayTime>=6000) {
+                advanceDay();
+            } 
+            return;
+        }
         tickProgress += delta;
         System.out.println("tickProgress: " + tickProgress);
         if (tickProgress >= ticksPerHour) {
@@ -307,6 +318,7 @@ public class PlayState extends GameState {
         if (isFinishedWithDailyThings()) {
             //SoundPlayer.getSoundPlayer().playVictoryMusic();
             SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
+            viewingCompletedDay = true;
         }
         
         // 3. Draw the GUIs
@@ -359,6 +371,10 @@ public class PlayState extends GameState {
             );
         }
         
+        if (viewingCompletedDay) {
+            g2.drawImage(completeDay, 200, 150, null);
+        }
+        
         // draw the todolist last to go on top
         todoListGuiElement.render(o);
         
@@ -403,6 +419,7 @@ public class PlayState extends GameState {
         BufferedImage workerWorkingImg = getAssetManager().getImage("worker");
         
         impAlertImage =  getAssetManager().getImage("impAlert");
+        completeDay = getAssetManager().getImage("dayComplete");
         
         int workerImageAdjust = 44;
         
@@ -622,9 +639,12 @@ public class PlayState extends GameState {
     
     public void advanceDay() {
         dayOn++;
+        viewingCompletedDay = false;
+        viewingDayTime = 0;
         if (isFinishedWithDailyThings()) { // did player finish all paperwork and daily ritual?
             //Completed all tasks
             //Go to the next day
+            demonPlayer.setX(30);
             if (dayOn == 1) {
                 obstructionValue = 1;
             } else if (dayOn == 2) {
