@@ -377,7 +377,7 @@ public class PlayState extends GameState {
         // coffee maker
         officeWorld.addEntity(new OfficeTaskObject(officeWorld, 850, getAssetManager().getImage("coffeemaker"), camera, coffeeTask));
         // fax machine
-        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxmachine"), camera, faxTask));
+        officeWorld.addEntity(new OfficeTaskObject(officeWorld, 1000, getAssetManager().getImage("faxMachine"), camera, faxTask));
         //  desk
         officeWorld.addEntity(new OfficeObject(officeWorld, 1200, getAssetManager().getImage("workerDesk"), camera));
         workers[2] = new Employee(officeWorld, 1200 + workerImageAdjust, workerWorkingImg, camera);
@@ -593,11 +593,19 @@ public class PlayState extends GameState {
     
     /// huuururrurrrrr
     public void onImpKillEmployee(HitImpTask hit) {
+        Employee targetEmployee = hit.getEmployeeTargeted();
         if (activeTask == hit) {
             activeTask = null;
         }
         // spawn a task block for interviewing
-        
+        // define the task and add it to the list of tasks to be updated
+        InterviewTask interviewTask = new InterviewTask(this);
+        ChangeEmployeeStateTaskObject cesto = new ChangeEmployeeStateTaskObject(officeWorld, 
+                targetEmployee.getX(), getAssetManager().getImage("emptyImage"), camera, interviewTask,
+                targetEmployee, Employee.WORKING);
+        // spawn a "wake up" task object near them
+        officeWorld.addEntity(cesto);
+                    
         // remove the imp task block from showing
         for (int i=0; i<impTaskObjects.size(); i++) {
             if (impTaskObjects.get(i).getAssociatedTask() == hit) {

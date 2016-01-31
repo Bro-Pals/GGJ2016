@@ -208,4 +208,10 @@ public class HitImpTask extends Task {
         impThing.setVelocity(impVelocity);
         setComplete(false);
     }
+
+    public Employee getEmployeeTargeted() {
+        return employeeTargeted;
+    }
+    
+    
 }

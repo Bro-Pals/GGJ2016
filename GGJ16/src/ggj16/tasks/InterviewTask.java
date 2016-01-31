@@ -7,6 +7,7 @@ import ggj16.sound.SoundPlayer;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -22,13 +23,17 @@ public class InterviewTask extends Task {
     int stepOn = 0;
     // codes to do in order
     int timesToTapLeft = 12; // for the first stage;
-   
     
     int millisToWait = 5000; // 5 seconds.
     int currWaitTime = 0;
     
+    private BufferedImage rPrompt, nPrompt, sPrompt;
+    
     public InterviewTask(GameState stateInside) {
         super(stateInside, "Hire worker");
+        rPrompt = stateInside.getAssetManager().getImage("rKeyPrompt");
+        nPrompt = stateInside.getAssetManager().getImage("nKeyPrompt");
+        sPrompt = stateInside.getAssetManager().getImage("sKeyPrompt");
     }
 
     @Override
@@ -51,6 +56,14 @@ public class InterviewTask extends Task {
         g2.drawString("stepOn: " + stepOn, 40, 160);
         g2.drawString("timesToTapLeft: " + timesToTapLeft, 40, 160);
 
+        if (stepOn == 0) {
+            g2.drawImage(rPrompt, 120, 40, null);
+        } else if (stepOn == 1) {
+            g2.drawImage(nPrompt, 120, 40, null);
+        } else if (stepOn == 2) {
+            g2.drawImage(sPrompt, 120, 40, null);
+        }
+        
     }
 
      @Override
