@@ -8,6 +8,7 @@ import ggj16.states.PlayState;
 import ggj16.Task;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  *
@@ -20,10 +21,12 @@ public class PaperworkTask extends Task {
     
     private boolean ready;
     private PlayState plateStateRef;
+    private BufferedImage fPrompt;
     
     public PaperworkTask(PlayState playState) {
         super(playState, "Do paperwork");
         this.plateStateRef = playState;
+        fPrompt = playState.getAssetManager().getImage("fKeyPrompt");
     }
 
     @Override
@@ -48,6 +51,9 @@ public class PaperworkTask extends Task {
         
         g2.setColor(Color.BLACK);
         g2.drawString("paperwork task", 40, 60);
+        
+        // draw control prompts
+        g2.drawImage(fPrompt, 120, 60, null);
     }
 
     

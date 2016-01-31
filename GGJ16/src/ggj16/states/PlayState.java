@@ -341,7 +341,6 @@ public class PlayState extends GameState {
         impTaskObjects = new ArrayList<>();
         
         // task and todo list init
-        PaperworkTask paperTask = new PaperworkTask(this);
         
         MakeCoffeeTask coffeeTask = new MakeCoffeeTask(this);
         MeetingTask meetingTask = new MeetingTask(this);
@@ -480,7 +479,8 @@ public class PlayState extends GameState {
             // if it's not the right one on the todo list then see if
             // it's one of the other tasks.
             if ((activeTask instanceof HitImpTask) ||
-                (activeTask instanceof InterviewTask)) {
+                (activeTask instanceof InterviewTask) ||
+                (activeTask instanceof PaperworkTask)    ) {
                 activeTask.key(keycode, pressed);
             }
         }
@@ -596,6 +596,8 @@ public class PlayState extends GameState {
         if (activeTask == hit) {
             activeTask = null;
         }
+        // spawn a task block for interviewing
+        
         // remove the imp task block from showing
         for (int i=0; i<impTaskObjects.size(); i++) {
             if (impTaskObjects.get(i).getAssociatedTask() == hit) {

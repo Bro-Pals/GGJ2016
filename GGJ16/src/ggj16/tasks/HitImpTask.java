@@ -2,6 +2,8 @@
 package ggj16.tasks;
 
 import bropals.lib.simplegame.KeyCode;
+import bropals.lib.simplegame.animation.Animation;
+import bropals.lib.simplegame.animation.Track;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
 import ggj16.tasks.objs.MoveTaskObject;
@@ -10,6 +12,7 @@ import ggj16.sound.SoundPlayer;
 import ggj16.states.PlayState;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.awt.image.BufferedImage;
 
 /**
  * Hit imp task
@@ -34,6 +37,9 @@ public class HitImpTask extends Task {
     final float impSpawnY = 50;
     final float impVelocity = 1f; // speed of the imp
 
+    BufferedImage fireballImage;
+    Animation impAnim;
+    
     PlayState ps;
     
     public HitImpTask(GameState stateInside, Employee threatenedEmployee) {
@@ -45,6 +51,18 @@ public class HitImpTask extends Task {
         timeLeftForEmployeeDeath = 20000;
         this.employeeTargeted = threatenedEmployee;
         ps = (PlayState)stateInside;
+        fireballImage = ps.getAssetManager().getImage("fireball");
+        BufferedImage tm1 = ps.getAssetManager().getImage("troublemaker1");
+        BufferedImage tm2 = ps.getAssetManager().getImage("troublemaker2");
+        ps.getAssetManager().createHorizontialFlipCopy(tm1, "troublemaker1flip");
+        ps.getAssetManager().createHorizontialFlipCopy(tm2, "troublemaker2flip");
+        impAnim = new Animation();
+        impAnim.addTrack(new Track(new BufferedImage[]{tm1,tm2}, 300)); // 0 moving left
+        impAnim.addTrack(new Track(new BufferedImage[]{
+            ps.getAssetManager().getImage("troublemaker1flip"),
+            ps.getAssetManager().getImage("troublemaker2flip")}, 300)); // 1 moving right
+        impAnim.setTrack(1); // start moving right;
+        impAnim.update(0); // initial update
     }
 
     @Override
@@ -68,8 +86,10 @@ public class HitImpTask extends Task {
         if (impThing != null) {
             if (impThing.getX() < 20) {
                 impThing.setDirection(0); /// move right
+                impAnim.setTrack(1);
             } else if (impThing.getX() > 390) {
                 impThing.setDirection((float)Math.PI); // move left
+                impAnim.setTrack(0);
             }
         }
         
@@ -105,6 +125,8 @@ public class HitImpTask extends Task {
             
         }
         
+        impAnim.update(ms);
+    
         if (impThing != null) {
             impThing.update(ms);
         }
@@ -134,13 +156,21 @@ public class HitImpTask extends Task {
         
         if (fireBallObject != null) {
             // placeholder fireball object
-            g2.setColor(Color.ORANGE);
-            g2.fillOval((int)fireBallObject.getX() - 10, (int)fireBallObject.getY() - 10, 20, 20);
+            //g2.setColor(Color.ORANGE);
+            //g2.fillOval((int)fireBallObject.getX() - 10, (int)fireBallObject.getY() - 10, 20, 20);
+            
+            // image for fireball
+            g2.drawImage(fireballImage, 
+                    (int)(fireBallObject.getX()) - 10, 
+                    (int)(fireBallObject.getY()) - 10, 
+                    20, 20, null);
         }
         
         // draw the placeholder imp
         g2.setColor(Color.RED);
-        g2.fillOval((int)impThing.getX() - 20, (int)impThing.getY() - 20, 40, 40);
+        //g2.fillOval((int)impThing.getX() - 20, (int)impThing.getY() - 20, 40, 40);
+        g2.drawImage(impAnim.getCurrentImage(), (int)impThing.getX() - 20, (int)impThing.getY() - 20, 40, 40, null);
+
     }
 
      @Override
