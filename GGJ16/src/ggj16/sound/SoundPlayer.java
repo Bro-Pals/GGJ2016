@@ -30,6 +30,7 @@ public class SoundPlayer {
     private SoundEffect faxMachine;
     private SoundEffect dialUpLong;
     private SoundEffect coffeeBrewing;
+    private SoundEffect impApproaching;
 
     //Music
     private SoundEffect mainSong;
@@ -71,6 +72,7 @@ public class SoundPlayer {
         faxMachine = assets.getSoundEffect("faxMachine");
         dialUpLong = assets.getSoundEffect("dialUpLong");
         coffeeBrewing = assets.getSoundEffect("coffeeBrewing");
+        impApproaching = assets.getSoundEffect("impApproaching");
 
         mainSong = assets.getSoundEffect("mainSong");
         victorySong = assets.getSoundEffect("victory");
@@ -119,6 +121,10 @@ public class SoundPlayer {
 
     public void playPageTurn() {
         playRandomSound(pageTurn);
+    }
+    
+    public void playImpApproaching() {
+        impApproaching.play();
     }
 
     public void playPhoneBeep() {

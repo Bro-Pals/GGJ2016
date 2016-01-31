@@ -158,7 +158,7 @@ public class PlayState extends GameState {
                     impTaskObjects.add(impTaskObject); // add to the list to keep track of it
                     // spawn a "wake up" task object near them
                     officeWorld.addEntity(impTaskObject);
-                    
+                    SoundPlayer.getSoundPlayer().playImpApproaching();
                     System.out.println("An imp started to attack an employee: whichOne: " + whichOne
                         + ", worker being attacked already: " + workers[whichOne].isBeingAttackedByImp());
                     workers[whichOne].setBeingAttackedByImp(true);
