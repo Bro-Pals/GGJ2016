@@ -421,6 +421,10 @@ public class PlayState extends GameState {
         demonPlayer = new PlayerDemon(officeWorld, 0, leftAnim, rightAnim, camera);
         officeWorld.addEntity(demonPlayer);
         
+        // init flip imp images
+        getAssetManager().createHorizontialFlipCopy(getAssetManager().getImage("troublemaker1"), "troublemaker1flip");
+        getAssetManager().createHorizontialFlipCopy(getAssetManager().getImage("troublemaker2"), "troublemaker2flip");
+        
         // employee heads init
         workerHeadsIcon = new BufferedImage[]{
             getAssetManager().getImage("workerHeadAwake"),

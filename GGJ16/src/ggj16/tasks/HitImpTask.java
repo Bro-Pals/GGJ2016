@@ -35,9 +35,9 @@ public class HitImpTask extends Task {
     Employee employeeTargeted;
     final float impSpawnX = 200;
     final float impSpawnY = 50;
-    final float impVelocity = 1f; // speed of the imp
+    final float impVelocity = 2f; // speed of the imp
 
-    BufferedImage fireballImage;
+    BufferedImage fireballImage, firePrompt;
     Animation impAnim;
     
     PlayState ps;
@@ -52,10 +52,9 @@ public class HitImpTask extends Task {
         this.employeeTargeted = threatenedEmployee;
         ps = (PlayState)stateInside;
         fireballImage = ps.getAssetManager().getImage("fireball");
+        firePrompt = ps.getAssetManager().getImage("firePrompt");
         BufferedImage tm1 = ps.getAssetManager().getImage("troublemaker1");
         BufferedImage tm2 = ps.getAssetManager().getImage("troublemaker2");
-        ps.getAssetManager().createHorizontialFlipCopy(tm1, "troublemaker1flip");
-        ps.getAssetManager().createHorizontialFlipCopy(tm2, "troublemaker2flip");
         impAnim = new Animation();
         impAnim.addTrack(new Track(new BufferedImage[]{tm1,tm2}, 300)); // 0 moving left
         impAnim.addTrack(new Track(new BufferedImage[]{
@@ -151,8 +150,8 @@ public class HitImpTask extends Task {
         g2.drawString("The current aim of the fireball: " + currentAim, 40, 210);
         
         g2.setColor(Color.YELLOW);
-        g2.drawLine((int)(200), (int)(270), 
-                (int)(200 + (40 * Math.cos(currentAim))), (int)(270 - (40 * Math.sin(currentAim))));
+        g2.drawLine((int)(200), (int)(230), 
+                (int)(200 + (40 * Math.cos(currentAim))), (int)(230 - (40 * Math.sin(currentAim))));
         
         if (fireBallObject != null) {
             // placeholder fireball object
@@ -170,7 +169,8 @@ public class HitImpTask extends Task {
         g2.setColor(Color.RED);
         //g2.fillOval((int)impThing.getX() - 20, (int)impThing.getY() - 20, 40, 40);
         g2.drawImage(impAnim.getCurrentImage(), (int)impThing.getX() - 20, (int)impThing.getY() - 20, 40, 40, null);
-
+        
+        g2.drawImage(firePrompt, 120, 240, null);
     }
 
      @Override
@@ -181,7 +181,7 @@ public class HitImpTask extends Task {
             // spawn the fire ball thing in the task
             float ballVel = 3f;
             float ballSpawnX = 200;
-            float ballSpawnY = 270;
+            float ballSpawnY = 230;
             fireBallObject = new MoveTaskObject(getWorld(), ballSpawnX, ballSpawnY, currentAim, ballVel);
             SoundPlayer.getSoundPlayer().playFireball();
             getWorld().addEntity(fireBallObject);
