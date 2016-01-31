@@ -20,6 +20,7 @@ import java.awt.image.BufferedImage;
 public class FiredState extends GameState {
 
     int screenOn;
+    int lastScreen = 4;
     BufferedImage[] images;
     
     @Override
@@ -44,6 +45,15 @@ public class FiredState extends GameState {
             case 3:
                 
                 break;
+            case 4:
+                g2.drawImage(images[1], 0, 0, null);
+                break;
+        }
+        g2.setColor(Color.WHITE);
+        if (screenOn < lastScreen) {
+            g2.drawString("Press Spacebar to continue...", 15, 580);
+        } else  {
+            g2.drawString("Press Spacebar to return to the main menu...", 50, 560);
         }
     }
 
@@ -51,7 +61,8 @@ public class FiredState extends GameState {
     public void onEnter() {
         SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.LOSER_SONG);
         images = new BufferedImage[]{
-            getAssetManager().getImage("boss")
+            getAssetManager().getImage("boss"),
+            getAssetManager().getImage("fireScreenFinal")
         };
         screenOn = 0;
     }
@@ -61,8 +72,8 @@ public class FiredState extends GameState {
         super.key(keycode, pressed);
         if (pressed && keycode == KeyCode.KEY_SPACE) {
             screenOn++;
-            if (screenOn > 3) {
-                
+            if (screenOn > lastScreen) {
+                getGameStateRunner().setState(new MenuState());
             }
         }
     }
