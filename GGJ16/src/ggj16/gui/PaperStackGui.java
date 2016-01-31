@@ -33,19 +33,16 @@ public class PaperStackGui extends GuiButton {
             ps.getAssetManager().getImage("paperstack4"),
             ps.getAssetManager().getImage("paperstack5")
         };
-        regions = new float[] {
-            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.8f,
-            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.6f,
-            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.4f,
-            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.2f,
-            0
-        };
         setGuiButtonAction(new GuiButtonAction() {
             @Override
             public void onButtonPress() {
                 toggle();
             }
         });
+    }
+    
+    private int paperWorkPercent(float percent) {
+        return (int)(ps.PAPERWORK_PER_DAY_BASE_VALUE*percent);
     }
 
     private void toggle() {
@@ -56,13 +53,13 @@ public class PaperStackGui extends GuiButton {
     public void render(Object o) {
         Graphics g = (Graphics)o;
         BufferedImage img = null;
-        if (ps.getPaperworkLeft() > regions[0]) {
+        if (ps.getPaperworkLeft() > paperWorkPercent(0.75f)) {
             img = images[0];
-        } else if (ps.getPaperworkLeft() > regions[1]) {
+        } else if (ps.getPaperworkLeft() > paperWorkPercent(0.5f) && ps.getPaperworkLeft() <= paperWorkPercent(0.75f)) {
             img = images[1];
-        } else if (ps.getPaperworkLeft() > regions[2]) {
+        } else if (ps.getPaperworkLeft() > paperWorkPercent(0.25f) && ps.getPaperworkLeft() <= paperWorkPercent(0.5f) ) {
             img = images[2];
-        } else if (ps.getPaperworkLeft() > regions[3]) {
+        } else if (ps.getPaperworkLeft() > 0 && ps.getPaperworkLeft() <= paperWorkPercent(0.25f) ) {
             img = images[3];
         } else if (ps.getPaperworkLeft() == 0) {
             img = images[4];

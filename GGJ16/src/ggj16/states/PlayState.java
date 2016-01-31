@@ -554,6 +554,9 @@ public class PlayState extends GameState {
      */
     public void changePaperwork(float amount) {
         paperworkLeft += amount;
+        if (paperworkLeft < 0) {
+            paperworkLeft = 0;
+        }
     }
 
     public float getPaperworkLeft() {
