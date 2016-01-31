@@ -91,6 +91,11 @@ public class PlayState extends GameState {
     // alert image
     private BufferedImage impAlertImage;
     
+    //Imp flying across the screen
+    private int impXLoc = 0;
+    private boolean showImp = false;
+    private BufferedImage impImage;
+    
     
     @Override
     public void update(int delta) {
@@ -182,6 +187,16 @@ public class PlayState extends GameState {
         camera.setXLocation((int)(demonPlayer.getX()+(demonPlayer.getWidth()/2)-400));
         //Cool parallax scrolling
         parallaxOffset = (int)( (float)(demonPlayer.getX()/((float)(Camera.getCameraMax()-demonPlayer.getWidth())-Camera.getCameraMin())) * 800 );
+        
+        //Update flying imp
+        if (showImp) {
+            impXLoc += 30;
+            if (impXLoc>850) {
+                showImp = false;
+            }
+        }
+        
+        startShowingImp();
         
         OfficeTaskObject intersects = null;
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
@@ -321,6 +336,16 @@ public class PlayState extends GameState {
             g2.drawImage(impAlertImage, xPos, yPos, null);
         }
         
+        //Draw an imp that is flying across the screen
+        if (showImp) {
+            g2.drawImage(
+                    impImage,
+                    impXLoc-(impImage.getWidth()/2),
+                    (int)((((float)((impXLoc-400)*(impXLoc-400)))/1000)+150)-(impImage.getHeight()/2),
+                    null
+            );
+        }
+        
         /*
         Debugging things
         */
@@ -424,6 +449,8 @@ public class PlayState extends GameState {
         // init flip imp images
         getAssetManager().createHorizontialFlipCopy(getAssetManager().getImage("troublemaker1"), "troublemaker1flip");
         getAssetManager().createHorizontialFlipCopy(getAssetManager().getImage("troublemaker2"), "troublemaker2flip");
+        
+        impImage = getImage("troublemaker1flip");
         
         // employee heads init
         workerHeadsIcon = new BufferedImage[]{
@@ -568,6 +595,13 @@ public class PlayState extends GameState {
             }
         }
         return count;
+    }
+    
+    public void startShowingImp() {
+        if (!showImp) {
+            showImp = true;
+            impXLoc = 0;
+        }
     }
     
     public void advanceDay() {
