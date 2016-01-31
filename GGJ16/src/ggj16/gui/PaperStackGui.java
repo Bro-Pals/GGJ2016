@@ -37,7 +37,8 @@ public class PaperStackGui extends GuiButton {
             ps.PAPERWORK_PER_DAY_BASE_VALUE*0.8f,
             ps.PAPERWORK_PER_DAY_BASE_VALUE*0.6f,
             ps.PAPERWORK_PER_DAY_BASE_VALUE*0.4f,
-            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.2f
+            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.2f,
+            0
         };
         setGuiButtonAction(new GuiButtonAction() {
             @Override

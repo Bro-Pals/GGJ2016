@@ -137,12 +137,6 @@ public class PlayState extends GameState {
         if (paperworkLeft < 0) {
             paperworkLeft = 0;
         }
-        
-        // if you finished all tasks and did all paperwork, then you're done for the day.
-        if (isFinishedWithDailyThings()) {
-            //advanceDay();
-            System.out.println("COMPLETED ALL TASKS");
-        }
        
         
         // imp spawning
@@ -532,7 +526,7 @@ public class PlayState extends GameState {
             }
         }
         if (keycode == KeyCode.KEY_T && pressed) {
-            System.out.println("Toggle");
+            //System.out.println("Toggle");
             toggleToDoListVisiblity();
         }
         if (keycode == KeyCode.KEY_Z) {
@@ -601,8 +595,17 @@ public class PlayState extends GameState {
         nextTaskIndex = 0;
         tickProgress = 0;
         ticksPerHour = MILLIS_PER_HOUR_INITIAL;
+        currImpAttackTime = 0; // reset imp spawn time;
         for (int i=0; i<toDoList.size(); i++) {
             toDoList.get(i).resetForDay();
+        }
+        // remove all imp task blocks.
+        for (int i=0; i<impTaskObjects.size(); i++) {
+            if (impTaskObjects.get(i).getAssociatedTask() == activeTask) {
+                activeTask = null;
+            }
+            officeWorld.getEntities().remove(impTaskObjects.get(i));
+            impTaskObjects.remove(i);
         }
         SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
     }
@@ -653,11 +656,11 @@ public class PlayState extends GameState {
                 getGameStateRunner().setState(new WinState());
             }
             
-            System.out.println("The day is now: " + dayOn);
-            System.out.println("Ticks per hour is now: " + ticksPerHour);
+           // System.out.println("The day is now: " + dayOn);
+           // System.out.println("Ticks per hour is now: " + ticksPerHour);
         } else {
             //Did not complete all tasks
-            System.out.println("YOU ARE FIRED");
+            //System.out.println("YOU ARE FIRED");
             getGameStateRunner().setState(new FiredState());
         }
     }
