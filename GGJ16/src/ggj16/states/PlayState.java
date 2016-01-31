@@ -41,12 +41,20 @@ import java.util.ArrayList;
 public class PlayState extends GameState {
     
     // Important constant values values
-    private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME_STAGE_1 = 10000; // 10 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME_STAGE_2 = 9000; // 9 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME_STAGE_3 = 7500; // 7.5 seconds between each chance for an imp to spawn.
+    
     public final float PAPERWORK_PER_DAY_BASE_VALUE = 100;
-    private final float EMPLOYEE_WORK_RATE = 0.01f; // the rate that each worker reduces paperwork.
-    private final int MILLIS_PER_HOUR_INITIAL = 30000; // how many milliseconds pass for each hour.
-    private final int MILLIS_PER_HOUR_STAGE_2 = 4166; // milliseconds per "hour" days 2 and 3
-    private final int MILLIS_PER_HOUR_STAGE_3 = 3333; // milliseconds per "hour" days 4 and 5
+    private final float EMPLOYEE_WORK_RATE = 0.009f; // the rate that each worker reduces paperwork.
+    private final float MINUTES_STAGE_1 = 4; // days 1 and 2
+    private final float MINUTES_STAGE_2 = 3; // days 3 and 4
+    private final float MINUTES_STAGE_3 = 2; // days 5 and 6
+    private final int MILLIS_PER_MINUTE = 60000; // how many milliseconds pass every minute
+    
+    private final int MILLIS_PER_HOUR_INITIAL = (int)(MILLIS_PER_MINUTE * MINUTES_STAGE_1/12); // how many milliseconds pass for each hour.
+    private final int MILLIS_PER_HOUR_STAGE_2 = (int)(MILLIS_PER_MINUTE * MINUTES_STAGE_2/12); // milliseconds per "hour" days 2 and 3
+    private final int MILLIS_PER_HOUR_STAGE_3 = (int)(MILLIS_PER_MINUTE * MINUTES_STAGE_3/12); // milliseconds per "hour" days 4 and 5
     
     private Camera camera;
     private Gui gui;
@@ -77,7 +85,8 @@ public class PlayState extends GameState {
     // imp attack values
     private ArrayList<ImpAttackTaskObject> impTaskObjects; // list of all imp attack tasks objects
     private int currImpAttackTime;
-    
+   
+    private int impWaitTimeCurrent; // wait time between each imp spawn chance.
     
     // game values.
     private int dayOn; // Count what day you're on.
@@ -111,7 +120,7 @@ public class PlayState extends GameState {
     public void update(int delta) {
         if (viewingCompletedDay) {
             viewingDayTime += delta;
-            if (viewingDayTime>=6000) {
+            if (viewingDayTime>=4000) {
                 advanceDay();
             } 
             return;
@@ -138,7 +147,7 @@ public class PlayState extends GameState {
         
         // imp spawning
         currImpAttackTime += delta;
-        if (currImpAttackTime > IMP_WAIT_TIME &&
+        if (currImpAttackTime > impWaitTimeCurrent&&
                 getNumWorkerAlive() != 0) { // there must be workers alive to spawn an imp on one
             // make an imp randomly attack
             // make a random worker fall asleep
@@ -289,11 +298,11 @@ public class PlayState extends GameState {
         }
         taskRender.dispose();
         
-        if (isFinishedWithDailyThings()) {
+        if (isFinishedWithDailyThings() && !viewingCompletedDay) {
             //SoundPlayer.getSoundPlayer().playVictoryMusic();
-            //SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
+            SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.NONE);
+            SoundPlayer.getSoundPlayer().playVictoryMusic();
             viewingCompletedDay = true;
-            getGameStateRunner().setState(new WinState());
         }
 
         // draw the to-do list on top of everything
@@ -312,6 +321,11 @@ public class PlayState extends GameState {
         // render employee status gui according to what state they're in.
         for (int i=0; i<workers.length; i++) {
             g2.drawImage(workerHeadsIcon[(workers[i].getState())], 495 + (50 * i), 10, null);
+        }
+        
+        BufferedImage dayImg = getAssetManager().getImage("day" + (dayOn + 1));
+        if (dayImg != null) {
+            g2.drawImage(dayImg, 10, 10, null);
         }
         
         // draw the alert GUI warning about an imp attack
@@ -365,7 +379,7 @@ public class PlayState extends GameState {
         toDoList = new ArrayList<>();
         impTaskObjects = new ArrayList<>();
         ticksPerHour = MILLIS_PER_HOUR_INITIAL;
-        
+        impWaitTimeCurrent = IMP_WAIT_TIME_STAGE_1;
         // task and todo list init
         
         MakeCoffeeTask coffeeTask = new MakeCoffeeTask(this);
@@ -481,7 +495,7 @@ public class PlayState extends GameState {
         gui.addGroup("main", main);
         gui.setEnabled("main", true);
         todoListGuiElement.setEnabled(false);
-        
+        dayOn = 0;
         SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
         
     }
@@ -527,6 +541,16 @@ public class PlayState extends GameState {
             } else {
                 demonPlayer.setSpeed(6);
             }
+        }
+        
+        // to test days there will be a cheat button
+        if (keycode == KeyCode.KEY_K && pressed) {
+            paperworkLeft -= 90;
+            System.out.println("Complete all the things");
+            for (int i=0; i<toDoList.size(); i++) {
+                toDoList.get(i).setComplete(true);
+            }
+            nextTaskIndex = toDoList.size();
         }
     }    
     
@@ -611,20 +635,26 @@ public class PlayState extends GameState {
         if (isFinishedWithDailyThings()) { // did player finish all paperwork and daily ritual?
             //Completed all tasks
             //Go to the next day
+            resetForNewDay();
             demonPlayer.setX(30);
             if (dayOn == 1) {
                 obstructionValue = 1;
             } else if (dayOn == 2) {
-                ticksPerHour = MILLIS_PER_HOUR_STAGE_2; //Make the days 5 minutes instead of 6
+                ticksPerHour = MILLIS_PER_HOUR_STAGE_2; 
+                impWaitTimeCurrent = IMP_WAIT_TIME_STAGE_2;
             } else if (dayOn == 3) {
                 obstructionValue = 4;
             } else if (dayOn == 4) {
-                ticksPerHour = MILLIS_PER_HOUR_STAGE_3; //Make the days 4 minutes instead of 5
+                ticksPerHour = MILLIS_PER_HOUR_STAGE_3;
+                impWaitTimeCurrent = IMP_WAIT_TIME_STAGE_3;
                 obstructionValue = 7;
             } else if (dayOn == 5) {
                 //Lets make this the win state
                 getGameStateRunner().setState(new WinState());
             }
+            
+            System.out.println("The day is now: " + dayOn);
+            System.out.println("Ticks per hour is now: " + ticksPerHour);
         } else {
             //Did not complete all tasks
             System.out.println("YOU ARE FIRED");

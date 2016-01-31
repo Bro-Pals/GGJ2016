@@ -17,7 +17,7 @@ import javax.sound.sampled.LineListener;
  */
 public class SoundPlayer {
 
-    public static final int MAIN_SONG = 0, VICTORY_SONG = 1, LOSER_SONG = 2;
+    public static final int MAIN_SONG = 0, VICTORY_SONG = 1, LOSER_SONG = 2, NONE = 3;
 
     private static SoundPlayer sp = new SoundPlayer();
     private SoundEffect[] impScreech;
@@ -114,7 +114,10 @@ public class SoundPlayer {
             } else if (song == LOSER_SONG) {
                 currentMusicTrack = loseSong;
             }
-            currentMusicTrack.getRaw().loop(Clip.LOOP_CONTINUOUSLY);
+            // don't play anything if there is no song
+            if (song != NONE) {
+                currentMusicTrack.getRaw().loop(Clip.LOOP_CONTINUOUSLY);
+            }
         }
     }
 

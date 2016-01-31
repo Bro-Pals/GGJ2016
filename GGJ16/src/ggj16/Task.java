@@ -57,7 +57,7 @@ public abstract class Task implements KeyListener {
      * Set if a task is completed or not
      * @param isComplete Is this task completed?
      */
-    protected void setComplete(boolean isComplete) {
+    public void setComplete(boolean isComplete) {
         this.isComplete = isComplete;
     }
     

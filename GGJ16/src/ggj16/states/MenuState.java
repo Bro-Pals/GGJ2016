@@ -5,6 +5,7 @@
  */
 package ggj16.states;
 
+import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.sound.SoundPlayer;
 import java.awt.Graphics;
@@ -16,7 +17,10 @@ import java.awt.image.BufferedImage;
  */
 public class MenuState extends GameState {
     
-    private BufferedImage bg;
+    int screenOn;
+    
+    private BufferedImage[] images;
+    
     
     @Override
     public void update(int i) {
@@ -25,12 +29,20 @@ public class MenuState extends GameState {
     @Override
     public void render(Object o) {
         Graphics g = (Graphics)o;
-        g.drawImage(bg, 0, 0, null);
+        if (images.length > screenOn) {
+             g.drawImage(images[screenOn], 0, 0, null);
+        }
+       
     }
 
     @Override
     public void onEnter() {
-        bg = getImage("menuscreen");
+        images = new BufferedImage[]{ 
+            getImage("menuscreen"),
+            getImage("instructions")
+        };        
+        
+        screenOn = 0;
         SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.MAIN_SONG);
     }
 
@@ -40,8 +52,13 @@ public class MenuState extends GameState {
 
     @Override
     public void key(int keycode, boolean pressed) {
-        if (!pressed) {
-            getGameStateRunner().setState(new PlayState());
+        if (keycode == KeyCode.KEY_SPACE && !pressed) {
+            screenOn++;
+            if (screenOn >= images.length) {
+                // go to the next state when they're done.
+                getGameStateRunner().setState(new PlayState());
+            }
+            
         }
     }
     
