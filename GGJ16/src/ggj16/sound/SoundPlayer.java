@@ -72,7 +72,7 @@ public class SoundPlayer {
         faxMachine = assets.getSoundEffect("faxMachine");
         dialUpLong = assets.getSoundEffect("dialUpLong");
         coffeeBrewing = assets.getSoundEffect("coffeeBrewing");
-        impApproaching = assets.getSoundEffect("impApproaching");
+        impApproaching = assets.getSoundEffect("approaching");
 
         mainSong = assets.getSoundEffect("mainSong");
         victorySong = assets.getSoundEffect("victory");
