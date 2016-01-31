@@ -19,20 +19,20 @@ public class EmailTask extends Task {
     int[] steps = new int[]{KeyCode.KEY_R, KeyCode.KEY_D};
     int timesLeft = 8;
     private BufferedImage read;
-    private BufferedImage respond;
-    private BufferedImage finish;
-    private BufferedImage canNotDoYetPrompt;
+    private BufferedImage respond; //, finish;
+    private BufferedImage canNotDoYetPrompt, rPrompt, dPrompt;
     private BufferedImage bg, completePrompt;
     
     public EmailTask(GameState stateInside) {
         super(stateInside, "Respond to emails");
         read = stateInside.getAssetManager().getImage("readScreen");
         respond = stateInside.getAssetManager().getImage("respondScreen");
-        finish = stateInside.getAssetManager().getImage("finishedScreen");
+        //finish = stateInside.getAssetManager().getImage("emailFinish");
         bg = stateInside.getAssetManager().getImage("emailBackground");
         completePrompt = stateInside.getAssetManager().getImage("taskCompletePrompt");
         canNotDoYetPrompt = stateInside.getAssetManager().getImage("canNotDoYet");
-        
+        rPrompt = stateInside.getAssetManager().getImage("rKeyPrompt");
+        dPrompt = stateInside.getAssetManager().getImage("dKeyPrompt");        
     }
 
     @Override
@@ -49,11 +49,15 @@ public class EmailTask extends Task {
         
         g2.drawImage(bg, 0, 0, null);
         if (isComplete()) {
-            g2.drawImage(finish, 78, 58, null);
+            g2.drawImage(respond, 0, 0, null);
         } else if (stepOn == 0) {
-            g2.drawImage(respond, 78, 58, null);
+            //g2.drawImage(respond, 78, 58, null);
+            g2.drawImage(respond, 0, 0, null);
+            g2.drawImage(rPrompt, 110, 30, null);
         } else if (stepOn == 1) {
-            g2.drawImage(read, 78, 58, null);
+            //g2.drawImage(read, 78, 58, null);
+            g2.drawImage(read, 0, 0, null);
+            g2.drawImage(dPrompt, 110, 30, null);
         }
         
         if (isComplete()) {

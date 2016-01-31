@@ -4,6 +4,7 @@ package ggj16.tasks;
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
+import ggj16.sound.SoundPlayer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -85,6 +86,7 @@ public class MeetingTask extends Task {
             if (timeUntilSleeper > timeBetweenRandomSleeper) {
                 if (Math.random() < 0.5) { // 50% chance
                     // make somebody be the sleeper
+                    SoundPlayer.getSoundPlayer().playFallAsleepEmployee();
                     sleeper = (int)(Math.random() * numPeople);
                     stepOn = 1;
                     timeUntilSleeper = 0; // reset timer
@@ -137,12 +139,14 @@ public class MeetingTask extends Task {
             return;
         }
         if (stepOn == 0 && i == KeyCode.KEY_M) {
+            SoundPlayer.getSoundPlayer().playDemonSpeaking();
             workLeft--;
             speechTimeLeft = 150;
             if (workLeft <= 0) {
                 setComplete(true);
             }
         } else if (stepOn == 1 && arrowOver == sleeper && i == KeyCode.KEY_F) {
+            SoundPlayer.getSoundPlayer().playWakeUpEmployee();
             // wake him up
             stepOn = 0;
             sleeper = -1;

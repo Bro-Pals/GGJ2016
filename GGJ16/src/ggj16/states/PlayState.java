@@ -40,6 +40,14 @@ import java.util.ArrayList;
  */
 public class PlayState extends GameState {
     
+    // Important constant values values
+    private final int IMP_WAIT_TIME = 10000; // 10 seconds between each chance for an imp to spawn.
+    public final float PAPERWORK_PER_DAY_BASE_VALUE = 100;
+    private final float EMPLOYEE_WORK_RATE = 0.01f; // the rate that each worker reduces paperwork.
+    private final int MILLIS_PER_HOUR_INITIAL = 30000; // how many milliseconds pass for each hour.
+    private final int MILLIS_PER_HOUR_STAGE_2 = 4166; // milliseconds per "hour" days 2 and 3
+    private final int MILLIS_PER_HOUR_STAGE_3 = 3333; // milliseconds per "hour" days 4 and 5
+    
     private Camera camera;
     private Gui gui;
     private ClockGui clockGui;
@@ -65,18 +73,16 @@ public class PlayState extends GameState {
     // imp attack values
     private ArrayList<ImpAttackTaskObject> impTaskObjects; // list of all imp attack tasks objects
     private int currImpAttackTime;
-    private final int IMP_WAIT_TIME = 2000; //10000; // 10 seconds between each chance for an imp to spawn.
+    
     
     // game values.
     private int dayOn; // Count what day you're on.
     private int obstructionValue = 0; //Level of obstruction
     private int hoursLeft = 12;
-    private int ticksPerHour = 30000;
+    private int ticksPerHour;
     // ticksPerHour * 12 /1000 = seconds per day ( 360 secs )
     private int tickProgress;
-    private final float PAPERWORK_PER_DAY_BASE_VALUE = 100;
     private float paperworkLeft = PAPERWORK_PER_DAY_BASE_VALUE; // how much paperwork is left for that day.
-    private float initialPaperworkValue = 100;
     private boolean viewingTasks; // if they're viewing tasks (render tasks?)
     
     //Background (unorganized for now :<)
@@ -100,15 +106,23 @@ public class PlayState extends GameState {
     @Override
     public void update(int delta) {
         tickProgress += delta;
-        if (tickProgress>=ticksPerHour) {
+        System.out.println("tickProgress: " + tickProgress);
+        if (tickProgress >= ticksPerHour) {
             advanceHour();
             tickProgress = 0;
         }
         // 1. update office world
-        officeWorld.updateEntities(delta);
-        // 2. update tasks world
-        if (nextTaskIndex >= toDoList.size()) {
-            //System.out.println("COMPLETED ALL TASKS");
+        officeWorld.updateEntities(delta);       
+        // update paperwork
+        paperworkLeft -= (getNumWorkerAlive() * EMPLOYEE_WORK_RATE);
+        if (paperworkLeft < 0) {
+            paperworkLeft = 0;
+        }
+        
+        // if you finished all tasks and did all paperwork, then you're done for the day.
+        if (isFinishedWithDailyThings()) {
+            //advanceDay();
+            System.out.println("COMPLETED ALL TASKS");
         }
         
         /*
@@ -143,7 +157,7 @@ public class PlayState extends GameState {
                 getNumWorkerAlive() != 0) { // there must be workers alive to spawn an imp on one
             // make an imp randomly attack
             // make a random worker fall asleep
-            if (Math.random() > 0) { // 0 is temp
+            if (Math.random() > 0.5) { // 50% chance to spawn at time limit
                 // randomly chose a non-dead worker
                 int whichOne = 0;
                 int iterations = 0; // prevent infinite loop
@@ -196,7 +210,7 @@ public class PlayState extends GameState {
             }
         }
         
-        startShowingImp();
+        //startShowingImp();
         
         OfficeTaskObject intersects = null;
         for (int i=0; i<officeWorld.getEntities().size(); i++) {
@@ -205,14 +219,12 @@ public class PlayState extends GameState {
                 OfficeTaskObject task = (OfficeTaskObject)obj;
                 if (task instanceof ChangeEmployeeStateTaskObject ||
                        task instanceof ImpAttackTaskObject) {
-                    //System.out.println("we found a cool generated task object.");
                     // if a wake employee, interview, or kill imp task is completed, then its deleted on completion.
                     if (task.getAssociatedTask().isComplete()) {
                         // remove object
                         if (activeTask == task.getAssociatedTask()) {
                             activeTask = null;
                         }
-                        //System.out.println("Removed a task object for being completed!");
                         obj.setParent(null);
                         officeWorld.getEntities().remove(obj);
                         // remove the imp task from the list of imp tasks.
@@ -292,7 +304,8 @@ public class PlayState extends GameState {
         }
         taskRender.dispose();
         
-        if (isCompletedWithTasks()) {
+        if (isFinishedWithDailyThings()) {
+            //SoundPlayer.getSoundPlayer().playVictoryMusic();
             SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
         }
         
@@ -368,6 +381,7 @@ public class PlayState extends GameState {
         camera = new Camera();
         toDoList = new ArrayList<>();
         impTaskObjects = new ArrayList<>();
+        ticksPerHour = MILLIS_PER_HOUR_INITIAL;
         
         // task and todo list init
         
@@ -544,10 +558,6 @@ public class PlayState extends GameState {
         return paperworkLeft;
     }
 
-    public float getInitialPaperworkValue() {
-        return initialPaperworkValue;
-    }
-    
     public void toggleToDoListVisiblity() {
         todoListGuiElement.setEnabled(!todoListGuiElement.isEnabled());
     }
@@ -557,6 +567,7 @@ public class PlayState extends GameState {
     }
     
     public void advanceHour() {
+        System.out.println("Hour decreaseed");
         hoursLeft--;
         if (hoursLeft>0) {
             clockGui.setClockRotation(12-hoursLeft);
@@ -580,7 +591,8 @@ public class PlayState extends GameState {
         hoursLeft = 12;
         paperworkLeft = PAPERWORK_PER_DAY_BASE_VALUE;
         nextTaskIndex = 0;
-        ticksPerHour = 30000;
+        tickProgress = 0;
+        ticksPerHour = MILLIS_PER_HOUR_INITIAL;
         for (int i=0; i<toDoList.size(); i++) {
             toDoList.get(i).resetForDay();
         }
@@ -610,17 +622,17 @@ public class PlayState extends GameState {
     
     public void advanceDay() {
         dayOn++;
-        if (isCompletedWithTasks()) {
+        if (isFinishedWithDailyThings()) { // did player finish all paperwork and daily ritual?
             //Completed all tasks
             //Go to the next day
             if (dayOn == 1) {
                 obstructionValue = 1;
             } else if (dayOn == 2) {
-                ticksPerHour = 4166; //Make the days 5 minutes instead of 6
+                ticksPerHour = MILLIS_PER_HOUR_STAGE_2; //Make the days 5 minutes instead of 6
             } else if (dayOn == 3) {
                 obstructionValue = 4;
             } else if (dayOn == 4) {
-                ticksPerHour = 3333; //Make the days 4 minutes instead of 5
+                ticksPerHour = MILLIS_PER_HOUR_STAGE_3; //Make the days 4 minutes instead of 5
                 obstructionValue = 7;
             } else if (dayOn == 5) {
                 //Lets make this the win state
@@ -656,5 +668,14 @@ public class PlayState extends GameState {
                 break;
             }
         }
+    }
+
+    /**
+     * See if the player is finished with everything to do in the day, that is
+     * do all their paperwork and finish all tasks.
+     * @return If the player is done with everything or not.
+     */
+    private boolean isFinishedWithDailyThings() {
+        return paperworkLeft <= 0 && isCompletedWithTasks();
     }
 }

@@ -16,8 +16,11 @@ import java.awt.image.BufferedImage;
 public class InterviewTask extends Task {
     // 3 steps:
     // 1. Tap "R" 12 times
+    //   Read 12 applications (paper folding and stuff)
     // 2. Press "N" for accepting applicant
+    //    Stamp an applications
     // 3. Tap "S" 10 times to interview them
+    //     Press "S" to speak
    
     
     int stepOn = 0;
@@ -79,9 +82,11 @@ public class InterviewTask extends Task {
             }
         } else if (stepOn == 1 && i == KeyCode.KEY_N) {
             stepOn++;
+            SoundPlayer.getSoundPlayer().playStamp();
             timesToTapLeft = 10; // setup for the next step
         } else if (stepOn == 2 && i == KeyCode.KEY_S) {
             timesToTapLeft--;
+            SoundPlayer.getSoundPlayer().playDemonSpeaking();
             if (timesToTapLeft <= 0) { // reduce steps left.
                 setComplete(true); // finish task after tapping S
             }

@@ -4,6 +4,7 @@ package ggj16.tasks;
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.Task;
+import ggj16.sound.SoundPlayer;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -78,7 +79,7 @@ public class ScareHouseTask extends Task {
         }
         
         // draw the little demon
-        g2.drawImage(demonTinyTask, (int)littleDemonPosX, 200, null);
+        g2.drawImage(demonTinyTask, (int)littleDemonPosX - (demonTinyTask.getWidth()/2), 200, null);
         
         g2.drawImage(aPrompt, 70, 40, null);
         g2.drawImage(dPrompt, 140, 40, null);
@@ -106,6 +107,8 @@ public class ScareHouseTask extends Task {
             boolean allScared = true;
             for (int j=0; j<housesPosX.length; j++) {
                 if (Math.abs(littleDemonPosX - housesPosX[j] + (houseNotScared.getWidth()/2)) < 15) {
+                    SoundPlayer.getSoundPlayer().playScareHouse();
+                    //SoundPlayer.getSoundPlayer().playDemonSpeaking(); (at the same time?)
                     housesScared[j] = true;
                 }
                 if (!housesScared[j]) {

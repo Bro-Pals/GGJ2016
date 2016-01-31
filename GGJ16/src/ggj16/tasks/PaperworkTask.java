@@ -21,12 +21,15 @@ public class PaperworkTask extends Task {
     
     private boolean ready;
     private PlayState plateStateRef;
-    private BufferedImage fPrompt;
+    private BufferedImage fPrompt, bg, pg1, pg2;
     
     public PaperworkTask(PlayState playState) {
         super(playState, "Do paperwork");
         this.plateStateRef = playState;
         fPrompt = playState.getAssetManager().getImage("fKeyPrompt");
+        bg = playState.getAssetManager().getImage("paperTaskBackground");
+        pg1 = playState.getAssetManager().getImage("paperTask1");
+        pg2 = playState.getAssetManager().getImage("paperTask2");
     }
 
     @Override
@@ -35,7 +38,7 @@ public class PaperworkTask extends Task {
         if (ready && i == KeyCode.KEY_F && bln) {
             // reduce paperwork
             ready = false;
-            plateStateRef.changePaperwork(-1);
+            plateStateRef.changePaperwork(-0.8f);
             SoundPlayer.getSoundPlayer().playPaperWriting();
         }
         if (!bln) {
@@ -46,11 +49,15 @@ public class PaperworkTask extends Task {
     @Override
     public void render(Graphics2D g2) {
         super.render(g2);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
         
-        g2.setColor(Color.BLACK);
-        g2.drawString("paperwork task", 40, 60);
+        g2.drawImage(bg, 0, 0, null);
+        if (ready) {
+            g2.drawImage(pg1, 0, 0, null);
+        } else {
+            g2.drawImage(pg2, 0, 0, null);
+        }
         
         // draw control prompts
         g2.drawImage(fPrompt, 120, 60, null);

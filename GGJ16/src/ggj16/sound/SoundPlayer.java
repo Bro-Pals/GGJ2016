@@ -106,6 +106,30 @@ public class SoundPlayer {
         int index = (int) (Math.random() * sounds.length);
         sounds[index].play();
     }
+    
+    public void playDemonSpeaking() {
+        System.out.println("No demon speaking just yet");
+    }
+    
+    public void playScareHouse() {
+        System.out.println("No house scaring sound yet");
+    }
+    
+    public void playStamp() {
+        System.out.println("No stamp sound yet");
+    }
+    
+    public void playWakeUpEmployee() {
+        System.out.println("No wake up employee yet");
+    }
+    
+    public void playFallAsleepEmployee() {
+        System.out.println("No fall asleep employee yet");
+    }
+    
+    public void playFoodArrival() {
+        System.out.println("No food sound yet");
+    }
 
     public void playLaugh() {
         playRandomSound(laughing);

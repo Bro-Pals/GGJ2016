@@ -9,6 +9,7 @@ import bropals.lib.simplegame.gui.GuiButton;
 import bropals.lib.simplegame.gui.GuiButtonAction;
 import bropals.lib.simplegame.gui.GuiElement;
 import ggj16.states.PlayState;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -33,10 +34,10 @@ public class PaperStackGui extends GuiButton {
             ps.getAssetManager().getImage("paperstack5")
         };
         regions = new float[] {
-            ps.getInitialPaperworkValue()*0.8f,
-            ps.getInitialPaperworkValue()*0.6f,
-            ps.getInitialPaperworkValue()*0.4f,
-            ps.getInitialPaperworkValue()*0.2f
+            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.8f,
+            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.6f,
+            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.4f,
+            ps.PAPERWORK_PER_DAY_BASE_VALUE*0.2f
         };
         setGuiButtonAction(new GuiButtonAction() {
             @Override
@@ -66,6 +67,10 @@ public class PaperStackGui extends GuiButton {
             img = images[4];
         }
         g.drawImage(img, getX(), getY(), getWidth(), getHeight(), null);
+        
+        int paperworkPercentDone = 100 - (int)(ps.getPaperworkLeft());
+        g.setColor(Color.WHITE);
+        g.drawString("Paperwork Done: " + paperworkPercentDone + "%", getX() + 30, getY() + 285);
     }
     
 }
