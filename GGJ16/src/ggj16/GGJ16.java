@@ -26,11 +26,12 @@ public class GGJ16 {
      */
     public static void main(String[] args) {
         AssetManager assetManager = new AssetManager(GGJ16.class, true);
-        GameWindow window = new AWTGameWindow("Our game", 800, 600);
-
+        GameWindow window = new AWTGameWindow("Office Demon", 800, 600);
         assetManager.loadImage("assets/images/background/background.png", "background");
         assetManager.loadImage("assets/images/background/border.png", "border");
         assetManager.loadImage("assets/images/background/border2.png", "border2");
+        assetManager.loadImage("assets/images/background/cutscreenDemon.png", "cutscreenDemon");
+        assetManager.loadImage("assets/images/background/cutscreenPaper.png", "cutscreenPaper");
         assetManager.loadImage("assets/images/background/fireScreenFinal.png", "fireScreenFinal");
         assetManager.loadImage("assets/images/background/foreground.png", "foreground");
         assetManager.loadImage("assets/images/background/instructions.png", "instructions");
@@ -71,6 +72,8 @@ public class GGJ16 {
         assetManager.loadImage("assets/images/controlPrompts/sKeyPrompt.png", "sKeyPrompt");
         assetManager.loadImage("assets/images/controlPrompts/taskCompletePrompt.png", "taskCompletePrompt");
         assetManager.loadImage("assets/images/controlPrompts/wakeUpPrompt.png", "wakeUpPrompt");
+        assetManager.loadImage("assets/images/cutscreenFireDemon.png", "cutscreenFireDemon");
+        assetManager.loadImage("assets/images/cutscreenFirePaper.png", "cutscreenFirePaper");
         assetManager.loadImage("assets/images/dayComplete.png", "dayComplete");
         assetManager.loadImage("assets/images/dayLabels/day1.png", "day1");
         assetManager.loadImage("assets/images/dayLabels/day2.png", "day2");
@@ -152,7 +155,6 @@ public class GGJ16 {
         assetManager.loadSoundEffect("assets/sounds/impScreech1.wav", "impScreech1");
         assetManager.loadSoundEffect("assets/sounds/impScreech2.wav", "impScreech2");
         assetManager.loadSoundEffect("assets/sounds/laugh1.wav", "laugh1");
-        assetManager.loadSoundEffect("assets/sounds/laugh2-old1.wav", "laugh2-old1");
         assetManager.loadSoundEffect("assets/sounds/laugh2.wav", "laugh2");
         assetManager.loadSoundEffect("assets/sounds/laugh3.wav", "laugh3");
         assetManager.loadSoundEffect("assets/sounds/lunchArrived.wav", "lunchArrived");
@@ -168,7 +170,9 @@ public class GGJ16 {
         assetManager.loadSoundEffect("assets/music/loserMusic.wav", "loserMusic");
         assetManager.loadSoundEffect("assets/music/mainSong.wav", "mainSong");
         assetManager.loadSoundEffect("assets/music/victory.wav", "victory");
-
+        
+        SoundPlayer.getSoundPlayer().init(assetManager);
+        
         GameStateRunner runner = new GameStateRunner(window, assetManager);
         runner.setState(new MenuState());
         runner.loop();

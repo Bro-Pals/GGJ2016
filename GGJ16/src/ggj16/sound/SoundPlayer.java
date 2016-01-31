@@ -122,6 +122,9 @@ public class SoundPlayer {
     }
 
     public void playRandomSound(SoundEffect[] sounds) {
+        if (sounds == null) {
+            System.out.println("Sound is null");
+        }
         int index = (int) (Math.random() * sounds.length);
         sounds[index].play();
     }

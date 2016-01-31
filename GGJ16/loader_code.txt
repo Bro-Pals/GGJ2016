@@ -1,6 +1,8 @@
 assetManager.loadImage("assets/images/background/background.png", "background");
 assetManager.loadImage("assets/images/background/border.png", "border");
 assetManager.loadImage("assets/images/background/border2.png", "border2");
+assetManager.loadImage("assets/images/background/cutscreenDemon.png", "cutscreenDemon");
+assetManager.loadImage("assets/images/background/cutscreenPaper.png", "cutscreenPaper");
 assetManager.loadImage("assets/images/background/fireScreenFinal.png", "fireScreenFinal");
 assetManager.loadImage("assets/images/background/foreground.png", "foreground");
 assetManager.loadImage("assets/images/background/instructions.png", "instructions");
@@ -41,6 +43,8 @@ assetManager.loadImage("assets/images/controlPrompts/scarePrompt.png", "scarePro
 assetManager.loadImage("assets/images/controlPrompts/sKeyPrompt.png", "sKeyPrompt");
 assetManager.loadImage("assets/images/controlPrompts/taskCompletePrompt.png", "taskCompletePrompt");
 assetManager.loadImage("assets/images/controlPrompts/wakeUpPrompt.png", "wakeUpPrompt");
+assetManager.loadImage("assets/images/cutscreenFireDemon.png", "cutscreenFireDemon");
+assetManager.loadImage("assets/images/cutscreenFirePaper.png", "cutscreenFirePaper");
 assetManager.loadImage("assets/images/dayComplete.png", "dayComplete");
 assetManager.loadImage("assets/images/dayLabels/day1.png", "day1");
 assetManager.loadImage("assets/images/dayLabels/day2.png", "day2");
