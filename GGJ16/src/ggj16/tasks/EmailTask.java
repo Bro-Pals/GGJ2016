@@ -22,6 +22,7 @@ public class EmailTask extends Task {
     private BufferedImage respond; //, finish;
     private BufferedImage canNotDoYetPrompt, rPrompt, dPrompt;
     private BufferedImage bg, completePrompt;
+    boolean down;
     
     public EmailTask(GameState stateInside) {
         super(stateInside, "Respond to emails");
@@ -32,7 +33,7 @@ public class EmailTask extends Task {
         completePrompt = stateInside.getAssetManager().getImage("taskCompletePrompt");
         canNotDoYetPrompt = stateInside.getAssetManager().getImage("canNotDoYet");
         rPrompt = stateInside.getAssetManager().getImage("rKeyPrompt");
-        dPrompt = stateInside.getAssetManager().getImage("dKeyPrompt");        
+        dPrompt = stateInside.getAssetManager().getImage("dKeyPrompt");
     }
 
     @Override
@@ -53,11 +54,11 @@ public class EmailTask extends Task {
         } else if (stepOn == 0) {
             //g2.drawImage(respond, 78, 58, null);
             g2.drawImage(respond, 0, 0, null);
-            g2.drawImage(rPrompt, 120, 50, null);
+            g2.drawImage(rPrompt, 250, 30, null);
         } else if (stepOn == 1) {
             //g2.drawImage(read, 78, 58, null);
             g2.drawImage(read, 0, 0, null);
-            g2.drawImage(dPrompt, 120, 50, null);
+            g2.drawImage(dPrompt, 250, 30, null);
         }
         
         if (isComplete()) {

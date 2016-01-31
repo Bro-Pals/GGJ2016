@@ -29,21 +29,26 @@ public class InterviewTask extends Task {
     
     int millisToWait = 5000; // 5 seconds.
     int currWaitTime = 0;
+    boolean down;
     
-    private BufferedImage rPrompt, nPrompt, sPrompt;
+    private BufferedImage rPrompt, nPrompt, sPrompt, pg1, pg2, pga, bg, interv;
     
     public InterviewTask(GameState stateInside) {
         super(stateInside, "Hire worker");
         rPrompt = stateInside.getAssetManager().getImage("rKeyPrompt");
         nPrompt = stateInside.getAssetManager().getImage("nKeyPrompt");
         sPrompt = stateInside.getAssetManager().getImage("sKeyPrompt");
+        bg = stateInside.getAssetManager().getImage("paperTaskBackground");
+        pg1 = stateInside.getAssetManager().getImage("applicationPaper1");
+        pg2 = stateInside.getAssetManager().getImage("applicationPaper2");
+        pga = stateInside.getAssetManager().getImage("applicationPaperAccept");
+        interv = stateInside.getAssetManager().getImage("workerInterview");
+        down = false;
     }
 
     @Override
     public void update(int ms) {
         super.update(ms);
-        
-        
     }
     
     @Override
@@ -60,11 +65,20 @@ public class InterviewTask extends Task {
          */
         
         if (stepOn == 0) {
-            g2.drawImage(rPrompt, 120, 40, null);
+            g2.drawImage(bg, 0, 0, null);
+            if (down) {
+                g2.drawImage(pg2, 0, 0, null);
+            } else {
+                g2.drawImage(pg1, 0, 0, null);
+            }
+            g2.drawImage(rPrompt, 240, 40, null);
         } else if (stepOn == 1) {
-            g2.drawImage(nPrompt, 120, 40, null);
+            g2.drawImage(bg, 0, 0, null);
+            g2.drawImage(pga, 0, 0, null);
+            g2.drawImage(nPrompt, 240, 40, null);
         } else if (stepOn == 2) {
-            g2.drawImage(sPrompt, 120, 40, null);
+            g2.drawImage(interv, 0, 0, null);
+            g2.drawImage(sPrompt, 70, 40, null);
         }
         
     }
@@ -72,6 +86,7 @@ public class InterviewTask extends Task {
      @Override
     public void key(int i, boolean bln) {
         super.key(i, bln);
+        down = bln;
         if (!bln) {
             return;
         }

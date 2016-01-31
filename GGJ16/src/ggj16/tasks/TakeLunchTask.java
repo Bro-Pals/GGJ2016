@@ -56,7 +56,7 @@ public class TakeLunchTask extends Task {
                 currWaitTime += ms;
                 if (currWaitTime > millisToWait) {
                     setComplete(true); // done waiting!
-                    SoundPlayer.getSoundPlayer().stopDialUpLong();
+                    SoundPlayer.getSoundPlayer().playFoodArrival();
                 }
             }
         }
@@ -114,11 +114,7 @@ public class TakeLunchTask extends Task {
         if (stepOn != codes.length) { // if you aren't yet completed with all of the steps...
             if (i == codes[stepOn]) { // if the keycode matches the current step...
                 stepOn++; // go to the next step
-                if (stepOn == codes.length) {
-                    SoundPlayer.getSoundPlayer().playDialUpLong();
-                } else {
-                    SoundPlayer.getSoundPlayer().playPhoneBeep();
-                }
+                SoundPlayer.getSoundPlayer().playPhoneBeep();
             }
 
         }

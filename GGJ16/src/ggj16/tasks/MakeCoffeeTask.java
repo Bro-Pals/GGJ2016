@@ -36,7 +36,7 @@ public class MakeCoffeeTask extends Task {
             stateInside.getAssetManager().getImage("coffeepot1"),
             stateInside.getAssetManager().getImage("coffeepot2"),
             stateInside.getAssetManager().getImage("coffeepot3"),
-            stateInside.getAssetManager().getImage("coffeepot4"),
+            stateInside.getAssetManager().getImage("coffeepot4"), // 3
             stateInside.getAssetManager().getImage("taskCompletePrompt"),
             stateInside.getAssetManager().getImage("brewingPrompt"), // 5
             stateInside.getAssetManager().getImage("fKeyPrompt"),
@@ -78,6 +78,9 @@ public class MakeCoffeeTask extends Task {
             img = images[2];
         } else {
             img = images[3];
+        }
+        if (isComplete()) {
+            img = images[3]; // show full thing when it's complete
         }
         g2.drawImage(img, 100, 0, null);
         if (stepOn < 3) {

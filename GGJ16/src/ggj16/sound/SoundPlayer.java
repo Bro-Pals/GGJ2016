@@ -25,6 +25,7 @@ public class SoundPlayer {
     private SoundEffect[] pageTurn;
     private SoundEffect[] laughing;
     private SoundEffect[] talking;
+    private SoundEffect[] scared;
     private SoundEffect phoneBeep;
     private SoundEffect paperWriting;
     private SoundEffect fireball;
@@ -34,6 +35,7 @@ public class SoundPlayer {
     private SoundEffect impApproaching;
     private SoundEffect wakeUp;
     private SoundEffect lunchArrived;
+    private SoundEffect stomp;
 
     //Music
     private SoundEffect mainSong;
@@ -74,6 +76,9 @@ public class SoundPlayer {
             assets.getSoundEffect("bossDemon2"),
             assets.getSoundEffect("bossDemon3")
         };
+        scared = new SoundEffect[] {
+            assets.getSoundEffect("wilhelm_scream")
+        };
         phoneBeep = assets.getSoundEffect("phoneBeep");
         paperWriting = assets.getSoundEffect("paperWriting");
         fireball = assets.getSoundEffect("fireball");
@@ -87,6 +92,7 @@ public class SoundPlayer {
         loseSong = assets.getSoundEffect("loserMusic");
         wakeUp = assets.getSoundEffect("wakeUp");
         lunchArrived = assets.getSoundEffect("lunchArrived");
+        stomp = assets.getSoundEffect("stomp");
         
         currentMusicTrack = mainSong;
     }
@@ -122,11 +128,11 @@ public class SoundPlayer {
     }
     
     public void playScareHouse() {
-        System.out.println("No house scaring sound yet");
+        playRandomSound(scared);
     }
     
     public void playStamp() {
-        System.out.println("No stamp sound yet");
+        stomp.play();
     }
     
     public void playWakeUpEmployee() {
@@ -138,7 +144,7 @@ public class SoundPlayer {
     }
     
     public void playFoodArrival() {
-        System.out.println("No food sound yet");
+        lunchArrived.play();
     }
 
     public void playLaugh() {

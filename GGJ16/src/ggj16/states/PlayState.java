@@ -291,8 +291,9 @@ public class PlayState extends GameState {
         
         if (isFinishedWithDailyThings()) {
             //SoundPlayer.getSoundPlayer().playVictoryMusic();
-            SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
+            //SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
             viewingCompletedDay = true;
+            getGameStateRunner().setState(new WinState());
         }
 
         // draw the to-do list on top of everything
