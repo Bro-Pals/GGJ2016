@@ -17,7 +17,7 @@ public class EmailTask extends Task {
 
     int stepOn = 0;
     int[] steps = new int[]{KeyCode.KEY_R, KeyCode.KEY_D};
-    int timesLeft = 8;
+    int timesLeft = 14;
     private BufferedImage read;
     private BufferedImage respond; //, finish;
     private BufferedImage canNotDoYetPrompt, rPrompt, dPrompt;
@@ -88,13 +88,13 @@ public class EmailTask extends Task {
     @Override
     public void resetForDay() {
         stepOn = 0;
-        timesLeft = 8;
+        timesLeft = 14;
         setComplete(false);
     }
     
     @Override
     public void getAfflictedByObstruction() {
-        timesLeft = 8;
+        timesLeft = 14;
         stepOn = 0;
     }
 }

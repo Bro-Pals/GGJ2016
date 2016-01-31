@@ -68,7 +68,7 @@ public class PaperStackGui extends GuiButton {
         }
         g.drawImage(img, getX(), getY(), getWidth(), getHeight(), null);
         
-        int paperworkPercentDone = 100 - (int)(ps.getPaperworkLeft());
+        int paperworkPercentDone = 100 - (int)((float)ps.getPaperworkLeft()/ps.PAPERWORK_PER_DAY_BASE_VALUE*(float)100);
         g.setColor(Color.WHITE);
         g.drawString("Paperwork Done: " + paperworkPercentDone + "%", getX() + 30, getY() + 285);
     }
