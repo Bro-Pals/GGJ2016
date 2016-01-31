@@ -34,7 +34,7 @@ public class GGJ16 {
         SoundPlayer.getSoundPlayer().init(assetManager);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        runner.setState(new WinState());
+        runner.setState(new MenuState());
         runner.loop();
     }
     

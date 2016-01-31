@@ -8,6 +8,7 @@ package ggj16.states;
 import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.sound.SoundPlayer;
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.image.BufferedImage;
 
@@ -31,6 +32,10 @@ public class MenuState extends GameState {
         Graphics g = (Graphics)o;
         if (images.length > screenOn) {
              g.drawImage(images[screenOn], 0, 0, null);
+        }
+        if (screenOn == 0) {
+            g.setColor(Color.YELLOW);
+            g.drawString("Press Space to continue...", 170, 520);
         }
        
     }
