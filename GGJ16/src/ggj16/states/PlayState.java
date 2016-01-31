@@ -347,7 +347,7 @@ public class PlayState extends GameState {
         }
         
         if (viewingCompletedDay) {
-            g2.drawImage(completeDay, 200, 150, null);
+            //g2.drawImage(completeDay, 200, 150, null);
         }
         
         // draw the todolist last to go on top

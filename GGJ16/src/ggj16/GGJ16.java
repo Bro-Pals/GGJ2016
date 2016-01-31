@@ -169,10 +169,8 @@ public class GGJ16 {
         assetManager.loadSoundEffect("assets/music/mainSong.wav", "mainSong");
         assetManager.loadSoundEffect("assets/music/victory.wav", "victory");
 
-        SoundPlayer.getSoundPlayer().init(assetManager);
-
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        runner.setState(new WinState());
+        runner.setState(new MenuState());
         runner.loop();
     }
 

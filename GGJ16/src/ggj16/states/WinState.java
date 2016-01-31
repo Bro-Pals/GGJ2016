@@ -19,7 +19,7 @@ import java.awt.image.BufferedImage;
 public class WinState extends GameState {
     
     int screenOn;
-    int lastScreen = 4;
+    int lastScreen = 5;
     private BufferedImage[] images;
     
     @Override
@@ -36,15 +36,20 @@ public class WinState extends GameState {
                 g2.drawImage(images[0], 397, 72, 275, 367, null);
                 break;
             case 1:
-                
+                g2.drawImage(images[2], 0, 0, null);
+                g2.drawImage(images[3], 0, 0, null);
                 break;
             case 2:
                 g2.drawImage(images[0], 0, 0, 800, 1067, null);
                 break;
             case 3:
-                
+                g2.drawImage(images[2], 0, 0, 1302, 977, null);
                 break;
             case 4:
+                g2.drawImage(images[2], 0, 0, null);
+                g2.drawImage(images[4], 0, 0, null); // paper goes away
+                break;
+            case 5:
                 g2.drawImage(images[1], 0, 0, null);
                 break;
         }
@@ -60,8 +65,10 @@ public class WinState extends GameState {
     public void onEnter() {
         images = new BufferedImage[]{
             getAssetManager().getImage("boss"),
-            getAssetManager().getImage("winScreenFinal")
-                
+            getAssetManager().getImage("winScreenFinal"),
+            getAssetManager().getImage("cutscreenDemon"),
+            getAssetManager().getImage("cutscreenPaper"),
+            getAssetManager().getImage("cutscreenFirePaper") // 4
         };      
         screenOn = 0;
     }
@@ -71,6 +78,9 @@ public class WinState extends GameState {
         super.key(keycode, pressed);
         if (!pressed && keycode == KeyCode.KEY_SPACE) {
             screenOn++;
+            if (screenOn == 4) {
+                SoundPlayer.getSoundPlayer().playFireball();
+            }
             if (screenOn == lastScreen) {
                 SoundPlayer.getSoundPlayer().playVictoryMusic();
             }
