@@ -11,6 +11,7 @@ import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
 import ggj16.states.MenuState;
+import ggj16.states.WinState;
 import java.io.File;
 
 /**
@@ -32,7 +33,7 @@ public class GGJ16 {
         SoundPlayer.getSoundPlayer().init(assetManager);
         
         GameStateRunner runner = new GameStateRunner(window, assetManager);
-        runner.setState(new MenuState());
+        runner.setState(new WinState());
         runner.loop();
     }
     
