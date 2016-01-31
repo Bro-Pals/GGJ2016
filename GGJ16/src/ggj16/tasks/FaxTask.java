@@ -100,4 +100,9 @@ public class FaxTask extends Task {
         waitTimeDoneFaxing = 4000;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

@@ -22,4 +22,8 @@ public class WakeSleeperTask extends Task {
     public void resetForDay() {
     }
     
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }
