@@ -4,6 +4,8 @@ import bropals.lib.simplegame.KeyCode;
 import bropals.lib.simplegame.state.GameState;
 import ggj16.sound.SoundPlayer;
 import ggj16.Task;
+import ggj16.states.util.Timer;
+import ggj16.states.util.TimerAction;
 import java.awt.Color;
 import java.awt.Graphics2D;
 import java.awt.image.BufferedImage;
@@ -23,10 +25,7 @@ public class MakeCoffeeTask extends Task {
         KeyCode.KEY_O
     };
 
-    int currWaitTime = 0;
-    int waitForCoffeeTime = 5000; // 5 seconds
-    
-    
+    private Timer coffeeBrew = new Timer(5000); //5 seconds
 
     private BufferedImage[] images;
 
@@ -41,7 +40,15 @@ public class MakeCoffeeTask extends Task {
             stateInside.getAssetManager().getImage("brewingPrompt"), // 5
             stateInside.getAssetManager().getImage("fKeyPrompt"),
             stateInside.getAssetManager().getImage("pKeyPrompt"),
-            stateInside.getAssetManager().getImage("oKeyPrompt"),};
+            stateInside.getAssetManager().getImage("oKeyPrompt"),
+        };
+        coffeeBrew.setAction(new TimerAction() {
+            @Override
+            public void intervalComplete() {
+                setComplete(true);
+                coffeeBrew.setStopped(true);
+            }
+        });
     }
 
     @Override
@@ -49,10 +56,7 @@ public class MakeCoffeeTask extends Task {
         super.update(ms);
         if (!isComplete()) {
             if (stepOn == codes.length) {
-                currWaitTime += ms;
-                if (currWaitTime > waitForCoffeeTime) {
-                    setComplete(true);
-                }
+                coffeeBrew.updateTimer(ms);
             }
         }
     }
@@ -64,11 +68,11 @@ public class MakeCoffeeTask extends Task {
         g2.fillRect(0, 0, 400, 300);
 
         BufferedImage img = null;
-        if (currWaitTime < waitForCoffeeTime / 3) {
+        if (coffeeBrew.getProgress() < coffeeBrew.getProgress() / 3) {
             img = images[0];
-        } else if (currWaitTime < (waitForCoffeeTime / 3) * 2) {
+        } else if (coffeeBrew.getProgress() < (coffeeBrew.getProgress() / 3) * 2) {
             img = images[1];
-        } else if (currWaitTime < waitForCoffeeTime) {
+        } else if (coffeeBrew.getProgress() < coffeeBrew.getProgress()) {
             img = images[2];
         } else {
             img = images[3];
@@ -107,8 +111,12 @@ public class MakeCoffeeTask extends Task {
     @Override
     public void resetForDay() {
         stepOn = 0;
-        currWaitTime = 0;
+        coffeeBrew.resetManually();
         setComplete(false);
     }
 
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

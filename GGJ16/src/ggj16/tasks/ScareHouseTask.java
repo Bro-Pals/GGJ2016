@@ -132,4 +132,9 @@ public class ScareHouseTask extends Task {
         right = false;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

@@ -83,4 +83,9 @@ public class InterviewTask extends Task {
         currWaitTime = 0;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

@@ -62,4 +62,9 @@ public class PaperworkTask extends Task {
         ready = false;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

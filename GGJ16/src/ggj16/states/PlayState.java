@@ -545,6 +545,7 @@ public class PlayState extends GameState {
         hoursLeft = 12;
         paperworkLeft = PAPERWORK_PER_DAY_BASE_VALUE;
         nextTaskIndex = 0;
+        ticksPerHour = 30000;
         for (int i=0; i<toDoList.size(); i++) {
             toDoList.get(i).resetForDay();
         }
@@ -573,12 +574,12 @@ public class PlayState extends GameState {
             if (dayOn == 1) {
                 obstructionValue = 1;
             } else if (dayOn == 2) {
-                ticksPerHour = 4500; //Make the days shorter
+                ticksPerHour = 4166; //Make the days 5 minutes instead of 6
             } else if (dayOn == 3) {
-                obstructionValue = 2;
+                obstructionValue = 4;
             } else if (dayOn == 4) {
-                ticksPerHour = 4000; //Make the days even shorter
-                obstructionValue = 3;
+                ticksPerHour = 3333; //Make the days 4 minutes instead of 5
+                obstructionValue = 7;
             } else if (dayOn == 5) {
                 //Lets make this the win state
                 getGameStateRunner().setState(new WinState());

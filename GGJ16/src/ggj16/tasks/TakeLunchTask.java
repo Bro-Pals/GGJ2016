@@ -130,4 +130,9 @@ public class TakeLunchTask extends Task {
         currWaitTime = 1;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

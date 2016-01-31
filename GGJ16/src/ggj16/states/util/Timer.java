@@ -39,6 +39,14 @@ public class Timer {
         this.targetNumber=targetNumber;
     }
     
+    public int getProgress() {
+        return progress;
+    }
+    
+    public void resetManually() {
+        progress = 0;
+    }
+    
     public void updateTimer(int delta) {
         if (stopped) {
             progress += delta;

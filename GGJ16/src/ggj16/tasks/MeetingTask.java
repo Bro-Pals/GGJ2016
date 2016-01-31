@@ -174,4 +174,9 @@ public class MeetingTask extends Task {
         timeUntilSleeper = 0;
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

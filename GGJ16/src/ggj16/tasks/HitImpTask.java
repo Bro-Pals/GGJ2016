@@ -208,4 +208,9 @@ public class HitImpTask extends Task {
         impThing.setVelocity(impVelocity);
         setComplete(false);
     }
+    
+    @Override
+    public void getAfflictedByObstruction() {
+        
+    }
 }

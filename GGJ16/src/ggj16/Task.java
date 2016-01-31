@@ -75,5 +75,5 @@ public abstract class Task implements KeyListener {
         return description;
     }
    
-    
+    public abstract void getAfflictedByObstruction();
 }
