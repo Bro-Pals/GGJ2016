@@ -201,7 +201,7 @@ public class HitImpTask extends Task {
         stepOn = 0;
         currentAim = (float)Math.PI/2; // starting pointing forward
         aimVel = 0.1f;
-        timeLeftForEmployeeDeath = 20000;
+        timeLeftForEmployeeDeath = 3000; //20000;
         impThing.setX(impSpawnX);
         impThing.setY(impSpawnY);
         impThing.setDirection(0);

@@ -39,10 +39,8 @@ public class InterviewTask extends Task {
     @Override
     public void update(int ms) {
         super.update(ms);
-        currWaitTime += ms;
-        if (currWaitTime > millisToWait) {
-            setComplete(true); // done waiting!
-        }
+        
+        
     }
     
     @Override
