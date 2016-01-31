@@ -10,6 +10,7 @@ import bropals.lib.simplegame.AWTGameWindow;
 import bropals.lib.simplegame.GameStateRunner;
 import bropals.lib.simplegame.GameWindow;
 import bropals.lib.simplegame.io.AssetManager;
+import ggj16.states.FiredState;
 import ggj16.states.MenuState;
 import ggj16.states.WinState;
 import java.io.File;

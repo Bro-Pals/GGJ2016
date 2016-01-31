@@ -18,8 +18,8 @@ import java.awt.image.BufferedImage;
  */
 public class WinState extends GameState {
     
-    int timeLeftOnScreen;
     int screenOn;
+    int lastScreen = 4;
     private BufferedImage[] images;
     
     @Override
@@ -44,14 +44,24 @@ public class WinState extends GameState {
             case 3:
                 
                 break;
+            case 4:
+                g2.drawImage(images[1], 0, 0, null);
+                break;
+        }
+        g2.setColor(Color.WHITE);
+        if (screenOn < lastScreen) {
+            g2.drawString("Press Spacebar to continue...", 15, 580);
+        } else  {
+            g2.drawString("Press Spacebar to return to the main menu...", 50, 560);
         }
     }
 
     @Override
     public void onEnter() {
-        SoundPlayer.getSoundPlayer().playVictoryMusic();
         images = new BufferedImage[]{
-            getAssetManager().getImage("boss")
+            getAssetManager().getImage("boss"),
+            getAssetManager().getImage("winScreenFinal")
+                
         };      
         screenOn = 0;
     }
@@ -59,10 +69,13 @@ public class WinState extends GameState {
     @Override
     public void key(int keycode, boolean pressed) {
         super.key(keycode, pressed);
-        if (pressed && keycode == KeyCode.KEY_SPACE) {
+        if (!pressed && keycode == KeyCode.KEY_SPACE) {
             screenOn++;
-            if (screenOn > 3) {
-                
+            if (screenOn == lastScreen) {
+                SoundPlayer.getSoundPlayer().playVictoryMusic();
+            }
+            if (screenOn > lastScreen) {
+                getGameStateRunner().setState(new MenuState());
             }
         }
     }
