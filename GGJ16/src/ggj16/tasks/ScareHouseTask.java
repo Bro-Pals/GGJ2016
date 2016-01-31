@@ -135,6 +135,8 @@ public class ScareHouseTask extends Task {
     
     @Override
     public void getAfflictedByObstruction() {
-        
+        for (int i=0; i<housesScared.length; i++) {
+            housesScared[i] = false;
+        }
     }
 }

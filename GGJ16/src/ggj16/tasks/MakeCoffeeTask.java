@@ -117,6 +117,6 @@ public class MakeCoffeeTask extends Task {
 
     @Override
     public void getAfflictedByObstruction() {
-        
+        resetForDay();
     }
 }

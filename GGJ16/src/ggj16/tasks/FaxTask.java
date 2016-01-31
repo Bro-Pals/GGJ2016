@@ -103,6 +103,7 @@ public class FaxTask extends Task {
     
     @Override
     public void getAfflictedByObstruction() {
-        
+        stepOn = 0;
+        currWaitTime = 0;
     }
 }

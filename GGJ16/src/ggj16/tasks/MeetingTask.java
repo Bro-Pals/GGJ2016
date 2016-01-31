@@ -177,6 +177,6 @@ public class MeetingTask extends Task {
     
     @Override
     public void getAfflictedByObstruction() {
-        
+        workLeft = 25;
     }
 }

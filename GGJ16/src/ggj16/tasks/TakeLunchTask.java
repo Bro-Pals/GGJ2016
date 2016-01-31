@@ -133,6 +133,7 @@ public class TakeLunchTask extends Task {
     
     @Override
     public void getAfflictedByObstruction() {
-        
+        stepOn = 0;
+        currWaitTime = 1;
     }
 }

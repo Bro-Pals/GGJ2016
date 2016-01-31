@@ -89,6 +89,7 @@ public class EmailTask extends Task {
     
     @Override
     public void getAfflictedByObstruction() {
-        
+        timesLeft = 8;
+        stepOn = 0;
     }
 }
