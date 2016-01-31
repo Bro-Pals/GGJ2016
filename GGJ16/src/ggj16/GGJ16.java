@@ -26,7 +26,7 @@ public class GGJ16 {
      */
     public static void main(String[] args) {
         AssetManager assetManager = new AssetManager(new File("assets"), true);
-        GameWindow window = new AWTGameWindow("Our game", 800, 600);
+        GameWindow window = new AWTGameWindow("Office Demon", 800, 600);
         
         assetManager.loadImagesInDirectories("images", true);
         assetManager.loadSoundEffectsInDirectories("sounds", true);

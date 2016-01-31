@@ -51,7 +51,7 @@ public class FiredState extends GameState {
                 g2.drawImage(images[2], 0, 0, 1302, 977, null);
                 break;
             case 4:
-                //g2.drawImage(images[2], 0, 0, null);  demon dies
+                g2.drawImage(images[4], 0, 0, null);  // demon dies
                 g2.drawImage(images[3], 0, paperPos, null);
                 break;
             case 5:
@@ -73,7 +73,8 @@ public class FiredState extends GameState {
             getAssetManager().getImage("boss"),
             getAssetManager().getImage("fireScreenFinal"),
             getAssetManager().getImage("cutscreenDemon"),
-            getAssetManager().getImage("cutscreenPaper")
+            getAssetManager().getImage("cutscreenPaper"),
+            getAssetManager().getImage("cutscreenFireDemon") // 4
         };
         screenOn = 0;
     }

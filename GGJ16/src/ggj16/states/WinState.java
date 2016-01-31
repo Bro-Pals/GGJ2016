@@ -47,7 +47,7 @@ public class WinState extends GameState {
                 break;
             case 4:
                 g2.drawImage(images[2], 0, 0, null);
-                //g2.drawImage(images[3], 0, 0, null);  paper goes away
+                g2.drawImage(images[4], 0, 0, null); // paper goes away
                 break;
             case 5:
                 g2.drawImage(images[1], 0, 0, null);
@@ -67,7 +67,8 @@ public class WinState extends GameState {
             getAssetManager().getImage("boss"),
             getAssetManager().getImage("winScreenFinal"),
             getAssetManager().getImage("cutscreenDemon"),
-            getAssetManager().getImage("cutscreenPaper")
+            getAssetManager().getImage("cutscreenPaper"),
+            getAssetManager().getImage("cutscreenFirePaper") // 4
         };      
         screenOn = 0;
     }
