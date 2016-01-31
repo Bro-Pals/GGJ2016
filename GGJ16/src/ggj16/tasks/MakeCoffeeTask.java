@@ -28,6 +28,7 @@ public class MakeCoffeeTask extends Task {
     private Timer coffeeBrew = new Timer(5000); //5 seconds
 
     private BufferedImage[] images;
+    private BufferedImage coffeeMachineImage;
 
     public MakeCoffeeTask(GameState stateInside) {
         super(stateInside, "Make coffee");
@@ -42,6 +43,7 @@ public class MakeCoffeeTask extends Task {
             stateInside.getAssetManager().getImage("pKeyPrompt"),
             stateInside.getAssetManager().getImage("oKeyPrompt"),
         };
+        coffeeMachineImage = stateInside.getAssetManager().getImage("coffeepotBackground");
         coffeeBrew.setAction(new TimerAction() {
             @Override
             public void intervalComplete() {
@@ -55,7 +57,7 @@ public class MakeCoffeeTask extends Task {
     public void update(int ms) {
         super.update(ms);
         if (!isComplete()) {
-            if (stepOn == codes.length) {
+            if (stepOn >= codes.length) {
                 coffeeBrew.updateTimer(ms);
             }
         }
@@ -66,18 +68,18 @@ public class MakeCoffeeTask extends Task {
         super.render(g2);
         g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
-
+        g2.drawImage(coffeeMachineImage, 100, 0, null);
         BufferedImage img = null;
-        if (coffeeBrew.getProgress() < coffeeBrew.getProgress() / 3) {
+        if (coffeeBrew.getProgress() < coffeeBrew.getTargetNumber()/ 3) {
             img = images[0];
-        } else if (coffeeBrew.getProgress() < (coffeeBrew.getProgress() / 3) * 2) {
+        } else if (coffeeBrew.getProgress() < (coffeeBrew.getTargetNumber() / 3) * 2) {
             img = images[1];
-        } else if (coffeeBrew.getProgress() < coffeeBrew.getProgress()) {
+        } else if (coffeeBrew.getProgress() < coffeeBrew.getTargetNumber()) {
             img = images[2];
         } else {
             img = images[3];
         }
-        g2.drawImage(img, 100, 50, null);
+        g2.drawImage(img, 100, 0, null);
         if (stepOn < 3) {
             g2.drawImage(images[6 + stepOn], 100 + (30 * stepOn), 60, null);
         }

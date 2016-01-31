@@ -35,7 +35,7 @@ public class HitImpTask extends Task {
     Employee employeeTargeted;
     final float impSpawnX = 200;
     final float impSpawnY = 50;
-    final float impVelocity = 2f; // speed of the imp
+    final float impVelocity = 1.5f; // speed of the imp
 
     BufferedImage fireballImage, firePrompt;
     Animation impAnim;
@@ -179,7 +179,7 @@ public class HitImpTask extends Task {
         if (bln && stepOn == 0 && i == KeyCode.KEY_F) {
             stepOn = 1; // shoot fire!
             // spawn the fire ball thing in the task
-            float ballVel = 3f;
+            float ballVel = 5f;
             float ballSpawnX = 200;
             float ballSpawnY = 230;
             fireBallObject = new MoveTaskObject(getWorld(), ballSpawnX, ballSpawnY, currentAim, ballVel);

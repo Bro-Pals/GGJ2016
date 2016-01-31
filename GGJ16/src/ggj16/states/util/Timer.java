@@ -48,7 +48,7 @@ public class Timer {
     }
     
     public void updateTimer(int delta) {
-        if (stopped) {
+        if (!stopped) {
             progress += delta;
             if (progress >= targetNumber) {
                 if (action != null) {

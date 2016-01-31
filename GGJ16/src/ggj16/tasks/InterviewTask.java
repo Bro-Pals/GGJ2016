@@ -81,6 +81,7 @@ public class InterviewTask extends Task {
             stepOn++;
             timesToTapLeft = 10; // setup for the next step
         } else if (stepOn == 2 && i == KeyCode.KEY_S) {
+            timesToTapLeft--;
             if (timesToTapLeft <= 0) { // reduce steps left.
                 setComplete(true); // finish task after tapping S
             }

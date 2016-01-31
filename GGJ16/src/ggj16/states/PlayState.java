@@ -159,8 +159,8 @@ public class PlayState extends GameState {
                     // spawn a "wake up" task object near them
                     officeWorld.addEntity(impTaskObject);
                     SoundPlayer.getSoundPlayer().playImpApproaching();
-                    System.out.println("An imp started to attack an employee: whichOne: " + whichOne
-                        + ", worker being attacked already: " + workers[whichOne].isBeingAttackedByImp());
+                   // System.out.println("An imp started to attack an employee: whichOne: " + whichOne
+                   //     + ", worker being attacked already: " + workers[whichOne].isBeingAttackedByImp());
                     workers[whichOne].setBeingAttackedByImp(true);
                 }
             }
@@ -197,7 +197,7 @@ public class PlayState extends GameState {
                         if (activeTask == task.getAssociatedTask()) {
                             activeTask = null;
                         }
-                        System.out.println("Removed a task object for being completed!");
+                        //System.out.println("Removed a task object for being completed!");
                         obj.setParent(null);
                         officeWorld.getEntities().remove(obj);
                         // remove the imp task from the list of imp tasks.
@@ -300,8 +300,7 @@ public class PlayState extends GameState {
         g2.drawImage(border2, 196, 306, null);
         g2.drawImage(border2, 598, 306, null);
         
-        // draw the todolist last to go on top
-        todoListGuiElement.render(o);
+        
         
         // render employee status gui according to what state they're in.
         for (int i=0; i<workers.length; i++) {
@@ -320,6 +319,9 @@ public class PlayState extends GameState {
             }
             g2.drawImage(impAlertImage, xPos, yPos, null);
         }
+        
+        // draw the todolist last to go on top
+        todoListGuiElement.render(o);
         
         /*
         Debugging things
