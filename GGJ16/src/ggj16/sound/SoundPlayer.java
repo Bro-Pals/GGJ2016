@@ -143,7 +143,7 @@ public class SoundPlayer {
     }
     
     public void playFallAsleepEmployee() {
-        System.out.println("No fall asleep employee yet");
+        //System.out.println("No fall asleep employee yet");
     }
     
     public void playFoodArrival() {

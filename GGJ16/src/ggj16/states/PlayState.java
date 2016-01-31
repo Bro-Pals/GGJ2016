@@ -540,7 +540,7 @@ public class PlayState extends GameState {
         // to test days there will be a cheat button
         if (keycode == KeyCode.KEY_K && pressed) {
             paperworkLeft -= 90;
-            System.out.println("Complete all the things");
+            //System.out.println("Complete all the things");
             for (int i=0; i<toDoList.size(); i++) {
                 toDoList.get(i).setComplete(true);
             }
@@ -554,6 +554,9 @@ public class PlayState extends GameState {
      */
     public void changePaperwork(float amount) {
         paperworkLeft += amount;
+        if (paperworkLeft < 0) {
+            paperworkLeft = 0;
+        }
     }
 
     public float getPaperworkLeft() {
@@ -569,7 +572,7 @@ public class PlayState extends GameState {
     }
     
     public void advanceHour() {
-        System.out.println("Hour decreaseed");
+        //System.out.println("Hour decreaseed");
         hoursLeft--;
         if (hoursLeft>0) {
             clockGui.setClockRotation(12-hoursLeft);
