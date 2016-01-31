@@ -45,6 +45,7 @@ public class Timer {
     
     public void resetManually() {
         progress = 0;
+        stopped = false;
     }
     
     public void updateTimer(int delta) {
