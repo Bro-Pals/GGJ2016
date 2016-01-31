@@ -65,7 +65,7 @@ public class PlayState extends GameState {
     // imp attack values
     private ArrayList<ImpAttackTaskObject> impTaskObjects; // list of all imp attack tasks objects
     private int currImpAttackTime;
-    private final int IMP_WAIT_TIME = 10000; //10000; // 10 seconds between each chance for an imp to spawn.
+    private final int IMP_WAIT_TIME = 2000; //10000; // 10 seconds between each chance for an imp to spawn.
     
     // game values.
     private int dayOn; // Count what day you're on.
