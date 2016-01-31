@@ -106,7 +106,6 @@ public class PlayState extends GameState {
     @Override
     public void update(int delta) {
         tickProgress += delta;
-        System.out.println("tickProgress: " + tickProgress);
         if (tickProgress >= ticksPerHour) {
             advanceHour();
             tickProgress = 0;
@@ -124,32 +123,7 @@ public class PlayState extends GameState {
             //advanceDay();
             System.out.println("COMPLETED ALL TASKS");
         }
-        
-        /*
-        // workers falling asleep
-        currWorkerSleepTime += delta;
-        if (currWorkerSleepTime > WORKER_SLEEP_WAIT_TIME) {
-            // make a random worker fall asleep
-            if (Math.random() > 0) { // 0 is temp
-                // randomly chose a non-dead and non-sleeping worker
-                int whichOne = 0;
-                do {
-                    whichOne = (int)(Math.random() * workers.length);
-                } while(workers[whichOne].getState() != Employee.WORKING);
-                // put them to sleep
-                workers[whichOne].setState(Employee.SLEEPING);
-                // define the task and add it to the list of tasks to be updated
-                WakeSleeperTask wakeTask = new WakeSleeperTask(this, "Wake up worker");
-                // spawn a "wake up" task object near them
-                officeWorld.addEntity(new ChangeEmployeeStateTaskObject(
-                        officeWorld, workers[whichOne].getX(), 
-                        getAssetManager().getImage("phoneOffice"), 
-                        camera, wakeTask, workers[whichOne],
-                        Employee.WORKING));
-                System.out.println("make a employee sleep: whichOne: " + whichOne);
-            }
-            currWorkerSleepTime = 0;
-        }*/
+       
         
         // imp spawning
         currImpAttackTime += delta;
@@ -308,15 +282,7 @@ public class PlayState extends GameState {
             //SoundPlayer.getSoundPlayer().playVictoryMusic();
             SoundPlayer.getSoundPlayer().setMusicTo(SoundPlayer.VICTORY_SONG);
         }
-        
-        // 3. Draw the GUIs
-        // Guis are in 2 parts:
-        // 200x300 at (0, 300)
-        //    This area will show the remaining amount of work.
-        // 200x300 at (600, 300)
-        //    This area will show the TO-DO list
-        
-        
+
         // draw the to-do list on top of everything
         if (viewingTasks) {
             // View all of the tasks.

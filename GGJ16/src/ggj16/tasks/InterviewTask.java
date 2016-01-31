@@ -49,14 +49,16 @@ public class InterviewTask extends Task {
     @Override
     public void render(Graphics2D g2) {
         super.render(g2);
-        g2.setColor(Color.WHITE);
+        g2.setColor(Color.BLACK);
         g2.fillRect(0, 0, 400, 300);
         
+        /*
         g2.setColor(Color.BLACK);
         g2.drawString("Interview task", 40, 60);
         g2.drawString("stepOn: " + stepOn, 40, 160);
         g2.drawString("timesToTapLeft: " + timesToTapLeft, 40, 160);
-
+         */
+        
         if (stepOn == 0) {
             g2.drawImage(rPrompt, 120, 40, null);
         } else if (stepOn == 1) {

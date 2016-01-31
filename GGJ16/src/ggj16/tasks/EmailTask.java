@@ -53,11 +53,11 @@ public class EmailTask extends Task {
         } else if (stepOn == 0) {
             //g2.drawImage(respond, 78, 58, null);
             g2.drawImage(respond, 0, 0, null);
-            g2.drawImage(rPrompt, 110, 30, null);
+            g2.drawImage(rPrompt, 120, 50, null);
         } else if (stepOn == 1) {
             //g2.drawImage(read, 78, 58, null);
             g2.drawImage(read, 0, 0, null);
-            g2.drawImage(dPrompt, 110, 30, null);
+            g2.drawImage(dPrompt, 120, 50, null);
         }
         
         if (isComplete()) {

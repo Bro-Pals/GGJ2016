@@ -72,9 +72,9 @@ public class ScareHouseTask extends Task {
         
         for (int j=0; j<housesPosX.length; j++) {
             if (housesScared[j]) {
-                g2.drawImage(houseIsScared, housesPosX[j] - (houseIsScared.getWidth()/2), 160, null);
+                g2.drawImage(houseIsScared, housesPosX[j] - 20, 160, null);
             } else {
-                g2.drawImage(houseNotScared, housesPosX[j] - (houseNotScared.getWidth()/2), 160, null);
+                g2.drawImage(houseNotScared, housesPosX[j] - 20, 160, null);
             }
         }
         
